@@ -1,12 +1,4 @@
 
-body {font-family: Arial, Helvetica, sans-serif; max-width:900px; margin:20px auto; padding:10px;}
-h1 {color:#2a7f4f;}
-table {width:100%; border-collapse:collapse; margin-top:20px;}
-th, td {border:1px solid #ddd; padding:8px; text-align:left;}
-th {background:#f2f2f2;}
-.qr {float:right; margin-left:20px;}
-</style>
-</head>
 <body>
 <h1>Trasabilitate blockchain – Pâine Eco Călărași, Lot P-2025-001</h1>
 <div class='qr'>
