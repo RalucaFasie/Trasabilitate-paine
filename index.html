@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trasabilitatea Pâinii — Flow & Verificare Blockchain</title>
+  <meta name="description" content="Vizualizare interactivă a lanțului de trasabilitate al pâinii cu verificare pe blockchain." />
+  <style>
+    :root{
+      --bg: #fbfcfb;
+      --card: #ffffff;
+      --accent-farm: #6a994e; /* verde câmp */
+      --accent-mill: #f0a500; /* galben cereale */
+      --accent-bakery: #d84315; /* portocaliu pâine */
+      --accent-store: #2b7a78; /* teal */
+      --accent-consumer: #4a4e69; /* muted */
+      --muted: #55606a;
+      --radius: 14px;
+      --shadow: 0 8px 24px rgba(17,24,39,0.06);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+      --maxw: 1100px;
+    }
+
+    html,body{height:100%; margin:0; font-family:Inter, "Segoe UI", Roboto, Arial; background:var(--bg); color:#0f172a; -webkit-font-smoothing:antialiased;}
+    .wrap{max-width:var(--maxw); margin:28px auto; padding:18px;}
+
+    header{display:flex; align-items:center; gap:16px; margin-bottom:18px;}
+    .logo{width:58px;height:58px;border-radius:12px;background:linear-gradient(135deg,#6a994e,#4a7c2b);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:var(--mono);box-shadow:0 8px 22px rgba(74,124,43,0.12)}
+    h1{margin:0;color:#274c23;font-size:1.35rem}
+    p.lead{margin:2px 0 0 0;color:var(--muted)}
+
+    .flow-wrap{position:relative; margin-top:20px; padding:22px; background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.98)); border-radius:16px; box-shadow:var(--shadow);}
+    .flow{display:flex; gap:18px; align-items:center; justify-content:center; flex-wrap:wrap; padding:8px 6px; position:relative; z-index:2;}
+
+    .node{display:flex; flex-direction:column; gap:8px; align-items:flex-start; width:220px; min-width:180px; background:var(--card); border-radius:12px; padding:12px; box-shadow:0 8px 20px rgba(8,12,16,0.04); border:1px solid rgba(0,0,0,0.04); text-decoration:none; color:inherit; transition:transform .18s ease, box-shadow .18s ease; position:relative;}
+    .node:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(6,10,8,0.08)}
+    .node h3{margin:0; color:#183c26; font-size:1rem}
+    .node p{margin:0;color:var(--muted);font-size:0.9rem}
+    .node .hash{margin-top:8px;font-family:var(--mono);background:#f4f6f5;padding:8px;border-radius:8px;font-size:0.85rem;overflow:auto;width:100%;}
+
+    .node .thumb{width:100%; height:110px; border-radius:10px; object-fit:cover; border:1px solid rgba(0,0,0,0.04)}
+
+    .connectors{position:absolute; inset:0; z-index:1; pointer-events:none}
+
+    .details{margin-top:22px; display:grid; gap:12px}
+    .detail{background:var(--card); border-radius:12px; padding:14px; box-shadow:0 8px 18px rgba(6,10,8,0.04); border:1px solid rgba(0,0,0,0.04)}
+    .detail h4{margin:0 0 8px 0; color:#12401f}
+    .qr{width:140px;height:140px;border-radius:10px;border:1px solid rgba(0,0,0,0.06); padding:6px;background:white;object-fit:contain}
+
+    .controls{display:flex; gap:10px; align-items:center; justify-content:flex-end; margin-bottom:12px}
+    .btn{background:#fff;border:1px solid rgba(0,0,0,0.06);padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600;color:#0f172a;box-shadow:0 6px 14px rgba(8,12,16,0.04);transition:transform .12s ease, background .12s ease}
+    .btn:hover{transform:translateY(-3px)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent-farm),#4a7c2b); color:white; border:none}
+
+    .meta{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:10px}
+
+    .modal{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(3,6,10,0.45); z-index:1000; opacity:0; pointer-events:none; transition:opacity .15s ease}
+    .modal.open{opacity:1; pointer-events:auto}
+    .modal-content{width:min(760px,94%); background:white; border-radius:12px; padding:18px; box-shadow:0 14px 46px rgba(5,10,10,0.2)}
+
+    .row{display:flex; gap:12px; align-items:flex-start}
+    .col{flex:1}
+
+    footer{margin-top:18px; color:var(--muted); text-align:center}
+
+    @media (max-width:720px){
+      .node{width:46%;}
+      .logo{width:50px;height:50px}
+    }
+    @media (max-width:420px){
+      .node{width:100%}
+      .flow{flex-direction:column; gap:12px}
+    }
+
+    /* subtle keyframe */
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+    .node.animated{animation:floaty 4s ease-in-out infinite}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true">AG</div>
+      <div>
+        <h1>Trasabilitatea Pâinii</h1>
+        <p class="lead"><strong>Vizualizare: flux & verificare blockchain (tema light)</strong></p>
+      </div>
+    </header>
+
+    <div class="controls">
+      <button class="btn" id="exportJson">Export JSON</button>
+      <button class="btn" id="connectBtn">Conectează Wallet</button>
+    </div>
+
+    <section class="flow-wrap" aria-label="Diagrama trasabilitate">
+      <svg class="connectors" id="connectors" viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+      <nav class="flow" id="flow">
+        <a class="node animated" id="node-1" href="#detail-1" data-index="0" data-accent="var(--accent-farm)" title="Mergi la detalii Bloc 1">
+          <img class="thumb" src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=1e2f6b6e4c" alt="Ferma AgroVerde" />
+          <h3>Bloc 1 — Ferma AgroVerde</h3>
+          <p>Originea cerealelor</p>
+          <div class="hash">8ac2f97b5dfe91c44a5f3b9c78e4a2120d33ef</div>
+        </a>
+
+        <a class="node animated" id="node-2" href="#detail-2" data-index="1" data-accent="var(--accent-mill)" title="Mergi la detalii Bloc 2">
+          <img class="thumb" src="https://images.unsplash.com/photo-1550258987-190a2d41a8ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=7c1f0b4ea1" alt="Moara" />
+          <h3>Bloc 2 — Moara PanMălina</h3>
+          <p>Lot procesat: GRAU-0725-CL</p>
+          <div class="hash">3de07b4fa2395c2d188a14f963ef77d0a245be</div>
+        </a>
+
+        <a class="node animated" id="node-3" href="#detail-3" data-index="2" data-accent="var(--accent-bakery)" title="Mergi la detalii Bloc 3">
+          <img class="thumb" src="https://images.unsplash.com/photo-1544476915-ed1370594142?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=3a6c1f4f" alt="Brutărie" />
+          <h3>Bloc 3 — Brutăria DeliPan</h3>
+          <p>Produs: Pâine albă 600g</p>
+          <div class="hash">a712c2bffb9331ed48b6a9d6f4dc001cbb3e01</div>
+        </a>
+
+        <a class="node animated" id="node-4" href="#detail-4" data-index="3" data-accent="var(--accent-store)" title="Mergi la detalii Bloc 4">
+          <img class="thumb" src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b9b1f" alt="Magazin EcoMarket" />
+          <h3>Bloc 4 — Magazinul EcoMarket</h3>
+          <p>Lot distribuție: DP-0725-01</p>
+          <div class="hash">e03b7ccaf45691a57ff9a1cde38df008aae97d</div>
+        </a>
+
+        <a class="node animated" id="node-5" href="#detail-5" data-index="4" data-accent="var(--accent-consumer)" title="Mergi la detalii Bloc 5">
+          <img class="thumb" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f7b9c" alt="Consumator" />
+          <h3>Bloc 5 — Consumatorul final</h3>
+          <p>Data achiziției: 24 iulie 2025</p>
+          <div class="hash">09a3bd2fa8b177a52fbb4c3e9d51aa1f5d26ff</div>
+        </a>
+      </nav>
+    </section>
+
+    <section class="details" aria-label="Detalii blocuri">
+      <article id="detail-1" class="detail">
+        <h4>Bloc 1 — Ferma AgroVerde</h4>
+        <p>Originea cerealelor: Ferma AgroVerde, jud. Călărași</p>
+        <p>Data recoltării: 15 iulie 2025</p>
+        <p>Hash: <code class="hash">8ac2f97b5dfe91c44a5f3b9c78e4a2120d33ef</code></p>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+          <button class="btn" data-copy-for="#detail-1">Copiază hash</button>
+          <button class="btn" data-verify-for="#detail-1">Verifică pe blockchain</button>
+        </div>
+      </article>
+
+      <article id="detail-2" class="detail">
+        <h4>Bloc 2 — Moara PanMălina</h4>
+        <p>Lot procesat: GRAU-0725-CL</p>
+        <p>Data măcinării: 20 iulie 2025</p>
+        <p>Hash: <code class="hash">3de07b4fa2395c2d188a14f963ef77d0a245be</code></p>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+          <button class="btn" data-copy-for="#detail-2">Copiază hash</button>
+          <button class="btn" data-verify-for="#detail-2">Verifică pe blockchain</button>
+        </div>
+      </article>
+
+      <article id="detail-3" class="detail">
+        <h4>Bloc 3 — Brutăria DeliPan</h4>
+        <p>Produs: Pâine albă 600g</p>
+        <p>Data fabricației: 22 iulie 2025</p>
+        <p>Hash: <code class="hash">a712c2bffb9331ed48b6a9d6f4dc001cbb3e01</code></p>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+          <button class="btn" data-copy-for="#detail-3">Copiază hash</button>
+          <button class="btn" data-verify-for="#detail-3">Verifică pe blockchain</button>
+        </div>
+      </article>
+
+      <article id="detail-4" class="detail">
+        <h4>Bloc 4 — Magazinul EcoMarket</h4>
+        <p>Lot de distribuție: DP-0725-01</p>
+        <p>Data livrării: 23 iulie 2025</p>
+        <p>Hash: <code class="hash">e03b7ccaf45691a57ff9a1cde38df008aae97d</code></p>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+          <button class="btn" data-copy-for="#detail-4">Copiază hash</button>
+          <button class="btn" data-verify-for="#detail-4">Verifică pe blockchain</button>
+        </div>
+      </article>
+
+      <article id="detail-5" class="detail">
+        <h4>Bloc 5 — Consumatorul final</h4>
+        <p>Data achiziției: 24 iulie 2025</p>
+        <p>Tranzacția confirmă trasabilitatea completă a produsului până la sursa cerealelor.</p>
+        <p>Hash final: <code class="hash">09a3bd2fa8b177a52fbb4c3e9d51aa1f5d26ff</code></p>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+          <button class="btn" data-copy-for="#detail-5">Copiază hash</button>
+          <button class="btn" data-verify-for="#detail-5">Verifică pe blockchain</button>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      © 2025 AgroVerde Blockchain Demo — realizat de Raluca Fășie
+    </footer>
+  </div>
+
+  <!-- Modal for verification / details -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-content">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong id="modal-title">Verificare</strong>
+        <button class="btn" id="modal-close">Închide</button>
+      </div>
+      <div id="modal-body">Se încarcă…</div>
+    </div>
+  </div>
+
+  <!-- Ethers.js for blockchain interaction (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
+  <script>
+    // Data model
+    const blocks = [
+      { id: 'b1', title: 'Ferma AgroVerde', hash: '8ac2f97b5dfe91c44a5f3b9c78e4a2120d33ef' },
+      { id: 'b2', title: 'Moara PanMălina', hash: '3de07b4fa2395c2d188a14f963ef77d0a245be' },
+      { id: 'b3', title: 'Brutăria DeliPan', hash: 'a712c2bffb9331ed48b6a9d6f4dc001cbb3e01' },
+      { id: 'b4', title: 'Magazinul EcoMarket', hash: 'e03b7ccaf45691a57ff9a1cde38df008aae97d' },
+      { id: 'b5', title: 'Consumator final', hash: '09a3bd2fa8b177a52fbb4c3e9d51aa1f5d26ff' }
+    ];
+
+    // Replace with your deployed contract address & ABI that stores/verifies hashes
+    const CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000'; // <-- set real address
+    const CONTRACT_ABI = [
+      // Example minimal ABI: event HashRegistered(bytes32 indexed h, address indexed who);
+      "event HashRegistered(bytes32 indexed h, address indexed who)",
+      // Example read function: function isRegistered(bytes32 h) public view returns (bool);
+      "function isRegistered(bytes32) view returns (bool)"
+    ];
+
+    // UI helpers
+    function $(sel, ctx=document) { return ctx.querySelector(sel); }
+    function $$(sel, ctx=document) { return Array.from(ctx.querySelectorAll(sel)); }
+
+    // Draw connectors between nodes
+    (function connectors(){
+      const svg = $('#connectors');
+      const flow = $('#flow');
+      function getCenterRect(el){
+        const r = el.getBoundingClientRect();
+        const parentR = flow.getBoundingClientRect();
+        return { x: (r.left + r.right)/2 - parentR.left, y: (r.top + r.bottom)/2 - parentR.top };
+      }
+      function update(){
+        while(svg.firstChild) svg.removeChild(svg.firstChild);
+        const flowRect = flow.getBoundingClientRect();
+        svg.setAttribute('viewBox', `0 0 ${Math.max(flowRect.width,1)} ${Math.max(flowRect.height,1)}`);
+        svg.setAttribute('width', flowRect.width);
+        svg.setAttribute('height', flowRect.height);
+        const nodes = Array.from(flow.querySelectorAll('.node'));
+        for(let i=0;i<nodes.length-1;i++){
+          const a = getCenterRect(nodes[i]);
+          const b = getCenterRect(nodes[i+1]);
+          const dx = Math.abs(b.x - a.x);
+          const controlOffset = Math.max(20, dx * 0.35);
+          const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+          const d = `M ${a.x} ${a.y} C ${a.x + controlOffset} ${a.y} ${b.x - controlOffset} ${b.y} ${b.x} ${b.y}`;
+          path.setAttribute('d', d);
+          path.setAttribute('fill', 'none');
+          // color based on target node accent
+          const accent = getComputedStyle(nodes[i+1]).getPropertyValue('--accent') || nodes[i+1].dataset.accent || '#6a994e';
+          path.setAttribute('stroke', accent.trim());
+          path.setAttribute('stroke-width', 3);
+          path.setAttribute('stroke-linecap', 'round');
+          path.setAttribute('stroke-linejoin', 'round');
+          path.setAttribute('opacity', 0.65);
+          svg.appendChild(path);
+          const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          circle.setAttribute('cx', b.x);
+          circle.setAttribute('cy', b.y);
+          circle.setAttribute('r', 4);
+          circle.setAttribute('fill', accent.trim());
+          svg.appendChild(circle);
+        }
+      }
+      let t;
+      function schedule(){ clearTimeout(t); t = setTimeout(update, 40); }
+      window.addEventListener('resize', schedule);
+      window.addEventListener('orientationchange', schedule);
+      window.addEventListener('load', schedule);
+      const obs = new MutationObserver(schedule);
+      obs.observe(flow, { attributes:true, childList:true, subtree:true, characterData:true });
+      schedule();
+    })();
+
+    // Copy and export
+    document.addEventListener('click', function(e){
+      const copyBtn = e.target.closest('[data-copy-for]');
+      if(copyBtn){
+        const sel = copyBtn.getAttribute('data-copy-for');
+        const el = document.querySelector(sel + ' .hash') || document.querySelector(sel + ' code.hash');
+        if(el) navigator.clipboard.writeText(el.textContent.trim()).then(()=>{ copyBtn.textContent='Copiat!'; setTimeout(()=>copyBtn.textContent='Copiază hash',900); });
+      }
+      const verifyBtn = e.target.closest('[data-verify-for]');
+      if(verifyBtn){
+        const sel = verifyBtn.getAttribute('data-verify-for');
+        const el = document.querySelector(sel + ' .hash') || document.querySelector(sel + ' code.hash');
+        if(el) openModalVerify(el.textContent.trim());
+      }
+    });
+
+    $('#exportJson').addEventListener('click', ()=>{
+      const payload = { generatedAt: new Date().toISOString(), blocks };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `trasabilitate-paine-${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    // Modal behavior
+    const modal = $('#modal');
+    const modalBody = $('#modal-body');
+    const modalTitle = $('#modal-title');
+    $('#modal-close').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+    function openModal(title, html){ modalTitle.textContent = title; modalBody.innerHTML = html; modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+
+    // Blockchain verification (optional): tries provider then fallback to public provider
+    async function verifyOnChain(hexHash){
+      // If hash looks like hex without 0x and length 40, try to compute a bytes32 at runtime
+      let padded;
+      if(/^0x[0-9a-f]{64}$/i.test(hexHash)) padded = hexHash;
+      else if(/^[0-9a-f]{64}$/i.test(hexHash)) padded = '0x' + hexHash;
+      else {
+        // if shorter, hash it using keccak256
+        padded = ethers.keccak256(ethers.toUtf8Bytes(hexHash));
+      }
+
+      // If user connected wallet, try read from contract
+      if(window.provider && CONTRACT_ADDRESS !== '0x0000000000000000000000000000000000000000'){
+        try{
+          const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, window.provider);
+          // try isRegistered
+          if(typeof contract.isRegistered === 'function'){
+            const ok = await contract.isRegistered(padded);
+            return { ok, method: 'contract:isRegistered' };
+          }
+          // else return that contract exists but no read fn
+          return { ok: false, method: 'contract:no-read' };
+        }catch(err){
+          return { ok: false, error: err.message }
+        }
+      }
+
+      // fallback: try Etherscan API or public provider — we'll use default getDefaultProvider (readonly)
+      try{
+        const provider = ethers.getDefaultProvider();
+        // if contract available, we could query logs - but without ABI we'll just return provider reachable
+        const block = await provider.getBlockNumber();
+        return { ok: true, method: 'provider:connected', block };
+      }catch(err){
+        return { ok: false, error: err.message };
+      }
+    }
+
+    async function openModalVerify(hash){
+      openModal('Verificare pe blockchain', `<p>Verific hash: <strong>${hash}</strong></p><p>Se efectuează verificarea…</p>`);
+      const result = await verifyOnChain(hash);
+      if(result.ok){
+        modalBody.innerHTML = `<p style="color:green;font-weight:700">Hash confirmat pe rețea</p><pre style="background:#f6f8f7;padding:10px;border-radius:8px">${JSON.stringify(result, null, 2)}</pre>`;
+      }else{
+        modalBody.innerHTML = `<p style="color:#b45309;font-weight:700">Nu s-a putut verifica complet</p><pre style="background:#fff4e6;padding:10px;border-radius:8px">${JSON.stringify(result, null, 2)}</pre><p>Poți conecta un wallet sau seta CONTRACT_ADDRESS în fișier pentru verificări la contract.</p>`;
+      }
+    }
+
+    // Wallet connect
+    $('#connectBtn').addEventListener('click', async ()=>{
+      if(window.ethereum){
+        try{
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          window.provider = new ethers.BrowserProvider(window.ethereum);
+          $('#connectBtn').textContent = 'Wallet conectat';
+        }catch(err){ alert('Conectare anulată: ' + err.message); }
+      }else{ alert('Nu este disponibil un wallet (Metamask). Poți folosi funcția de verificare read-only.'); }
+    });
+
+    // Make nodes clickable to open modal with details
+    $$('#flow .node').forEach((node, i)=>{
+      node.addEventListener('click', (e)=>{
+        // open detail modal instead of anchor navigation
+        e.preventDefault();
+        const title = node.querySelector('h3').textContent;
+        const hash = node.querySelector('.hash').textContent.trim();
+        const img = node.querySelector('.thumb')?.src || '';
+        openModal(title, `<div class="row"><div class="col"><img src="${img}" alt="" style="width:100%;border-radius:8px;margin-bottom:8px"/></div><div class="col"><p><strong>Hash:</strong> <code style="font-family:var(--mono)">${hash}</code></p><p style="margin-top:8px"><button class=\
