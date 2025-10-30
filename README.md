@@ -20,7 +20,7 @@ th {background:#f2f2f2;}
   <img alt='QR AgroVerde' src='qr_agroverde.png' width='200' height='200'>
   <p style='font-size:12px'>Scanează codul QR pentru a accesa pagina consumatorului.</p>
 </div>
-<p>Acesta este un demo de trasabilitate alimentară cu blockchain. Fiecare etapă este înregistrată și are un hash unic pentru verificare.</p>
+<p>Aceasta este trasabilitatea alimentară cu blockchain. Fiecare etapă este înregistrată și are un hash unic pentru verificare.</p>
 
 <h2>Etape înregistrate</h2>
 <table>
