@@ -2,7 +2,7 @@
 <body>
 <h1>Trasabilitate blockchain – Pâine Eco Călărași, Lot P-2025-001</h1>
 <div class='qr'>
-  <img alt='QR AgroVerde' src='file_000000002a4462439bfbf4d35ae6c6e8' width='200' height='200'>
+  <img alt='QR AgroVerde' src='file_000000002a4462439bfbf4d35ae6c6e8.png' width='200' height='200'>
   <p style='font-size:12px'>Scanează codul QR pentru a accesa pagina consumatorului.</p>
 </div>
 <p>Aceasta este trasabilitatea alimentară cu blockchain. Fiecare etapă este înregistrată și are un hash unic pentru verificare.</p>
