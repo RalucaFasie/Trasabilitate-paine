@@ -1,11 +1,4 @@
 
-<!doctype html>
-<html lang="ro">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Trasabilitate – Pâine Eco Călărași</title>
-<style>
 body {font-family: Arial, Helvetica, sans-serif; max-width:900px; margin:20px auto; padding:10px;}
 h1 {color:#2a7f4f;}
 table {width:100%; border-collapse:collapse; margin-top:20px;}
