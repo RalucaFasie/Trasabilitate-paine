@@ -1,28 +1,41 @@
-# Trasabilitatea Pâinii — AgroVerde
+# Trasabilitate-paine — Registry demo
 
-Aceasta repo conține o demonstrație de trasabilitate a pâinii folosind un lanț de evenimente (blocuri).
+Această ramură (feature/registry-demo) conține fișierele pentru demonstrația locală a publicării și verificării dovezilor (hash/CID) pe un registru blockchain local (Hardhat). Am pregătit contract, script de deploy, relayer skeleton și fișiere QR pentru fiecare bloc demo.
 
-Am actualizat README pentru a include descrierea noilor funcții și legătura către o pagină interactivă (index.html) cu vizualizarea fluxului și funcționalități suplimentare.
+Conținut adăugat:
+- contracts/SimpleRegistry.sol — contract OpenZeppelin cu rol RELAYER și event HashRegistered
+- hardhat.config.js — configurație pentru rețele locale/testnet
+- scripts/deploy.js — script deploy
+- relayer/index.js — skeleton relayer (mock mode sau real, dacă setezi RELAYER_PK)
+- .env.example — variabile mediu
+- assets/qr-b1.svg .. assets/qr-b5.svg — imagini QR (placeholder SVG per bloc)
 
-Funcționalități nou adăugate (în index.html):
+Scenariu recomandat (demo local — fără plăți reale):
 
-- Diagramă interactivă cu noduri (blocuri) și conexiuni SVG între ele.
-- Click pe un nod deschide un modal cu detalii complete.
-- Dark / Light mode toggle (salvat în localStorage).
-- Buton "Copiază hash" pentru fiecare bloc.
-- Buton "Export JSON" pentru a descărca traseul ca fișier JSON.
-- Conexiuni dinamice care se recalculază la redimensionare sau când se schimbă layout-ul.
-- Accesibilitate: focus navigation și aria-labels, keyboard support (Esc închide modal).
+1. Instalează dependențe:
+   npm install
 
-Cum testezi local:
+2. Pornește nod Hardhat:
+   npx hardhat node
 
-1. Descarcă repo.
-2. Deschide index.html în browser (sau rulează un server local: `python -m http.server` și accesează `http://localhost:8000`).
+3. Deploy local:
+   npx hardhat run scripts/deploy.js --network localhost
+   Vei primi adresa contractului — seteaz-o în relayer/.env sau exporteaz-o ca CONTRACT_ADDRESS.
 
-Publicare pe GitHub Pages:
+4. Pornește relayer (mock mode e OK pentru demo):
+   node relayer/index.js
 
-- Dacă vrei o pagină publică, activează GitHub Pages pentru acest repo (Settings → Pages) și setează root sau branch gh-pages; index.html va fi folosit pentru afișarea interactivă.
+5. Importă una din cheile generate de Hardhat în Metamask (în nodul local primești conturi cu ETH fake). Deschide `index.html` (din branch main sau servește-l static) și folosește butoanele:
+   - "Conectează Wallet" pentru a conecta Metamask
+   - "Înregistrează hash (demo)" pentru a trimite tranzacție local (dacă wallet are ETH fake)
+   - "Înregistrează via Relayer" pentru a trimite payload la relayer (mock mode returnează hash)
+   - "Verifică pe blockchain" pentru a apela contract.isRegistered și/sau interoga logurile
 
-Conținutul index.html este adăugat în repo și conține toate funcționalitățile menționate.
+QR codes
+- Am adăugat fișiere SVG în `assets/` pentru fiecare bloc: qr-b1.svg .. qr-b5.svg.
+- Acestea sunt placeholder-uri care conțin hash-ul blocului; pentru coduri QR scannabile recomand să generezi imagini QR cu linkul de verificare (ex: `https://your-demo.example/verify?hash=<hash>`), apoi înlocuiește fișierele din `assets/`.
 
-© 2025 AgroVerde — realizat de Raluca Fășie
+Următorii pași pe care ți-i pot face imediat:
+- Generez imagini QR scannabile (dacă îmi dai un endpoint de verificare public sau dacă vrei să folosesc serviciu public de generare QR) și le comit.
+- Adaug buton "Înregistrează hash" în front-end pentru a lansa register() direct cu signer (dacă vrei). (pot comite pe branch sau main)
+- Creez script deploy pentru testnet (Mumbai/Sepolia) și instrucțiuni complete după ce setezi RPC/cheie.
