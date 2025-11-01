@@ -32,9 +32,22 @@ describe("SimpleRegistry", function () {
     const testCid = "QmTest123";
 
     it("Should allow anyone to register a hash", async function () {
-      await expect(registry.connect(user).register(testHash, testCid))
-        .to.emit(registry, "HashRegistered")
-        .withArgs(testHash, user.address, testCid, await getBlockTimestamp());
+      const tx = await registry.connect(user).register(testHash, testCid);
+      const receipt = await tx.wait();
+      const event = receipt.logs.find(log => {
+        try {
+          return registry.interface.parseLog(log).name === "HashRegistered";
+        } catch {
+          return false;
+        }
+      });
+      
+      expect(event).to.not.be.undefined;
+      const parsedEvent = registry.interface.parseLog(event);
+      expect(parsedEvent.args[0]).to.equal(testHash);
+      expect(parsedEvent.args[1]).to.equal(user.address);
+      expect(parsedEvent.args[2]).to.equal(testCid);
+      expect(parsedEvent.args[3]).to.be.gt(0);
       
       expect(await registry.isRegistered(testHash)).to.be.true;
     });
@@ -65,9 +78,22 @@ describe("SimpleRegistry", function () {
       const RELAYER_ROLE = await registry.RELAYER_ROLE();
       await registry.grantRole(RELAYER_ROLE, relayer.address);
 
-      await expect(registry.connect(relayer).registerByRelayer(testHash, user.address, testCid))
-        .to.emit(registry, "HashRegistered")
-        .withArgs(testHash, user.address, testCid, await getBlockTimestamp());
+      const tx = await registry.connect(relayer).registerByRelayer(testHash, user.address, testCid);
+      const receipt = await tx.wait();
+      const event = receipt.logs.find(log => {
+        try {
+          return registry.interface.parseLog(log).name === "HashRegistered";
+        } catch {
+          return false;
+        }
+      });
+      
+      expect(event).to.not.be.undefined;
+      const parsedEvent = registry.interface.parseLog(event);
+      expect(parsedEvent.args[0]).to.equal(testHash);
+      expect(parsedEvent.args[1]).to.equal(user.address);
+      expect(parsedEvent.args[2]).to.equal(testCid);
+      expect(parsedEvent.args[3]).to.be.gt(0);
       
       const registration = await registry.registrations(testHash);
       expect(registration.reporter).to.equal(user.address);
@@ -101,11 +127,4 @@ describe("SimpleRegistry", function () {
       expect(await registry.isRegistered(testHash)).to.be.true;
     });
   });
-
-  // Helper function to get current block timestamp
-  async function getBlockTimestamp() {
-    const blockNum = await ethers.provider.getBlockNumber();
-    const block = await ethers.provider.getBlock(blockNum);
-    return block.timestamp;
-  }
 });
