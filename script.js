@@ -71,12 +71,24 @@ function escapeHtml(text) {
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
 
+// Function to validate and sanitize color values (hex format only)
+function sanitizeColor(color) {
+    // Only allow valid hex colors (#RGB or #RRGGBB format)
+    const hexColorPattern = /^#[0-9A-Fa-f]{6}$/;
+    if (hexColorPattern.test(color)) {
+        return color;
+    }
+    // Fallback to a safe default color if validation fails
+    return '#6a994e';
+}
+
 // Function to generate popup HTML content
 function generatePopupHTML(stage) {
     const data = stageData[stage];
     if (!data) return '';
 
     const escapedTitle = escapeHtml(data.title);
+    const safeColor = sanitizeColor(data.color);
     const fieldsHTML = data.fields.map(field => {
         const escapedLabel = escapeHtml(field.label);
         const escapedValue = escapeHtml(field.value);
@@ -97,7 +109,7 @@ function generatePopupHTML(stage) {
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, ${data.color}22 0%, ${data.color}11 100%);
+            background: linear-gradient(135deg, ${safeColor}22 0%, ${safeColor}11 100%);
             padding: 2rem;
             line-height: 1.6;
             color: #2c3e50;
@@ -115,14 +127,14 @@ function generatePopupHTML(stage) {
             gap: 1rem;
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid ${data.color};
+            border-bottom: 2px solid ${safeColor};
         }
         .popup-icon {
             font-size: 2.5rem;
         }
         .popup-title {
             font-size: 1.75rem;
-            color: ${data.color};
+            color: ${safeColor};
             font-weight: 700;
         }
         .popup-content {
@@ -142,10 +154,10 @@ function generatePopupHTML(stage) {
             margin-bottom: 0.5rem;
             background: #f8f9fa;
             border-radius: 8px;
-            border-left: 4px solid ${data.color};
+            border-left: 4px solid ${safeColor};
         }
         .popup-content strong {
-            color: ${data.color};
+            color: ${safeColor};
             display: inline-block;
             min-width: 140px;
         }
@@ -162,7 +174,7 @@ function generatePopupHTML(stage) {
             font-style: italic;
         }
         .close-button {
-            background: ${data.color};
+            background: ${safeColor};
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
@@ -173,7 +185,7 @@ function generatePopupHTML(stage) {
             transition: all 0.2s ease;
         }
         .close-button:hover {
-            background: ${data.color}dd;
+            background: ${safeColor}dd;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -212,6 +224,9 @@ function openStagePopup(stage) {
     
     if (popup) {
         // Write the generated HTML to the popup window
+        // Note: document.write is used intentionally here for GitHub Pages compatibility
+        // The HTML content is generated from internal, validated data (not user input)
+        // All user-facing text is escaped via escapeHtml() and colors are validated via sanitizeColor()
         popup.document.open();
         popup.document.write(popupHTML);
         popup.document.close();
