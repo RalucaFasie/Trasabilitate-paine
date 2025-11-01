@@ -256,7 +256,7 @@ npx hardhat run scripts/deploy.js --network sepolia
 - Relayer runs in mock mode by default (for demo purposes)
 - QR codes are placeholders (need to be generated with actual verification URLs)
 - Contract is not upgradeable (requires redeployment for changes)
-- No package.json (dependencies must be installed manually based on project needs)
+- No package.json (dependencies must be installed manually based on project needs). This is intentional for demonstration/educational purposes to keep the project lightweight and flexible. For production use or collaborative development, it is strongly recommended to add a `package.json` to manage dependencies and scripts in a standard, reproducible way.
 
 ## Resources
 
