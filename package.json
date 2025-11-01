@@ -1,0 +1,41 @@
+{
+  "name": "trasabilitate-paine",
+  "version": "1.0.0",
+  "description": "Blockchain-based bread traceability system with Hardhat smart contracts and relayer service",
+  "main": "index.js",
+  "scripts": {
+    "node": "npx hardhat node",
+    "deploy": "npx hardhat run scripts/deploy.js --network localhost",
+    "deploy:mumbai": "npx hardhat run scripts/deploy.js --network mumbai",
+    "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
+    "relayer": "node relayer/index.js",
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "clean": "npx hardhat clean"
+  },
+  "keywords": [
+    "blockchain",
+    "traceability",
+    "hardhat",
+    "ethereum",
+    "smart-contracts",
+    "food-safety"
+  ],
+  "author": "Raluca Fășie",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.4"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.10.0",
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

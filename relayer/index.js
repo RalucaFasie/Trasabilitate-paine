@@ -16,7 +16,7 @@ if(!process.env.RELAYER_PK || !process.env.RPC_URL) {
   console.warn('Relayer: set RELAYER_PK and RPC_URL in env to send txs. Running in mock mode if absent.');
 }
 
-const provider = process.env.RPC_URL ? new ethers.providers.JsonRpcProvider(process.env.RPC_URL) : null;
+const provider = process.env.RPC_URL ? new ethers.JsonRpcProvider(process.env.RPC_URL) : null;
 const relayerWallet = (process.env.RELAYER_PK && provider) ? new ethers.Wallet(process.env.RELAYER_PK, provider) : null;
 const contract = (relayerWallet && CONTRACT_ADDRESS) ? new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, relayerWallet) : null;
 
