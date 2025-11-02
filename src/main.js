@@ -1,3 +1,5 @@
+import './styles.css';
+
 // Stage data with structured content
 const stageData = {
     ferma: {

@@ -5,72 +5,105 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)](https://soliditylang.org/)
 
-Această ramură (feature/registry-demo) conține fișierele pentru demonstrația locală a publicării și verificării dovezilor (hash/CID) pe un registru blockchain local (Hardhat). Am pregătit contract, script de deploy, relayer skeleton și fișiere QR pentru fiecare bloc demo.
+Sistem interactiv de trasabilitate pentru pâine folosind blockchain. Acest proiect oferă o interfață web modernă pentru urmărirea întregului lanț de aprovizionare al pâinii, de la fermă la consumator, cu suport pentru înregistrare pe blockchain.
 
-Conținut adăugat:
-- contracts/SimpleRegistry.sol — contract OpenZeppelin cu rol RELAYER și event HashRegistered
-- hardhat.config.js — configurație pentru rețele locale/testnet
-- scripts/deploy.js — script deploy
-- relayer/index.js — skeleton relayer (mock mode sau real, dacă setezi RELAYER_PK)
-- .env.example — variabile mediu
-- assets/qr-b1.svg .. assets/qr-b5.svg — imagini QR (placeholder SVG per bloc)
+## 🚀 Getting Started
 
-## Scenariu recomandat (demo local — fără plăți reale)
+### Cerințe preliminare
+- Node.js >= 18.0.0
+- npm >= 9.0.0
 
-### 1. Instalează dependențe:
+### Instalare și rulare locală
+
+#### 1. Instalează dependențele:
 ```bash
 npm install
 ```
 
-### 2. Configurează environment (opțional pentru demo):
+#### 2. Pornește serverul de dezvoltare (Vite):
+```bash
+npm run dev
+```
+
+Aplicația va fi disponibilă la `http://localhost:5173`
+
+#### 3. Build pentru producție:
+```bash
+npm run build
+```
+
+Aceasta va genera folderul `dist/` cu fișierele optimizate pentru producție.
+
+#### 4. Previzualizare build producție:
+```bash
+npm run preview
+```
+
+### Linting și formatare
+
+```bash
+# Verifică codul cu ESLint
+npm run lint
+
+# Formatează codul cu Prettier
+npm run format
+```
+
+## 📁 Structura proiectului
+
+```
+├── public/              # Fișiere statice și HTML
+│   ├── assets/         # Imagini și resurse statice
+│   ├── index.html      # Pagina principală
+│   └── verify.html     # Pagina de verificare
+├── src/                # Cod sursă JavaScript și CSS
+│   ├── main.js         # Entry point JavaScript
+│   └── styles.css      # Stiluri CSS
+├── contracts/          # Smart contracts Solidity
+│   └── SimpleRegistry.sol
+├── scripts/            # Scripts de deploy blockchain
+│   └── deploy.js
+├── relayer/            # Serviciu relayer backend
+│   └── index.js
+├── test/               # Contract tests
+│   └── SimpleRegistry.test.js
+├── vite.config.js      # Configurare Vite
+├── .eslintrc.json      # Configurare ESLint
+├── .prettierrc         # Configurare Prettier
+└── package.json        # Dependencies și scripturi
+
+```
+
+## 🔗 Blockchain Integration
+
+### Setup pentru dezvoltare locală cu Hardhat
+
+#### 1. Configurează environment (opțional pentru demo):
 ```bash
 cp .env.example .env
 # Editează .env cu cheile tale (opțional pentru testnet)
 ```
 
-### 3. Pornește nod Hardhat local:
+#### 2. Pornește nod Hardhat local:
 ```bash
 npm run node
-# Sau: npx hardhat node
 ```
 
-### 4. Deploy local (într-un terminal nou):
+#### 3. Deploy contractul local (într-un terminal nou):
 ```bash
 npm run deploy
-# Sau: npx hardhat run scripts/deploy.js --network localhost
 ```
 **Important:** Notează adresa contractului din output și seteaz-o în `.env` ca `CONTRACT_ADDRESS=0x...`
 
-### 5. Pornește relayer (mock mode e OK pentru demo):
+#### 4. Pornește relayer (mock mode OK pentru demo):
 ```bash
 npm run relayer
-# Sau: node relayer/index.js
 ```
-Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
+Relayer va rula pe http://localhost:3001
 
-### 6. Deschide aplicația web:
-Servește fișierele HTML cu un server local:
-```bash
-# Opțiune 1: Python
-python -m http.server 8000
-
-# Opțiune 2: Node.js http-server (instalează global: npm i -g http-server)
-http-server -p 8000
-```
-
-Apoi deschide în browser: http://localhost:8000/index.html
-
-### 7. Conectează Metamask:
+#### 5. Conectează Metamask:
 - Importă una din cheile generate de Hardhat în Metamask
 - Configurează rețeaua custom: RPC URL = http://localhost:8545, Chain ID = 31337
-- Folosește butoanele din interfață:
-  - **"Conectează Wallet"** - conectează Metamask
-  - **"Verifică pe blockchain"** - verifică hash-uri înregistrate
-  - **"Export JSON"** - exportă datele de trasabilitate
-
-QR codes
-- Am adăugat fișiere SVG în `assets/` pentru fiecare bloc: qr-b1.svg .. qr-b5.svg.
-- Acestea sunt placeholder-uri care conțin hash-ul blocului; pentru coduri QR scannabile recomand să generezi imagini QR cu linkul de verificare (ex: `https://your-demo.example/verify?hash=<hash>`), apoi înlocuiește fișierele din `assets/`.
 
 ## Deploy pe testnet (Sepolia sau Mumbai)
 
@@ -97,30 +130,15 @@ CONTRACT_ADDRESS=deployed_contract_address
 npm run relayer
 ```
 
-## Structura proiectului
+## 🌐 GitHub Pages Deployment
 
-```
-├── .github/             # GitHub configurations
-│   ├── workflows/       # CI/CD workflows
-│   ├── ISSUE_TEMPLATE/  # Issue templates
-│   └── pull_request_template.md
-├── contracts/           # Smart contracts Solidity
-│   └── SimpleRegistry.sol
-├── scripts/            # Scripts de deploy
-│   └── deploy.js
-├── relayer/            # Serviciu relayer backend
-│   └── index.js
-├── test/               # Contract tests
-│   └── SimpleRegistry.test.js
-├── assets/             # QR codes și resurse
-├── index.html          # Interfață principală de vizualizare
-├── verify.html         # Pagină de verificare
-├── hardhat.config.js   # Configurare Hardhat
-├── package.json        # Dependencies și scripturi npm
-├── CODE_OF_CONDUCT.md  # Contributor guidelines
-├── SECURITY.md         # Security policy
-└── CONTRIBUTING.md     # Development guidelines
-```
+După ce rulezi `npm run build`, folderul `dist/` conține toate fișierele necesare pentru GitHub Pages.
+
+**Opțiuni de deployment:**
+1. **Manual:** Copiază conținutul din `dist/` în branch-ul `gh-pages`
+2. **GitHub Actions:** Configurează un workflow pentru a publica automat din `dist/`
+
+Configurația `base: './'` din `vite.config.js` asigură compatibilitatea cu GitHub Pages.
 
 ## Tehnologii utilizate
 
