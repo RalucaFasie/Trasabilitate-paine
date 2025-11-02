@@ -5,72 +5,99 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)](https://soliditylang.org/)
 
-Această ramură (feature/registry-demo) conține fișierele pentru demonstrația locală a publicării și verificării dovezilor (hash/CID) pe un registru blockchain local (Hardhat). Am pregătit contract, script de deploy, relayer skeleton și fișiere QR pentru fiecare bloc demo.
+Aplicație web de trasabilitate pentru pâine cu smart contracts Hardhat și serviciu relayer pentru înregistrarea pe blockchain.
 
-Conținut adăugat:
+**Structura modernă:**
+- `src/` — JavaScript și CSS sursă (ES modules)
+- `public/` — HTML și assets statice
+- Build tool: Vite pentru dev și production builds
+
+**Componente:**
 - contracts/SimpleRegistry.sol — contract OpenZeppelin cu rol RELAYER și event HashRegistered
 - hardhat.config.js — configurație pentru rețele locale/testnet
 - scripts/deploy.js — script deploy
 - relayer/index.js — skeleton relayer (mock mode sau real, dacă setezi RELAYER_PK)
 - .env.example — variabile mediu
-- assets/qr-b1.svg .. assets/qr-b5.svg — imagini QR (placeholder SVG per bloc)
+- public/assets/ — imagini QR și ilustrații
 
-## Scenariu recomandat (demo local — fără plăți reale)
+## Rulare locală - Frontend
 
 ### 1. Instalează dependențe:
 ```bash
 npm install
 ```
 
-### 2. Configurează environment (opțional pentru demo):
+### 2. Pornește dev server:
+```bash
+npm run dev
+```
+Apoi deschide în browser: http://localhost:5173/
+
+### 3. Build pentru producție:
+```bash
+npm run build
+```
+Generează folderul `dist/` care poate fi servit direct sau urcat pe GitHub Pages.
+
+### 4. Preview build de producție:
+```bash
+npm run preview
+```
+
+### 5. Lint și format cod:
+```bash
+npm run lint      # Verifică codul cu ESLint
+npm run format    # Formatează codul cu Prettier
+```
+
+## Rulare cu blockchain local (Hardhat)
+
+### 1. Configurează environment (opțional pentru demo):
 ```bash
 cp .env.example .env
 # Editează .env cu cheile tale (opțional pentru testnet)
 ```
 
-### 3. Pornește nod Hardhat local:
+### 2. Pornește nod Hardhat local (terminal 1):
 ```bash
 npm run node
-# Sau: npx hardhat node
 ```
 
-### 4. Deploy local (într-un terminal nou):
+### 3. Deploy local (terminal 2):
 ```bash
 npm run deploy
-# Sau: npx hardhat run scripts/deploy.js --network localhost
 ```
 **Important:** Notează adresa contractului din output și seteaz-o în `.env` ca `CONTRACT_ADDRESS=0x...`
 
-### 5. Pornește relayer (mock mode e OK pentru demo):
+### 4. Pornește relayer (terminal 3):
 ```bash
 npm run relayer
-# Sau: node relayer/index.js
 ```
 Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
 
-### 6. Deschide aplicația web:
-Servește fișierele HTML cu un server local:
-```bash
-# Opțiune 1: Python
-python -m http.server 8000
-
-# Opțiune 2: Node.js http-server (instalează global: npm i -g http-server)
-http-server -p 8000
-```
-
-Apoi deschide în browser: http://localhost:8000/index.html
-
-### 7. Conectează Metamask:
+### 5. Conectează Metamask:
 - Importă una din cheile generate de Hardhat în Metamask
 - Configurează rețeaua custom: RPC URL = http://localhost:8545, Chain ID = 31337
-- Folosește butoanele din interfață:
-  - **"Conectează Wallet"** - conectează Metamask
-  - **"Verifică pe blockchain"** - verifică hash-uri înregistrate
-  - **"Export JSON"** - exportă datele de trasabilitate
+- Folosește butoanele din interfață pentru a interacționa cu blockchain-ul
 
-QR codes
-- Am adăugat fișiere SVG în `assets/` pentru fiecare bloc: qr-b1.svg .. qr-b5.svg.
-- Acestea sunt placeholder-uri care conțin hash-ul blocului; pentru coduri QR scannabile recomand să generezi imagini QR cu linkul de verificare (ex: `https://your-demo.example/verify?hash=<hash>`), apoi înlocuiește fișierele din `assets/`.
+### QR codes
+- Fișierele SVG din `public/assets/` conțin placeholder-uri pentru QR codes (qr-b1.svg .. qr-b5.svg).
+- Pentru coduri QR scannabile, generează imagini QR cu linkul de verificare (ex: `https://your-demo.example/verify.html?hash=<hash>`).
+
+## GitHub Pages
+
+Pentru publicare pe GitHub Pages:
+
+1. Build-ează proiectul:
+```bash
+npm run build
+```
+
+2. Conținutul din folderul `dist/` poate fi publicat pe GitHub Pages fie prin:
+   - Configurare directă în Settings → Pages → Source: "gh-pages branch"
+   - GitHub Actions workflow pentru deploy automat
+
+3. Asigură-te că `base: './'` este setat în `vite.config.js` pentru compatibilitate cu GitHub Pages.
 
 ## Deploy pe testnet (Sepolia sau Mumbai)
 
@@ -104,22 +131,28 @@ npm run relayer
 │   ├── workflows/       # CI/CD workflows
 │   ├── ISSUE_TEMPLATE/  # Issue templates
 │   └── pull_request_template.md
+├── public/              # Static assets și HTML
+│   ├── index.html       # Interfață principală
+│   ├── verify.html      # Pagină de verificare
+│   └── assets/          # Images, QR codes
+├── src/                 # Source files (JS, CSS)
+│   ├── main.js          # Entry point JavaScript (ES module)
+│   └── styles.css       # Main stylesheet
 ├── contracts/           # Smart contracts Solidity
 │   └── SimpleRegistry.sol
-├── scripts/            # Scripts de deploy
+├── scripts/             # Scripts de deploy
 │   └── deploy.js
-├── relayer/            # Serviciu relayer backend
+├── relayer/             # Serviciu relayer backend
 │   └── index.js
-├── test/               # Contract tests
+├── test/                # Contract tests
 │   └── SimpleRegistry.test.js
-├── assets/             # QR codes și resurse
-├── index.html          # Interfață principală de vizualizare
-├── verify.html         # Pagină de verificare
-├── hardhat.config.js   # Configurare Hardhat
-├── package.json        # Dependencies și scripturi npm
-├── CODE_OF_CONDUCT.md  # Contributor guidelines
-├── SECURITY.md         # Security policy
-└── CONTRIBUTING.md     # Development guidelines
+├── dist/                # Production build output (generated)
+├── vite.config.js       # Vite configuration
+├── .eslintrc.json       # ESLint configuration
+├── .prettierrc          # Prettier configuration
+├── hardhat.config.js    # Configurare Hardhat
+├── package.json         # Dependencies și scripturi npm
+└── README.md            # Acest fișier
 ```
 
 ## Tehnologii utilizate
