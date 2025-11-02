@@ -16,11 +16,39 @@ Acest repository conține un sistem de trasabilitate pentru pâine bazat pe bloc
 ## Dezvoltare locală (Frontend)
 
 ### 1. Instalează dependențe
+Sistem interactiv de trasabilitate pentru pâine folosind blockchain. Acest proiect oferă o interfață web modernă pentru urmărirea întregului lanț de aprovizionare al pâinii, de la fermă la consumator, cu suport pentru înregistrare pe blockchain.
+
+## 🚀 Getting Started
+
+### Cerințe preliminare
+- Node.js >= 18.0.0
+- npm >= 9.0.0
+Aplicație web de trasabilitate pentru pâine cu smart contracts Hardhat și serviciu relayer pentru înregistrarea pe blockchain.
+
+**Structura modernă:**
+- `src/` — JavaScript și CSS sursă (ES modules)
+- `public/` — HTML și assets statice
+- Build tool: Vite pentru dev și production builds
+
+**Componente:**
+- contracts/SimpleRegistry.sol — contract OpenZeppelin cu rol RELAYER și event HashRegistered
+- hardhat.config.js — configurație pentru rețele locale/testnet
+- scripts/deploy.js — script deploy
+- relayer/index.js — skeleton relayer (mock mode sau real, dacă setezi RELAYER_PK)
+- .env.example — variabile mediu
+- public/assets/ — imagini QR și ilustrații
+
+## Rulare locală - Frontend
+
+### Instalare și rulare locală
+
+#### 1. Instalează dependențele:
 ```bash
 npm install
 ```
 
 ### 2. Pornește serverul de dezvoltare
+#### 2. Pornește serverul de dezvoltare (Vite):
 ```bash
 npm run dev
 ```
@@ -28,6 +56,9 @@ npm run dev
 Aplicația va fi disponibilă la http://localhost:5173/
 
 ### 3. Build pentru producție
+Aplicația va fi disponibilă la `http://localhost:5173`
+
+#### 3. Build pentru producție:
 ```bash
 npm run build
 ```
@@ -35,11 +66,29 @@ npm run build
 Fișierele de producție vor fi generate în directorul `dist/`
 
 ### 4. Preview build-ul de producție
+Aceasta va genera folderul `dist/` cu fișierele optimizate pentru producție.
+
+#### 4. Previzualizare build producție:
+### 2. Pornește dev server:
+```bash
+npm run dev
+```
+Apoi deschide în browser: http://localhost:5173/
+
+### 3. Build pentru producție:
+```bash
+npm run build
+```
+Generează folderul `dist/` care poate fi servit direct sau urcat pe GitHub Pages.
+
+### 4. Preview build de producție:
 ```bash
 npm run preview
 ```
 
 ### 5. Linting și formatare
+### Linting și formatare
+
 ```bash
 # Verifică codul cu ESLint
 npm run lint
@@ -51,17 +100,59 @@ npm run format
 ## Dezvoltare blockchain (Smart Contracts)
 
 ### 1. Configurează environment (opțional pentru demo)
+## 📁 Structura proiectului
+
+```
+├── public/              # Fișiere statice și HTML
+│   ├── assets/         # Imagini și resurse statice
+│   ├── index.html      # Pagina principală
+│   └── verify.html     # Pagina de verificare
+├── src/                # Cod sursă JavaScript și CSS
+│   ├── main.js         # Entry point JavaScript
+│   └── styles.css      # Stiluri CSS
+├── contracts/          # Smart contracts Solidity
+│   └── SimpleRegistry.sol
+├── scripts/            # Scripts de deploy blockchain
+│   └── deploy.js
+├── relayer/            # Serviciu relayer backend
+│   └── index.js
+├── test/               # Contract tests
+│   └── SimpleRegistry.test.js
+├── vite.config.js      # Configurare Vite
+├── .eslintrc.json      # Configurare ESLint
+├── .prettierrc         # Configurare Prettier
+└── package.json        # Dependencies și scripturi
+
+```
+
+## 🔗 Blockchain Integration
+
+### Setup pentru dezvoltare locală cu Hardhat
+
+#### 1. Configurează environment (opțional pentru demo):
+### 5. Lint și format cod:
+```bash
+npm run lint      # Verifică codul cu ESLint
+npm run format    # Formatează codul cu Prettier
+```
+
+## Rulare cu blockchain local (Hardhat)
+
+### 1. Configurează environment (opțional pentru demo):
 ```bash
 cp .env.example .env
 # Editează .env cu cheile tale (opțional pentru testnet)
 ```
 
 ### 2. Pornește nod Hardhat local
+#### 2. Pornește nod Hardhat local:
 ```bash
 npm run node
 ```
 
 ### 3. Deploy local (într-un terminal nou)
+#### 3. Deploy contractul local (într-un terminal nou):
+### 3. Deploy local (terminal 2):
 ```bash
 npm run deploy
 ```
@@ -71,17 +162,27 @@ npm run deploy
 ### 4. Pornește relayer (mock mode e OK pentru demo)
 ```bash
 npm run relayer
+#### 4. Pornește relayer (mock mode OK pentru demo):
+```bash
+npm run relayer
 ```
+Relayer va rula pe http://localhost:3001
+
+#### 5. Conectează Metamask:
+- Importă una din cheile generate de Hardhat în Metamask
+- Configurează rețeaua custom: RPC URL = http://localhost:8545, Chain ID = 31337
+### 4. Pornește relayer (terminal 3):
+```bash
+npm run relayer
+```
+Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
 
 Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
 
 ### 5. Conectează Metamask:
 - Importă una din cheile generate de Hardhat în Metamask
 - Configurează rețeaua custom: RPC URL = http://localhost:8545, Chain ID = 31337
-- Folosește butoanele din interfață:
-  - **"Conectează Wallet"** - conectează Metamask
-  - **"Verifică pe blockchain"** - verifică hash-uri înregistrate
-  - **"Export JSON"** - exportă datele de trasabilitate
+- Folosește butoanele din interfață pentru a interacționa cu blockchain-ul
 
 ## Deploy pe GitHub Pages
 
@@ -103,6 +204,24 @@ Configurează un workflow GitHub Actions pentru a construi automat și a publica
 1. Build-ul creează directorul `dist/` cu fișiere statice
 2. Configurează GitHub Pages să servească din branch-ul `gh-pages` sau direct din `dist/` (dacă este disponibil)
 3. Aplicația va fi disponibilă la `https://<username>.github.io/<repository>/`
+### QR codes
+- Fișierele SVG din `public/assets/` conțin placeholder-uri pentru QR codes (qr-b1.svg .. qr-b5.svg).
+- Pentru coduri QR scannabile, generează imagini QR cu linkul de verificare (ex: `https://your-demo.example/verify.html?hash=<hash>`).
+
+## GitHub Pages
+
+Pentru publicare pe GitHub Pages:
+
+1. Build-ează proiectul:
+```bash
+npm run build
+```
+
+2. Conținutul din folderul `dist/` poate fi publicat pe GitHub Pages fie prin:
+   - Configurare directă în Settings → Pages → Source: "gh-pages branch"
+   - GitHub Actions workflow pentru deploy automat
+
+3. Asigură-te că `base: './'` este setat în `vite.config.js` pentru compatibilitate cu GitHub Pages.
 
 ## Deploy pe testnet (Sepolia sau Mumbai)
 
@@ -129,8 +248,15 @@ CONTRACT_ADDRESS=deployed_contract_address
 npm run relayer
 ```
 
-## Structura proiectului
+## 🌐 GitHub Pages Deployment
 
+După ce rulezi `npm run build`, folderul `dist/` conține toate fișierele necesare pentru GitHub Pages.
+
+**Opțiuni de deployment:**
+1. **Manual:** Copiază conținutul din `dist/` în branch-ul `gh-pages`
+2. **GitHub Actions:** Configurează un workflow pentru a publica automat din `dist/`
+
+Configurația `base: './'` din `vite.config.js` asigură compatibilitatea cu GitHub Pages.
 ```
 ├── .github/             # GitHub configurations
 │   ├── workflows/       # CI/CD workflows
@@ -146,6 +272,16 @@ npm run relayer
 ├── contracts/           # Smart contracts Solidity
 │   └── SimpleRegistry.sol
 ├── scripts/             # Scripts de deploy blockchain
+├── public/              # Static assets și HTML
+│   ├── index.html       # Interfață principală
+│   ├── verify.html      # Pagină de verificare
+│   └── assets/          # Images, QR codes
+├── src/                 # Source files (JS, CSS)
+│   ├── main.js          # Entry point JavaScript (ES module)
+│   └── styles.css       # Main stylesheet
+├── contracts/           # Smart contracts Solidity
+│   └── SimpleRegistry.sol
+├── scripts/             # Scripts de deploy
 │   └── deploy.js
 ├── relayer/             # Serviciu relayer backend
 │   └── index.js
@@ -160,6 +296,13 @@ npm run relayer
 ├── CODE_OF_CONDUCT.md   # Contributor guidelines
 ├── SECURITY.md          # Security policy
 └── CONTRIBUTING.md      # Development guidelines
+├── dist/                # Production build output (generated)
+├── vite.config.js       # Vite configuration
+├── .eslintrc.json       # ESLint configuration
+├── .prettierrc          # Prettier configuration
+├── hardhat.config.js    # Configurare Hardhat
+├── package.json         # Dependencies și scripturi npm
+└── README.md            # Acest fișier
 ```
 
 ## Tehnologii utilizate
