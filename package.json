@@ -23,6 +23,14 @@
   ],
   "author": "Raluca Fășie",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RalucaFasie/Trasabilitate-paine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RalucaFasie/Trasabilitate-paine/issues"
+  },
+  "homepage": "https://github.com/RalucaFasie/Trasabilitate-paine#readme",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "hardhat": "^2.19.4"

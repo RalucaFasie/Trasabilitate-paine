@@ -1,5 +1,10 @@
 # Trasabilitate-paine — Registry demo
 
+[![CI](https://github.com/RalucaFasie/Trasabilitate-paine/actions/workflows/ci.yml/badge.svg)](https://github.com/RalucaFasie/Trasabilitate-paine/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)](https://soliditylang.org/)
+
 Această ramură (feature/registry-demo) conține fișierele pentru demonstrația locală a publicării și verificării dovezilor (hash/CID) pe un registru blockchain local (Hardhat). Am pregătit contract, script de deploy, relayer skeleton și fișiere QR pentru fiecare bloc demo.
 
 Conținut adăugat:
@@ -95,17 +100,26 @@ npm run relayer
 ## Structura proiectului
 
 ```
+├── .github/             # GitHub configurations
+│   ├── workflows/       # CI/CD workflows
+│   ├── ISSUE_TEMPLATE/  # Issue templates
+│   └── pull_request_template.md
 ├── contracts/           # Smart contracts Solidity
 │   └── SimpleRegistry.sol
 ├── scripts/            # Scripts de deploy
 │   └── deploy.js
 ├── relayer/            # Serviciu relayer backend
 │   └── index.js
+├── test/               # Contract tests
+│   └── SimpleRegistry.test.js
 ├── assets/             # QR codes și resurse
 ├── index.html          # Interfață principală de vizualizare
 ├── verify.html         # Pagină de verificare
 ├── hardhat.config.js   # Configurare Hardhat
-└── package.json        # Dependencies și scripturi npm
+├── package.json        # Dependencies și scripturi npm
+├── CODE_OF_CONDUCT.md  # Contributor guidelines
+├── SECURITY.md         # Security policy
+└── CONTRIBUTING.md     # Development guidelines
 ```
 
 ## Tehnologii utilizate
