@@ -17,6 +17,9 @@ typechain-types/
 dist/
 build/
 
+# Vite
+.vite/
+
 # Logs
 logs
 *.log

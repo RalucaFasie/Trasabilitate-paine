@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
-  <rect width="100%" height="100%" fill="#fff" stroke="#111" stroke-width="2" rx="12"/>
-  <g transform="translate(20,20)">
-    <rect width="260" height="260" fill="#eefaf9" rx="8"/>
-    <text x="130" y="140" font-size="12" font-family="Arial, Helvetica, sans-serif" text-anchor="middle" fill="#0f766e">QR: e03b7ccaf45691a57ff9a1cde38df008aae97d</text>
-  </g>
-</svg>
