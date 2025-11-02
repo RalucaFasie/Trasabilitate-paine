@@ -5,6 +5,13 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)](https://soliditylang.org/)
 
+Sistem interactiv de trasabilitate pentru pâine folosind blockchain. Acest proiect oferă o interfață web modernă pentru urmărirea întregului lanț de aprovizionare al pâinii, de la fermă la consumator, cu suport pentru înregistrare pe blockchain.
+
+## 🚀 Getting Started
+
+### Cerințe preliminare
+- Node.js >= 18.0.0
+- npm >= 9.0.0
 Aplicație web de trasabilitate pentru pâine cu smart contracts Hardhat și serviciu relayer pentru înregistrarea pe blockchain.
 
 **Structura modernă:**
@@ -22,11 +29,28 @@ Aplicație web de trasabilitate pentru pâine cu smart contracts Hardhat și ser
 
 ## Rulare locală - Frontend
 
-### 1. Instalează dependențe:
+### Instalare și rulare locală
+
+#### 1. Instalează dependențele:
 ```bash
 npm install
 ```
 
+#### 2. Pornește serverul de dezvoltare (Vite):
+```bash
+npm run dev
+```
+
+Aplicația va fi disponibilă la `http://localhost:5173`
+
+#### 3. Build pentru producție:
+```bash
+npm run build
+```
+
+Aceasta va genera folderul `dist/` cu fișierele optimizate pentru producție.
+
+#### 4. Previzualizare build producție:
 ### 2. Pornește dev server:
 ```bash
 npm run dev
@@ -44,6 +68,46 @@ Generează folderul `dist/` care poate fi servit direct sau urcat pe GitHub Page
 npm run preview
 ```
 
+### Linting și formatare
+
+```bash
+# Verifică codul cu ESLint
+npm run lint
+
+# Formatează codul cu Prettier
+npm run format
+```
+
+## 📁 Structura proiectului
+
+```
+├── public/              # Fișiere statice și HTML
+│   ├── assets/         # Imagini și resurse statice
+│   ├── index.html      # Pagina principală
+│   └── verify.html     # Pagina de verificare
+├── src/                # Cod sursă JavaScript și CSS
+│   ├── main.js         # Entry point JavaScript
+│   └── styles.css      # Stiluri CSS
+├── contracts/          # Smart contracts Solidity
+│   └── SimpleRegistry.sol
+├── scripts/            # Scripts de deploy blockchain
+│   └── deploy.js
+├── relayer/            # Serviciu relayer backend
+│   └── index.js
+├── test/               # Contract tests
+│   └── SimpleRegistry.test.js
+├── vite.config.js      # Configurare Vite
+├── .eslintrc.json      # Configurare ESLint
+├── .prettierrc         # Configurare Prettier
+└── package.json        # Dependencies și scripturi
+
+```
+
+## 🔗 Blockchain Integration
+
+### Setup pentru dezvoltare locală cu Hardhat
+
+#### 1. Configurează environment (opțional pentru demo):
 ### 5. Lint și format cod:
 ```bash
 npm run lint      # Verifică codul cu ESLint
@@ -58,17 +122,27 @@ cp .env.example .env
 # Editează .env cu cheile tale (opțional pentru testnet)
 ```
 
-### 2. Pornește nod Hardhat local (terminal 1):
+#### 2. Pornește nod Hardhat local:
 ```bash
 npm run node
 ```
 
+#### 3. Deploy contractul local (într-un terminal nou):
 ### 3. Deploy local (terminal 2):
 ```bash
 npm run deploy
 ```
 **Important:** Notează adresa contractului din output și seteaz-o în `.env` ca `CONTRACT_ADDRESS=0x...`
 
+#### 4. Pornește relayer (mock mode OK pentru demo):
+```bash
+npm run relayer
+```
+Relayer va rula pe http://localhost:3001
+
+#### 5. Conectează Metamask:
+- Importă una din cheile generate de Hardhat în Metamask
+- Configurează rețeaua custom: RPC URL = http://localhost:8545, Chain ID = 31337
 ### 4. Pornește relayer (terminal 3):
 ```bash
 npm run relayer
@@ -124,8 +198,15 @@ CONTRACT_ADDRESS=deployed_contract_address
 npm run relayer
 ```
 
-## Structura proiectului
+## 🌐 GitHub Pages Deployment
 
+După ce rulezi `npm run build`, folderul `dist/` conține toate fișierele necesare pentru GitHub Pages.
+
+**Opțiuni de deployment:**
+1. **Manual:** Copiază conținutul din `dist/` în branch-ul `gh-pages`
+2. **GitHub Actions:** Configurează un workflow pentru a publica automat din `dist/`
+
+Configurația `base: './'` din `vite.config.js` asigură compatibilitatea cu GitHub Pages.
 ```
 ├── .github/             # GitHub configurations
 │   ├── workflows/       # CI/CD workflows
