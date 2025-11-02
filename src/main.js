@@ -97,7 +97,7 @@ function escapeHtml(text) {
 // Function to validate and sanitize color values (hex format only)
 function sanitizeColor(color) {
   // Only allow valid hex colors (#RGB or #RRGGBB format)
-  const hexColorPattern = /^#[0-9A-Fa-f]{6}$/;
+  const hexColorPattern = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
   if (hexColorPattern.test(color)) {
     return color;
   }
