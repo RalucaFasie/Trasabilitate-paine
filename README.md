@@ -5,62 +5,62 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)](https://soliditylang.org/)
 
-Această ramură (feature/registry-demo) conține fișierele pentru demonstrația locală a publicării și verificării dovezilor (hash/CID) pe un registru blockchain local (Hardhat). Am pregătit contract, script de deploy, relayer skeleton și fișiere QR pentru fiecare bloc demo.
+Sistem de trasabilitate pentru pâine construit cu blockchain (Hardhat) și interfață web modernă (Vite). Proiectul conține contracte smart Solidity, un serviciu relayer backend și o interfață web interactivă pentru vizualizarea și verificarea trasabilității produselor.
 
-Conținut adăugat:
-- contracts/SimpleRegistry.sol — contract OpenZeppelin cu rol RELAYER și event HashRegistered
-- hardhat.config.js — configurație pentru rețele locale/testnet
-- scripts/deploy.js — script deploy
-- relayer/index.js — skeleton relayer (mock mode sau real, dacă setezi RELAYER_PK)
-- .env.example — variabile mediu
-- assets/qr-b1.svg .. assets/qr-b5.svg — imagini QR (placeholder SVG per bloc)
+## Pornire rapidă
 
-## Scenariu recomandat (demo local — fără plăți reale)
+### Development local (interfață web)
 
-### 1. Instalează dependențe:
+1. **Instalează dependențe:**
 ```bash
 npm install
 ```
 
-### 2. Configurează environment (opțional pentru demo):
+2. **Pornește serverul de dezvoltare:**
+```bash
+npm run dev
+```
+
+Aplicația va rula pe http://localhost:5173 (portul default Vite).
+
+3. **Build pentru producție:**
+```bash
+npm run build
+```
+
+Fișierele pentru producție vor fi generate în directorul `dist/`.
+
+4. **Preview build de producție:**
+```bash
+npm run preview
+```
+
+### Development blockchain (Hardhat + Relayer)
+
+1. **Configurează environment (opțional pentru demo):**
 ```bash
 cp .env.example .env
 # Editează .env cu cheile tale (opțional pentru testnet)
 ```
 
-### 3. Pornește nod Hardhat local:
+2. **Pornește nod Hardhat local:**
 ```bash
 npm run node
-# Sau: npx hardhat node
 ```
 
-### 4. Deploy local (într-un terminal nou):
+3. **Deploy local (într-un terminal nou):**
 ```bash
 npm run deploy
-# Sau: npx hardhat run scripts/deploy.js --network localhost
 ```
 **Important:** Notează adresa contractului din output și seteaz-o în `.env` ca `CONTRACT_ADDRESS=0x...`
 
-### 5. Pornește relayer (mock mode e OK pentru demo):
+4. **Pornește relayer (mock mode e OK pentru demo):**
 ```bash
 npm run relayer
-# Sau: node relayer/index.js
 ```
 Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
 
-### 6. Deschide aplicația web:
-Servește fișierele HTML cu un server local:
-```bash
-# Opțiune 1: Python
-python -m http.server 8000
-
-# Opțiune 2: Node.js http-server (instalează global: npm i -g http-server)
-http-server -p 8000
-```
-
-Apoi deschide în browser: http://localhost:8000/index.html
-
-### 7. Conectează Metamask:
+5. **Conectează Metamask:**
 - Importă una din cheile generate de Hardhat în Metamask
 - Configurează rețeaua custom: RPC URL = http://localhost:8545, Chain ID = 31337
 - Folosește butoanele din interfață:
@@ -68,9 +68,15 @@ Apoi deschide în browser: http://localhost:8000/index.html
   - **"Verifică pe blockchain"** - verifică hash-uri înregistrate
   - **"Export JSON"** - exportă datele de trasabilitate
 
-QR codes
-- Am adăugat fișiere SVG în `assets/` pentru fiecare bloc: qr-b1.svg .. qr-b5.svg.
-- Acestea sunt placeholder-uri care conțin hash-ul blocului; pentru coduri QR scannabile recomand să generezi imagini QR cu linkul de verificare (ex: `https://your-demo.example/verify?hash=<hash>`), apoi înlocuiește fișierele din `assets/`.
+## Linting și formatare
+
+```bash
+# Verifică codul cu ESLint
+npm run lint
+
+# Formatează codul cu Prettier
+npm run format
+```
 
 ## Deploy pe testnet (Sepolia sau Mumbai)
 
@@ -104,27 +110,52 @@ npm run relayer
 │   ├── workflows/       # CI/CD workflows
 │   ├── ISSUE_TEMPLATE/  # Issue templates
 │   └── pull_request_template.md
+├── public/              # Static assets și HTML
+│   ├── assets/          # Images, QR codes
+│   ├── index.html       # Interfață principală
+│   └── verify.html      # Pagină de verificare
+├── src/                 # Source code (JS, CSS)
+│   ├── main.js          # Entry point JavaScript
+│   ├── styles.css       # Stylesheet principal
+│   └── assets/          # Source assets (dacă există)
 ├── contracts/           # Smart contracts Solidity
 │   └── SimpleRegistry.sol
-├── scripts/            # Scripts de deploy
+├── scripts/             # Scripts de deploy blockchain
 │   └── deploy.js
-├── relayer/            # Serviciu relayer backend
+├── relayer/             # Serviciu relayer backend
 │   └── index.js
-├── test/               # Contract tests
+├── test/                # Contract tests
 │   └── SimpleRegistry.test.js
-├── assets/             # QR codes și resurse
-├── index.html          # Interfață principală de vizualizare
-├── verify.html         # Pagină de verificare
-├── hardhat.config.js   # Configurare Hardhat
-├── package.json        # Dependencies și scripturi npm
-├── CODE_OF_CONDUCT.md  # Contributor guidelines
-├── SECURITY.md         # Security policy
-└── CONTRIBUTING.md     # Development guidelines
+├── dist/                # Build output (generat de Vite)
+├── vite.config.js       # Configurare Vite
+├── hardhat.config.js    # Configurare Hardhat
+├── .eslintrc.json       # Configurare ESLint
+├── .prettierrc          # Configurare Prettier
+├── package.json         # Dependencies și scripturi npm
+├── CODE_OF_CONDUCT.md   # Contributor guidelines
+├── SECURITY.md          # Security policy
+└── CONTRIBUTING.md      # Development guidelines
 ```
 
 ## Tehnologii utilizate
 
+- **Frontend:** Vite 5, HTML5, CSS3, JavaScript (vanilla)
+- **Dev Tools:** ESLint, Prettier
 - **Blockchain:** Solidity 0.8.20, Hardhat, OpenZeppelin
 - **Backend:** Express.js, ethers.js v6
-- **Frontend:** HTML5, CSS3, JavaScript (vanilla)
 - **Network:** Ethereum-compatible (Hardhat local, Sepolia, Mumbai)
+
+## GitHub Pages
+
+Pentru a publica aplicația pe GitHub Pages:
+
+1. **Build proiectul:**
+```bash
+npm run build
+```
+
+2. **Deploy directorul `dist/` pe GitHub Pages:**
+   - Opțiune A: Folosește GitHub Actions pentru a publica automat din branch-ul `dist` sau `gh-pages`
+   - Opțiune B: Manual - copiază conținutul din `dist/` într-un branch dedicat și configurează GitHub Pages să servească din acel branch
+
+**Notă:** Configurația Vite folosește `base: './'` pentru compatibilitate cu GitHub Pages.
