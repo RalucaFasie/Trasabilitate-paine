@@ -137,13 +137,13 @@ npm run relayer
 │   └── index.js
 ├── test/               # Contract tests
 │   └── SimpleRegistry.test.js
-├── public/             # Static assets and HTML files
-│   ├── assets/         # Images, QR codes, and other assets
-│   ├── index.html      # Main interface
-│   └── verify.html     # Verification page
+├── public/             # Static assets (copied to dist during build)
+│   └── assets/         # Images, QR codes, and other static files
 ├── src/                # Source code
 │   ├── main.js         # Main JavaScript entry point
 │   └── styles.css      # Application styles
+├── index.html          # Main interface (Vite entry point)
+├── verify.html         # Verification page
 ├── dist/               # Production build output (generated)
 ├── vite.config.js      # Vite configuration
 ├── .eslintrc.json      # ESLint configuration
