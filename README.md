@@ -5,6 +5,17 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)](https://soliditylang.org/)
 
+Acest repository conține un sistem de trasabilitate pentru pâine bazat pe blockchain, cu contracte inteligente Hardhat și o interfață web modernă construită cu Vite.
+
+**Componente:**
+- **Frontend:** Interfață web interactivă (public/ + src/) construită cu Vite
+- **Smart Contracts:** Contracte Solidity pentru trasabilitate on-chain
+- **Relayer:** Serviciu backend pentru interacțiunea cu blockchain
+- **Assets:** Imagini QR și resurse vizuale
+
+## Dezvoltare locală (Frontend)
+
+### 1. Instalează dependențe
 Sistem interactiv de trasabilitate pentru pâine folosind blockchain. Acest proiect oferă o interfață web modernă pentru urmărirea întregului lanț de aprovizionare al pâinii, de la fermă la consumator, cu suport pentru înregistrare pe blockchain.
 
 ## 🚀 Getting Started
@@ -36,11 +47,15 @@ Aplicație web de trasabilitate pentru pâine cu smart contracts Hardhat și ser
 npm install
 ```
 
+### 2. Pornește serverul de dezvoltare
 #### 2. Pornește serverul de dezvoltare (Vite):
 ```bash
 npm run dev
 ```
 
+Aplicația va fi disponibilă la http://localhost:5173/
+
+### 3. Build pentru producție
 Aplicația va fi disponibilă la `http://localhost:5173`
 
 #### 3. Build pentru producție:
@@ -48,6 +63,9 @@ Aplicația va fi disponibilă la `http://localhost:5173`
 npm run build
 ```
 
+Fișierele de producție vor fi generate în directorul `dist/`
+
+### 4. Preview build-ul de producție
 Aceasta va genera folderul `dist/` cu fișierele optimizate pentru producție.
 
 #### 4. Previzualizare build producție:
@@ -68,6 +86,7 @@ Generează folderul `dist/` care poate fi servit direct sau urcat pe GitHub Page
 npm run preview
 ```
 
+### 5. Linting și formatare
 ### Linting și formatare
 
 ```bash
@@ -78,6 +97,9 @@ npm run lint
 npm run format
 ```
 
+## Dezvoltare blockchain (Smart Contracts)
+
+### 1. Configurează environment (opțional pentru demo)
 ## 📁 Structura proiectului
 
 ```
@@ -122,18 +144,24 @@ cp .env.example .env
 # Editează .env cu cheile tale (opțional pentru testnet)
 ```
 
+### 2. Pornește nod Hardhat local
 #### 2. Pornește nod Hardhat local:
 ```bash
 npm run node
 ```
 
+### 3. Deploy local (într-un terminal nou)
 #### 3. Deploy contractul local (într-un terminal nou):
 ### 3. Deploy local (terminal 2):
 ```bash
 npm run deploy
 ```
+
 **Important:** Notează adresa contractului din output și seteaz-o în `.env` ca `CONTRACT_ADDRESS=0x...`
 
+### 4. Pornește relayer (mock mode e OK pentru demo)
+```bash
+npm run relayer
 #### 4. Pornește relayer (mock mode OK pentru demo):
 ```bash
 npm run relayer
@@ -149,11 +177,33 @@ npm run relayer
 ```
 Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
 
+Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
+
 ### 5. Conectează Metamask:
 - Importă una din cheile generate de Hardhat în Metamask
 - Configurează rețeaua custom: RPC URL = http://localhost:8545, Chain ID = 31337
 - Folosește butoanele din interfață pentru a interacționa cu blockchain-ul
 
+## Deploy pe GitHub Pages
+
+Proiectul este configurat pentru GitHub Pages folosind Vite cu `base: './'` pentru compatibilitate.
+
+### Opțiunea 1: Deploy manual
+```bash
+# Build proiectul
+npm run build
+
+# Deploy directorul dist/ pe branch-ul gh-pages
+# Folosește gh-pages package sau GitHub Actions
+```
+
+### Opțiunea 2: GitHub Actions (recomandat)
+Configurează un workflow GitHub Actions pentru a construi automat și a publica directorul `dist/` pe branch-ul `gh-pages` la fiecare push pe main.
+
+**Pași:**
+1. Build-ul creează directorul `dist/` cu fișiere statice
+2. Configurează GitHub Pages să servească din branch-ul `gh-pages` sau direct din `dist/` (dacă este disponibil)
+3. Aplicația va fi disponibilă la `https://<username>.github.io/<repository>/`
 ### QR codes
 - Fișierele SVG din `public/assets/` conțin placeholder-uri pentru QR codes (qr-b1.svg .. qr-b5.svg).
 - Pentru coduri QR scannabile, generează imagini QR cu linkul de verificare (ex: `https://your-demo.example/verify.html?hash=<hash>`).
@@ -212,6 +262,16 @@ Configurația `base: './'` din `vite.config.js` asigură compatibilitatea cu Git
 │   ├── workflows/       # CI/CD workflows
 │   ├── ISSUE_TEMPLATE/  # Issue templates
 │   └── pull_request_template.md
+├── public/              # Static files și entry HTML
+│   ├── assets/          # Imagini, QR codes, resurse statice
+│   ├── index.html       # Pagina principală
+│   └── verify.html      # Pagina de verificare
+├── src/                 # Source code frontend
+│   ├── main.js          # JavaScript entry point
+│   └── styles.css       # Stiluri CSS
+├── contracts/           # Smart contracts Solidity
+│   └── SimpleRegistry.sol
+├── scripts/             # Scripts de deploy blockchain
 ├── public/              # Static assets și HTML
 │   ├── index.html       # Interfață principală
 │   ├── verify.html      # Pagină de verificare
@@ -227,6 +287,15 @@ Configurația `base: './'` din `vite.config.js` asigură compatibilitatea cu Git
 │   └── index.js
 ├── test/                # Contract tests
 │   └── SimpleRegistry.test.js
+├── dist/                # Build output (generat automat, ignorat de git)
+├── vite.config.js       # Configurare Vite
+├── hardhat.config.js    # Configurare Hardhat
+├── .eslintrc.json       # Configurare ESLint
+├── .prettierrc          # Configurare Prettier
+├── package.json         # Dependencies și scripturi npm
+├── CODE_OF_CONDUCT.md   # Contributor guidelines
+├── SECURITY.md          # Security policy
+└── CONTRIBUTING.md      # Development guidelines
 ├── dist/                # Production build output (generated)
 ├── vite.config.js       # Vite configuration
 ├── .eslintrc.json       # ESLint configuration
