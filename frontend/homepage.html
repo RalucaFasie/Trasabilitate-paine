@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Homepage - Trasabilitate Pâine</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;padding:20px}
+    .hero{display:flex;gap:20px;align-items:center}
+    .hero img{max-width:200px;border-radius:8px}
+    .products{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+    .card{border:1px solid #ddd;padding:12px;border-radius:8px;width:220px}
+    .loading{color:#666}
+  </style>
+</head>
+<body>
+  <h1>Trasabilitate Pâine — Homepage (demo)</h1>
+  <div id="root">
+    <div class="loading">Se încarcă...</div>
+  </div>
+
+  <script>
+    async function fetchHome() {
+      try {
+        const res = await fetch('/api/home.json');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        render(data);
+      } catch (err) {
+        document.getElementById('root').innerHTML = '<div class="loading">Eroare la încărcare: '+err.message+'</div>';
+      }
+    }
+
+    function render(data) {
+      const root = document.getElementById('root');
+      const hero = document.createElement('div');
+      hero.className = 'hero';
+      hero.innerHTML = `
+        <div>
+          <h2>${escapeHtml(data.hero.title)}</h2>
+          <p>${escapeHtml(data.hero.subtitle)}</p>
+        </div>
+        <img src="${escapeHtml(data.hero.image)}" alt="hero">
+      `;
+
+      const products = document.createElement('div');
+      products.className = 'products';
+      for (const p of data.products) {
+        const c = document.createElement('div');
+        c.className = 'card';
+        c.innerHTML = `<h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.description)}</p><small>Lot: ${escapeHtml(p.batch)}</small>`;
+        products.appendChild(c);
+      }
+
+      root.innerHTML = '';
+      root.appendChild(hero);
+      root.appendChild(products);
+    }
+
+    function escapeHtml(s){ return String(s).replace(/[&<>\"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]}); }
+
+    fetchHome();
+  </script>
+</body>
+</html>
