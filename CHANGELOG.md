@@ -68,9 +68,8 @@ All notable changes to this project will be documented in this file.
 
 - **Frontend**
   - Interactive HTML interface for traceability visualization
-  - 5-block bread traceability flow (Farm → Mill → Bakery → Store → Consumer)
-  - Blockchain verification functionality
-  - Metamask integration for wallet connection
+  - 5-stage bread traceability flow (Farm → Transport → Mill → IoT → Store)
+  - Demo mode with static data (no wallet required)
   - Export functionality for traceability data
 
 ### Changed
