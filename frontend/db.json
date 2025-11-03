@@ -1,0 +1,47 @@
+{
+  "home": {
+    "hero": {
+      "title": "Trasabilitatea Pâinii",
+      "subtitle": "De la fermă la masă - urmărește călătoria pâinii tale",
+      "description": "Sistem interactiv de trasabilitate bazat pe blockchain pentru transparență completă în lanțul de aprovizionare"
+    },
+    "products": [
+      {
+        "id": 1,
+        "name": "Pâine Albă Tradițională",
+        "description": "Pâine proaspătă din grâu local, copt zilnic",
+        "price": "4.50 RON",
+        "image": "/assets/bread-product-1.jpg",
+        "origin": "Ferma AgroVerde, Călărași",
+        "hash": "0xabc123def456"
+      },
+      {
+        "id": 2,
+        "name": "Pâine Integrală Bio",
+        "description": "100% făină integrală certificată bio",
+        "price": "6.00 RON",
+        "image": "/assets/bread-product-2.jpg",
+        "origin": "Ferma EcoBio, Brăila",
+        "hash": "0xdef789ghi012"
+      },
+      {
+        "id": 3,
+        "name": "Pâine cu Semințe",
+        "description": "Bogată în semințe de floarea soarelui și in",
+        "price": "5.50 RON",
+        "image": "/assets/bread-product-3.jpg",
+        "origin": "Ferma GrâuVerde, Constanța",
+        "hash": "0xjkl345mno678"
+      },
+      {
+        "id": 4,
+        "name": "Pâine de Secară",
+        "description": "Aromă intensă, perfectă pentru sandvișuri",
+        "price": "5.00 RON",
+        "image": "/assets/bread-product-4.jpg",
+        "origin": "Ferma TradițieBună, Ialomița",
+        "hash": "0xpqr901stu234"
+      }
+    ]
+  }
+}

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage - Trasabilitatea Pâinii</title>
+    <meta name="description" content="Sistem de trasabilitate pentru pâine - de la fermă la masă">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero h2 {
+            color: #764ba2;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            color: #6c757d;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Products Section */
+        .products-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .products-section h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea33 0%, #764ba233 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 3rem;
+        }
+
+        .product-name {
+            color: #2c3e50;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            color: #6c757d;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            color: #667eea;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-origin {
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-hash {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: #495057;
+            background: #e9ecef;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            word-break: break-all;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #f5c6cb;
+            margin-bottom: 1rem;
+        }
+
+        .error h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .retry-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .retry-button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .retry-button:active {
+            transform: translateY(0);
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Se încarcă datele...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error" class="error hidden">
+            <h3>Eroare la încărcarea datelor</h3>
+            <p id="error-message"></p>
+            <button class="retry-button" onclick="loadData()">Reîncearcă</button>
+        </div>
+
+        <!-- Content (initially hidden) -->
+        <div id="content" class="hidden">
+            <!-- Hero Section -->
+            <section id="hero" class="hero">
+                <!-- Hero content will be populated dynamically -->
+            </section>
+
+            <!-- Products Section -->
+            <section class="products-section">
+                <h2>Produse Disponibile</h2>
+                <div id="products-grid" class="products-grid">
+                    <!-- Product cards will be populated dynamically -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Trasabilitatea Pâinii - Sistem bazat pe blockchain</p>
+    </footer>
+
+    <script>
+        // Function to escape HTML to prevent XSS attacks
+        function escapeHtml(text) {
+            if (text === null || text === undefined) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, function(m) {
+                return map[m];
+            });
+        }
+
+        // Function to load and display data
+        async function loadData() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const errorMessageEl = document.getElementById('error-message');
+            const contentEl = document.getElementById('content');
+
+            // Show loading, hide error and content
+            loadingEl.classList.remove('hidden');
+            errorEl.classList.add('hidden');
+            contentEl.classList.add('hidden');
+
+            try {
+                // Fetch data from mock API
+                const response = await fetch('/api/home.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Validate data structure
+                if (!data.hero || !data.products) {
+                    throw new Error('Date invalide: lipsesc câmpurile hero sau products');
+                }
+
+                // Render hero section
+                renderHero(data.hero);
+
+                // Render products
+                renderProducts(data.products);
+
+                // Hide loading, show content
+                loadingEl.classList.add('hidden');
+                contentEl.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                
+                // Hide loading, show error
+                loadingEl.classList.add('hidden');
+                errorEl.classList.remove('hidden');
+                errorMessageEl.textContent = escapeHtml(error.message);
+            }
+        }
+
+        // Function to render hero section
+        function renderHero(hero) {
+            const heroEl = document.getElementById('hero');
+            
+            // Escape all user-facing text to prevent XSS
+            const title = escapeHtml(hero.title);
+            const subtitle = escapeHtml(hero.subtitle);
+            const description = escapeHtml(hero.description);
+
+            heroEl.innerHTML = `
+                <h1>${title}</h1>
+                <h2>${subtitle}</h2>
+                <p>${description}</p>
+            `;
+        }
+
+        // Function to render products
+        function renderProducts(products) {
+            const productsGridEl = document.getElementById('products-grid');
+            
+            // Clear existing content
+            productsGridEl.innerHTML = '';
+
+            // Validate products is an array
+            if (!Array.isArray(products)) {
+                console.error('Products must be an array');
+                return;
+            }
+
+            // Render each product card
+            products.forEach(product => {
+                // Escape all user-facing text to prevent XSS
+                const name = escapeHtml(product.name);
+                const description = escapeHtml(product.description);
+                const price = escapeHtml(product.price);
+                const origin = escapeHtml(product.origin);
+                const hash = escapeHtml(product.hash);
+                const image = escapeHtml(product.image);
+
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image">🍞</div>
+                    <div class="product-name">${name}</div>
+                    <div class="product-description">${description}</div>
+                    <div class="product-price">${price}</div>
+                    <div class="product-origin">📍 ${origin}</div>
+                    <div class="product-hash">Hash: ${hash}</div>
+                `;
+
+                productsGridEl.appendChild(productCard);
+            });
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+        });
+    </script>
+</body>
+</html>
