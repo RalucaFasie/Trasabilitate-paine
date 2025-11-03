@@ -8,5 +8,8 @@
   },
   "devDependencies": {
     "json-server": "^0.17.3"
+  },
+  "dependencies": {
+    "express-rate-limit": "^8.2.1"
   }
 }

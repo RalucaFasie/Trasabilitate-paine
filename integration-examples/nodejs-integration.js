@@ -382,8 +382,15 @@ async function exampleUsage() {
 
 async function createExpressAPI() {
   const express = require('express');
+  const RateLimit = require('express-rate-limit');
   const app = express();
   app.use(express.json());
+
+  // set up rate limiter: maximum 100 requests per 15 minutes per IP
+  const limiter = RateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // max 100 requests per windowMs
+  });
 
   const connector = new BlockchainConnector(CONFIG);
   await connector.connect();
@@ -401,8 +408,8 @@ async function createExpressAPI() {
   });
 
   // Verify hash endpoint
-  // TODO: Add rate limiting for production (e.g., express-rate-limit)
-  app.post('/api/verify', async (req, res) => {
+  // Apply rate limiting to the verify endpoint
+  app.post('/api/verify', limiter, async (req, res) => {
     try {
       const { data } = req.body;
       const result = await connector.verifyHash(data);
