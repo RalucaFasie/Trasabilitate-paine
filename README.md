@@ -52,55 +52,29 @@ Aplicație web de trasabilitate pentru pâine cu smart contracts Hardhat și ser
 
 ## Rulare locală - Frontend
 
-### Instalare și rulare locală
-
-#### 1. Instalează dependențele:
+### 1. Instalează dependențele
 ```bash
 npm install
 ```
 
-### 2. Pornește serverul de dezvoltare
-#### 2. Pornește serverul de dezvoltare (Vite):
+### 2. Pornește serverul de dezvoltare (Vite)
 ```bash
 npm run dev
 ```
-
 Aplicația va fi disponibilă la http://localhost:5173/
 
 ### 3. Build pentru producție
-Aplicația va fi disponibilă la `http://localhost:5173`
-
-#### 3. Build pentru producție:
 ```bash
 npm run build
 ```
+Generează folderul `dist/` cu fișierele optimizate pentru producție.
 
-Fișierele de producție vor fi generate în directorul `dist/`
-
-### 4. Preview build-ul de producție
-Aceasta va genera folderul `dist/` cu fișierele optimizate pentru producție.
-
-#### 4. Previzualizare build producție:
-### 2. Pornește dev server:
-```bash
-npm run dev
-```
-Apoi deschide în browser: http://localhost:5173/
-
-### 3. Build pentru producție:
-```bash
-npm run build
-```
-Generează folderul `dist/` care poate fi servit direct sau urcat pe GitHub Pages.
-
-### 4. Preview build de producție:
+### 4. Preview build de producție
 ```bash
 npm run preview
 ```
 
 ### 5. Linting și formatare
-### Linting și formatare
-
 ```bash
 # Verifică codul cu ESLint
 npm run lint
@@ -109,9 +83,6 @@ npm run lint
 npm run format
 ```
 
-## Dezvoltare blockchain (Smart Contracts)
-
-### 1. Configurează environment (opțional pentru demo)
 ## 📁 Structura proiectului
 
 ```
@@ -139,54 +110,30 @@ npm run format
 
 ## 🔗 Blockchain Integration
 
-### Setup pentru dezvoltare locală cu Hardhat
+### Rulare cu blockchain local (Hardhat)
 
-#### 1. Configurează environment (opțional pentru demo):
-### 5. Lint și format cod:
-```bash
-npm run lint      # Verifică codul cu ESLint
-npm run format    # Formatează codul cu Prettier
-```
-
-## Rulare cu blockchain local (Hardhat)
-
-### 1. Configurează environment (opțional pentru demo):
+#### 1. Configurează environment (opțional pentru demo)
 ```bash
 cp .env.example .env
 # Editează .env cu cheile tale (opțional pentru testnet)
 ```
 
-### 2. Pornește nod Hardhat local
-#### 2. Pornește nod Hardhat local:
+#### 2. Pornește nod Hardhat local
 ```bash
 npm run node
 ```
 
-### 3. Deploy local (într-un terminal nou)
-#### 3. Deploy contractul local (într-un terminal nou):
-### 3. Deploy local (terminal 2):
+#### 3. Deploy contractul local (într-un terminal nou)
 ```bash
 npm run deploy
 ```
 
 **Important:** Notează adresa contractului din output și seteaz-o în `.env` ca `CONTRACT_ADDRESS=0x...`
 
-### 4. Pornește relayer (mock mode e OK pentru demo)
-```bash
-npm run relayer
-#### 4. Pornește relayer (mock mode OK pentru demo):
+#### 4. Pornește relayer (mock mode OK pentru demo)
 ```bash
 npm run relayer
 ```
-Relayer va rula pe http://localhost:3001
-
-
-### 4. Pornește relayer (terminal 3):
-```bash
-npm run relayer
-```
-Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
-
 Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
 
 
@@ -264,53 +211,6 @@ După ce rulezi `npm run build`, folderul `dist/` conține toate fișierele nece
 2. **GitHub Actions:** Configurează un workflow pentru a publica automat din `dist/`
 
 Configurația `base: './'` din `vite.config.js` asigură compatibilitatea cu GitHub Pages.
-```
-├── .github/             # GitHub configurations
-│   ├── workflows/       # CI/CD workflows
-│   ├── ISSUE_TEMPLATE/  # Issue templates
-│   └── pull_request_template.md
-├── public/              # Static files și entry HTML
-│   ├── assets/          # Imagini, QR codes, resurse statice
-│   ├── index.html       # Pagina principală
-│   └── verify.html      # Pagina de verificare
-├── src/                 # Source code frontend
-│   ├── main.js          # JavaScript entry point
-│   └── styles.css       # Stiluri CSS
-├── contracts/           # Smart contracts Solidity
-│   └── SimpleRegistry.sol
-├── scripts/             # Scripts de deploy blockchain
-├── public/              # Static assets și HTML
-│   ├── index.html       # Interfață principală
-│   ├── verify.html      # Pagină de verificare
-│   └── assets/          # Images, QR codes
-├── src/                 # Source files (JS, CSS)
-│   ├── main.js          # Entry point JavaScript (ES module)
-│   └── styles.css       # Main stylesheet
-├── contracts/           # Smart contracts Solidity
-│   └── SimpleRegistry.sol
-├── scripts/             # Scripts de deploy
-│   └── deploy.js
-├── relayer/             # Serviciu relayer backend
-│   └── index.js
-├── test/                # Contract tests
-│   └── SimpleRegistry.test.js
-├── dist/                # Build output (generat automat, ignorat de git)
-├── vite.config.js       # Configurare Vite
-├── hardhat.config.js    # Configurare Hardhat
-├── .eslintrc.json       # Configurare ESLint
-├── .prettierrc          # Configurare Prettier
-├── package.json         # Dependencies și scripturi npm
-├── CODE_OF_CONDUCT.md   # Contributor guidelines
-├── SECURITY.md          # Security policy
-└── CONTRIBUTING.md      # Development guidelines
-├── dist/                # Production build output (generated)
-├── vite.config.js       # Vite configuration
-├── .eslintrc.json       # ESLint configuration
-├── .prettierrc          # Prettier configuration
-├── hardhat.config.js    # Configurare Hardhat
-├── package.json         # Dependencies și scripturi npm
-└── README.md            # Acest fișier
-```
 
 ## Tehnologii utilizate
 

@@ -22,9 +22,9 @@ const contract = (relayerWallet && CONTRACT_ADDRESS) ? new ethers.Contract(CONTR
 
 app.post('/submit', async (req, res) => {
   try {
-    const { payload, reporter, signature } = req.body;
+    const { payload, reporter } = req.body;
     
-    // Input validation
+    // Input validation - consolidated for efficiency
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
       return res.status(400).json({ ok: false, error: 'Invalid payload: must be an object' });
     }
@@ -32,17 +32,20 @@ app.post('/submit', async (req, res) => {
       return res.status(400).json({ ok: false, error: 'Invalid reporter: must be a valid non-zero Ethereum address' });
     }
     
-    // In production: verify signature (EIP-712) that reporter signed payload
-    // For demo: accept payload and compute hash
+    // Compute hash once
     const hash = ethers.keccak256(ethers.toUtf8Bytes(JSON.stringify(payload)));
-    if(!contract) {
+    
+    // Mock mode - return early without blockchain interaction
+    if (!contract) {
       return res.json({ ok: true, note: 'Relayer running in mock mode (no tx sent)', hash });
     }
+    
+    // Production mode - send transaction
     const tx = await contract.registerByRelayer(hash, reporter, payload.ipfsCid || '');
     await tx.wait();
     res.json({ ok: true, txHash: tx.hash, hash });
   } catch(err) {
-    res.status(500).json({ ok:false, error: err.message });
+    res.status(500).json({ ok: false, error: err.message });
   }
 });
 

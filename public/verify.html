@@ -73,7 +73,6 @@
             <p class="meta"><strong>${block.title}</strong><br>${block.date}</p>
             <p>${block.desc}</p>
             <p><strong>Hash:</strong> <span class="hash">${block.hash}</span></p>
-            <p><a class="btn" href="index.html">Vezi fluxul complet</a></p>
             <p><a class="btn" href="./index.html">Vezi fluxul complet</a></p>
           </div>
           <div style="width:200px;flex:0 0 200px;display:flex;flex-direction:column;align-items:center;gap:8px">
@@ -89,7 +88,14 @@
       const s = document.createElement('script');
       s.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js';
       s.onload = ()=>{
-        QRCode.toCanvas(document.getElementById('qr'), url, { width: 160 }).catch(err=>console.error(err));
+        if (typeof QRCode !== 'undefined') {
+          QRCode.toCanvas(document.getElementById('qr'), url, { width: 160 }).catch(err=>console.error('QR code generation failed:', err));
+        }
+      };
+      s.onerror = ()=>{
+        console.error('Failed to load QR code library');
+        const canvas = document.getElementById('qr');
+        if (canvas) canvas.style.display = 'none';
       };
       document.head.appendChild(s);
     })();
