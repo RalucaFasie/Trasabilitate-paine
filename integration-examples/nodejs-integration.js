@@ -372,6 +372,13 @@ async function exampleUsage() {
 // ============================================================================
 // Express API Example (REST endpoints for blockchain integration)
 // ============================================================================
+// ⚠️ SECURITY NOTE: This is a basic example for demonstration purposes.
+// For production use, implement:
+// - Rate limiting (e.g., express-rate-limit)
+// - Authentication/Authorization (e.g., JWT, API keys)
+// - Input validation and sanitization
+// - CORS configuration
+// - Request logging and monitoring
 
 async function createExpressAPI() {
   const express = require('express');
@@ -382,6 +389,7 @@ async function createExpressAPI() {
   await connector.connect();
 
   // Register hash endpoint
+  // TODO: Add rate limiting for production (e.g., express-rate-limit)
   app.post('/api/register', async (req, res) => {
     try {
       const { data, ipfsCid } = req.body;
@@ -393,6 +401,7 @@ async function createExpressAPI() {
   });
 
   // Verify hash endpoint
+  // TODO: Add rate limiting for production (e.g., express-rate-limit)
   app.post('/api/verify', async (req, res) => {
     try {
       const { data } = req.body;
