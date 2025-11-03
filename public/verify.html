@@ -34,6 +34,16 @@
       { hash: '09a3bd2fa8b177a52fbb4c3e9d51aa1f5d26ff', title: 'Consumator final', date: '24 iulie 2025', desc: 'Tranzacția confirmă trasabilitatea completă a produsului.', img: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f7b9c' }
     ];
 
+    // Escape HTML to prevent XSS
+    function escapeHTML(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     function getParam(name){
       const url = new URL(window.location.href);
       return url.searchParams.get(name);
@@ -52,7 +62,7 @@
       }
       const block = findBlock(hash);
       if(!block){
-        content.innerHTML = `<p>Hash necunoscut în demo: <code>${hash}</code></p><p>Poți folosi una din înregistrările demo:</p><ul>${blocks.map(b=>`<li><a href="verify.html?hash=${b.hash}">${b.title} — ${b.hash}</a></li>`).join('</ul><ul>')}</ul>`;
+        content.innerHTML = `<p>Hash necunoscut în demo: <code>${escapeHTML(hash)}</code></p><p>Poți folosi una din înregistrările demo:</p><ul>${blocks.map(b=>`<li><a href="verify.html?hash=${b.hash}">${b.title} — ${b.hash}</a></li>`).join('</ul><ul>')}</ul>`;
         return;
       }
 
