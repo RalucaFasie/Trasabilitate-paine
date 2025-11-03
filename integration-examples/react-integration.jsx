@@ -234,6 +234,11 @@ export function useContract() {
 // Custom Hook: Relayer Service (Gasless Transactions)
 // ============================================================================
 
+/**
+ * ⚠️ SECURITY WARNING: This example uses empty signature for demonstration.
+ * In production, implement proper EIP-712 signature verification to prevent
+ * unauthorized transaction submission through the relayer.
+ */
 export function useRelayer() {
   const { config, account } = useBlockchain();
   const [loading, setLoading] = useState(false);
@@ -252,7 +257,7 @@ export function useRelayer() {
         body: JSON.stringify({
           payload: data,
           reporter: reporter || account,
-          signature: '0x', // TODO: Implement EIP-712 signature
+          signature: '0x', // ⚠️ INSECURE: TODO - Implement EIP-712 signature
         }),
       });
 

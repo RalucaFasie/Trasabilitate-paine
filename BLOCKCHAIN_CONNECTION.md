@@ -163,6 +163,9 @@ POST http://localhost:3001/submit
 ```
 
 #### JavaScript/TypeScript Client Example
+
+⚠️ **SECURITY WARNING**: The examples below use empty signatures (`'0x'`) for demonstration purposes only. In production environments, you MUST implement proper EIP-712 signature verification to prevent unauthorized transactions through the relayer service.
+
 ```javascript
 async function submitToRelayer(data, userAddress) {
   const response = await fetch('http://localhost:3001/submit', {
@@ -173,7 +176,7 @@ async function submitToRelayer(data, userAddress) {
     body: JSON.stringify({
       payload: data,
       reporter: userAddress,
-      signature: '0x' // In production, implement EIP-712 signature
+      signature: '0x' // ⚠️ INSECURE: In production, implement EIP-712 signature
     })
   });
   
@@ -349,6 +352,8 @@ User Browser → Your Backend → Relayer Service → Smart Contract
 
 ## Security Considerations
 
+⚠️ **CRITICAL**: The code examples in this document use empty signatures (`'0x'`) for demonstration purposes ONLY. This is NOT secure for production use.
+
 ### For Direct Contract Interaction
 1. **Input Validation**: Always validate and sanitize data before hashing
 2. **Signature Verification**: Implement EIP-712 for typed data signing
@@ -356,11 +361,41 @@ User Browser → Your Backend → Relayer Service → Smart Contract
 4. **Gas Estimation**: Check gas costs before submitting transactions
 
 ### For Relayer Integration
-1. **Authentication**: Implement API authentication (JWT, API keys)
-2. **Rate Limiting**: Prevent abuse of gasless transactions
-3. **Signature Verification**: Verify user signatures before relaying
+1. **⚠️ SIGNATURE VERIFICATION (CRITICAL)**: The current relayer accepts empty signatures for testing. In production, you MUST implement proper EIP-712 signature verification to authenticate users and prevent unauthorized transaction submission.
+2. **Authentication**: Implement API authentication (JWT, API keys)
+3. **Rate Limiting**: Prevent abuse of gasless transactions
 4. **Monitoring**: Monitor relayer wallet balance
 5. **CORS Configuration**: Configure CORS for allowed origins
+
+### EIP-712 Signature Implementation (Required for Production)
+
+For production relayer deployments, implement signature verification:
+
+```javascript
+// Example: EIP-712 signature verification (to be implemented)
+const domain = {
+  name: 'TrasabilitatePaine',
+  version: '1',
+  chainId: await provider.getNetwork().chainId,
+  verifyingContract: contractAddress
+};
+
+const types = {
+  Registration: [
+    { name: 'payload', type: 'string' },
+    { name: 'reporter', type: 'address' },
+    { name: 'timestamp', type: 'uint256' }
+  ]
+};
+
+// Verify signature before accepting relayer request
+const recoveredAddress = ethers.verifyTypedData(domain, types, value, signature);
+if (recoveredAddress !== reporter) {
+  throw new Error('Invalid signature');
+}
+```
+
+See [EIP-712 specification](https://eips.ethereum.org/EIPS/eip-712) for implementation details.
 
 ## Troubleshooting
 

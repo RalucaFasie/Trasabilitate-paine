@@ -140,6 +140,7 @@ async function checkRelayerService() {
   info(`Relayer URL: ${relayerUrl}`);
   
   try {
+    // Note: fetch is built-in for Node.js >= 18.0.0 (this project's minimum requirement)
     // Try to make a test request (will fail validation but confirms service is running)
     const response = await fetch(`${relayerUrl}/submit`, {
       method: 'POST',
@@ -149,7 +150,7 @@ async function checkRelayerService() {
       body: JSON.stringify({
         payload: { test: 'connection-check' },
         reporter: ethers.ZeroAddress,
-        signature: '0x',
+        signature: '0x', // Test only - production requires proper EIP-712 signature
       }),
     });
     

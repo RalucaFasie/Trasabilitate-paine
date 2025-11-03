@@ -158,9 +158,13 @@ class BlockchainConnector {
    * @param {Object} payload - Data to submit
    * @param {string} reporter - Reporter address
    * @returns {Promise<Object>} Relayer response
+   * 
+   * ⚠️ SECURITY WARNING: This example uses empty signature for demonstration.
+   * In production, implement proper EIP-712 signature verification!
    */
   async submitToRelayer(payload, reporter) {
     try {
+      // Note: fetch is built-in for Node.js >= 18.0.0 (this project's requirement)
       const response = await fetch(`${this.config.relayerUrl}/submit`, {
         method: 'POST',
         headers: {
@@ -169,7 +173,7 @@ class BlockchainConnector {
         body: JSON.stringify({
           payload,
           reporter,
-          signature: '0x', // In production, implement EIP-712 signature
+          signature: '0x', // ⚠️ INSECURE: In production, implement EIP-712 signature
         }),
       });
 
