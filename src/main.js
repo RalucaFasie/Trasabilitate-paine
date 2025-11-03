@@ -80,7 +80,7 @@ function escapeHtml(text) {
 // Compile regex once for better performance
 const hexColorPattern = /^#[0-9A-Fa-f]{6}$/;
 function sanitizeColor(color) {
-  // Only allow valid hex colors (#RGB or #RRGGBB format)
+  // Only allow valid hex colors (#RRGGBB format)
   if (hexColorPattern.test(color)) {
     return color;
   }
