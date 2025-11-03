@@ -142,6 +142,8 @@ async function checkRelayerService() {
   try {
     // Note: fetch is built-in for Node.js >= 18.0.0 (this project's minimum requirement)
     // Try to make a test request (will fail validation but confirms service is running)
+    // Use a valid test address instead of ZeroAddress (which is rejected by relayer validation)
+    const testAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'; // Hardhat test account #1
     const response = await fetch(`${relayerUrl}/submit`, {
       method: 'POST',
       headers: {
@@ -149,7 +151,7 @@ async function checkRelayerService() {
       },
       body: JSON.stringify({
         payload: { test: 'connection-check' },
-        reporter: ethers.ZeroAddress,
+        reporter: testAddress,
         signature: '0x', // Test only - production requires proper EIP-712 signature
       }),
     });
