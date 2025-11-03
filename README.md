@@ -24,9 +24,7 @@ This document describes where all project configuration files are defined and th
 - **Key configurations:**
   - Entry points
   - Output directory
-  - Module loaders
-  - Plugins
-  - Development server settings
+  - Build mode
 
 #### 4. **.vscode/launch.json**
 - **Location:** `/.vscode/launch.json`
