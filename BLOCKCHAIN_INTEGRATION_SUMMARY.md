@@ -37,8 +37,8 @@ The system now provides comprehensive blockchain connection capabilities that en
 - Context provider for blockchain state
 - Custom hooks: `useBlockchain()`, `useContract()`, `useRelayer()`
 - Ready-to-use components for registration and verification
-- MetaMask support + read-only mode
-- Gasless transaction support via relayer
+- Demo mode: read-only queries + relayer service
+- No wallet or MetaMask required
 
 **Node.js Integration (integration-examples/nodejs-integration.js)**
 - `BlockchainConnector` class for backend services
@@ -60,21 +60,17 @@ The system now provides comprehensive blockchain connection capabilities that en
 
 **YES!** The system provides multiple integration methods:
 
-### Method 1: Direct Contract Interaction
-External applications can connect directly to the smart contract using ethers.js:
+### Method 1: Read-Only Contract Queries (Demo Mode)
+External applications can query the blockchain directly for verification:
 
 ```javascript
 import { ethers } from 'ethers';
 
-// Connect to blockchain
+// Connect to blockchain (read-only, no wallet needed)
 const provider = new ethers.JsonRpcProvider('RPC_URL');
 const contract = new ethers.Contract(ADDRESS, ABI, provider);
 
-// Register data
-const hash = ethers.keccak256(ethers.toUtf8Bytes(JSON.stringify(data)));
-await contract.register(hash, 'optional-cid');
-
-// Verify data
+// Verify data (read operation)
 const isRegistered = await contract.isRegistered(hash);
 ```
 
@@ -174,17 +170,12 @@ Use `npm run verify-connection` to check:
 
 ## Integration Patterns
 
-### Pattern 1: Frontend-Only DApp
-```
-React App → MetaMask → Smart Contract
-```
-Perfect for decentralized applications where users have wallets.
-
-### Pattern 2: Gasless Application
+### Pattern 1: Demo Mode (Recommended)
 ```
 React/Web App → Relayer Service → Smart Contract
+             ↘ → JSON-RPC (read-only)
 ```
-Perfect for applications where users don't have wallets.
+Perfect for demos and prototypes - no wallet needed.
 
 ### Pattern 3: Backend-Integrated
 ```
@@ -255,7 +246,7 @@ The React app will now be able to:
 - Register product data on blockchain
 - Verify product authenticity
 - Display blockchain registration details
-- Support both MetaMask and gasless transactions
+- Support gasless transactions via relayer (demo mode)
 
 ## Conclusion
 

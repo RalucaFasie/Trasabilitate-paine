@@ -1,8 +1,11 @@
 /**
- * React Integration Example for Trasabilitate-paine Blockchain System
+ * React Integration Example for Trasabilitate-paine Blockchain System (Demo Mode)
  * 
  * This file demonstrates how to integrate the blockchain traceability system
- * into a React application (e.g., codespaces-react or any other React project).
+ * into a React application in DEMO MODE - no wallet or Metamask required.
+ * 
+ * All transactions are submitted via the relayer service (gasless).
+ * Read operations work directly through the JSON-RPC provider.
  * 
  * Installation:
  * npm install ethers
@@ -15,25 +18,25 @@ import { useState, useEffect, createContext, useContext } from 'react';
 import { ethers } from 'ethers';
 
 // ============================================================================
-// Configuration
+// Configuration (Demo Mode - Relayer Service Only)
 // ============================================================================
 
 const BLOCKCHAIN_CONFIG = {
-  // Local development (Hardhat)
+  // Local development (Hardhat) - Demo mode uses relayer
   local: {
     rpcUrl: 'http://localhost:8545',
     chainId: 31337,
     contractAddress: 'YOUR_LOCAL_CONTRACT_ADDRESS',
     relayerUrl: 'http://localhost:3001',
   },
-  // Sepolia testnet
+  // Sepolia testnet - Demo mode uses relayer
   sepolia: {
     rpcUrl: 'https://sepolia.infura.io/v3/YOUR_INFURA_KEY',
     chainId: 11155111,
     contractAddress: 'YOUR_SEPOLIA_CONTRACT_ADDRESS',
     relayerUrl: 'YOUR_RELAYER_URL',
   },
-  // Mumbai testnet (Polygon)
+  // Mumbai testnet (Polygon) - Demo mode uses relayer
   mumbai: {
     rpcUrl: 'https://rpc-mumbai.maticvigil.com',
     chainId: 80001,
@@ -72,31 +75,18 @@ export function BlockchainProvider({ children, network = 'local' }) {
 
   const initializeProvider = async () => {
     try {
-      let web3Provider;
-      let web3Signer;
-
-      // Check if MetaMask is available
-      if (typeof window !== 'undefined' && window.ethereum) {
-        // Use MetaMask
-        web3Provider = new ethers.BrowserProvider(window.ethereum);
-        await web3Provider.send('eth_requestAccounts', []);
-        web3Signer = await web3Provider.getSigner();
-        const address = await web3Signer.getAddress();
-        setAccount(address);
-      } else {
-        // Fallback to JSON-RPC provider (read-only)
-        web3Provider = new ethers.JsonRpcProvider(config.rpcUrl);
-        console.warn('MetaMask not detected. Running in read-only mode.');
-      }
+      // Use JSON-RPC provider (read-only mode for demo)
+      const web3Provider = new ethers.JsonRpcProvider(config.rpcUrl);
+      console.log('Connected to blockchain in read-only mode (demo)');
 
       const contractInstance = new ethers.Contract(
         config.contractAddress,
         CONTRACT_ABI,
-        web3Signer || web3Provider
+        web3Provider
       );
 
       setProvider(web3Provider);
-      setSigner(web3Signer);
+      setSigner(null);
       setContract(contractInstance);
       setConnected(true);
       setError(null);
@@ -107,21 +97,7 @@ export function BlockchainProvider({ children, network = 'local' }) {
     }
   };
 
-  const switchNetwork = async (targetChainId) => {
-    if (!window.ethereum) return;
-
-    try {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: ethers.toQuantity(targetChainId) }],
-      });
-    } catch (err) {
-      if (err.code === 4902) {
-        console.error('Network not added to MetaMask');
-      }
-      throw err;
-    }
-  };
+  // Network switching removed - demo mode only uses relayer service
 
   const value = {
     provider,
@@ -132,7 +108,6 @@ export function BlockchainProvider({ children, network = 'local' }) {
     error,
     config,
     initializeProvider,
-    switchNetwork,
   };
 
   return (
@@ -151,41 +126,13 @@ export function useBlockchain() {
 }
 
 // ============================================================================
-// Custom Hook: Direct Contract Interaction
+// Custom Hook: Read-Only Contract Interaction (Demo Mode)
 // ============================================================================
 
 export function useContract() {
-  const { contract, account, connected } = useBlockchain();
+  const { contract, connected } = useBlockchain();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const registerHash = async (data, ipfsCid = '') => {
-    if (!contract || !connected) {
-      throw new Error('Contract not connected');
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const dataString = typeof data === 'string' ? data : JSON.stringify(data);
-      const hash = ethers.keccak256(ethers.toUtf8Bytes(dataString));
-
-      const tx = await contract.register(hash, ipfsCid);
-      const receipt = await tx.wait();
-
-      setLoading(false);
-      return {
-        hash,
-        txHash: receipt.hash,
-        blockNumber: receipt.blockNumber,
-      };
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-      throw err;
-    }
-  };
 
   const verifyHash = async (data) => {
     if (!contract) {
@@ -221,12 +168,10 @@ export function useContract() {
   };
 
   return {
-    registerHash,
     verifyHash,
     getRegistrationDetails,
     loading,
     error,
-    account,
   };
 }
 
@@ -235,16 +180,15 @@ export function useContract() {
 // ============================================================================
 
 /**
- * ⚠️ SECURITY WARNING: This example uses empty signature for demonstration.
- * In production, implement proper EIP-712 signature verification to prevent
- * unauthorized transaction submission through the relayer.
+ * Hook for submitting data via relayer service (gasless, no wallet required)
+ * This is the primary method for demo mode - users don't need wallets or gas fees.
  */
 export function useRelayer() {
-  const { config, account } = useBlockchain();
+  const { config } = useBlockchain();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const submitToRelayer = async (data, reporter = null) => {
+  const submitToRelayer = async (data, reporter = '0x0000000000000000000000000000000000000001') => {
     setLoading(true);
     setError(null);
 
@@ -256,8 +200,8 @@ export function useRelayer() {
         },
         body: JSON.stringify({
           payload: data,
-          reporter: reporter || account,
-          signature: '0x', // ⚠️ INSECURE: TODO - Implement EIP-712 signature
+          reporter: reporter,
+          signature: '0x', // Demo mode - no signature verification
         }),
       });
 
@@ -280,11 +224,11 @@ export function useRelayer() {
 }
 
 // ============================================================================
-// Example Component: Hash Registration Form
+// Example Component: Registration via Relayer (Demo Mode)
 // ============================================================================
 
-export function HashRegistrationForm() {
-  const { registerHash, loading, error } = useContract();
+export function RegistrationForm() {
+  const { submitToRelayer, loading, error } = useRelayer();
   const [formData, setFormData] = useState({
     productId: '',
     batchNumber: '',
@@ -296,25 +240,26 @@ export function HashRegistrationForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const dataToHash = {
+      const dataToSubmit = {
         productId: formData.productId,
         batchNumber: formData.batchNumber,
         location: formData.location,
         timestamp: Date.now(),
+        ipfsCid: formData.ipfsCid || '',
       };
 
-      const res = await registerHash(dataToHash, formData.ipfsCid);
+      const res = await submitToRelayer(dataToSubmit);
       setResult(res);
-      alert('Hash registered successfully!');
+      alert('Data submitted successfully via relayer!');
     } catch (err) {
-      console.error('Registration failed:', err);
-      alert('Registration failed: ' + err.message);
+      console.error('Submission failed:', err);
+      alert('Submission failed: ' + err.message);
     }
   };
 
   return (
-    <div className="hash-registration-form">
-      <h2>Register Product on Blockchain</h2>
+    <div className="registration-form">
+      <h2>Register Product (Demo Mode - No Wallet Required)</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Product ID:</label>
@@ -360,7 +305,7 @@ export function HashRegistrationForm() {
           />
         </div>
         <button type="submit" disabled={loading}>
-          {loading ? 'Registering...' : 'Register on Blockchain'}
+          {loading ? 'Submitting...' : 'Submit (No Gas Fee)'}
         </button>
       </form>
 
@@ -368,16 +313,16 @@ export function HashRegistrationForm() {
 
       {result && (
         <div className="result">
-          <h3>Registration Successful!</h3>
+          <h3>Submitted Successfully!</h3>
           <p>
             <strong>Hash:</strong> {result.hash}
           </p>
-          <p>
-            <strong>Transaction:</strong> {result.txHash}
-          </p>
-          <p>
-            <strong>Block:</strong> {result.blockNumber}
-          </p>
+          {result.txHash && (
+            <p>
+              <strong>Transaction:</strong> {result.txHash}
+            </p>
+          )}
+          {result.note && <p className="note">{result.note}</p>}
         </div>
       )}
     </div>
@@ -475,88 +420,7 @@ export function HashVerification() {
   );
 }
 
-// ============================================================================
-// Example Component: Gasless Registration (via Relayer)
-// ============================================================================
-
-export function GaslessRegistration() {
-  const { submitToRelayer, loading, error } = useRelayer();
-  const { account } = useBlockchain();
-  const [formData, setFormData] = useState({
-    productId: '',
-    description: '',
-  });
-  const [result, setResult] = useState(null);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const payload = {
-        ...formData,
-        timestamp: Date.now(),
-        ipfsCid: '',
-      };
-
-      const res = await submitToRelayer(payload, account);
-      setResult(res);
-      alert('Registered via relayer!');
-    } catch (err) {
-      console.error('Relayer submission failed:', err);
-      alert('Failed: ' + err.message);
-    }
-  };
-
-  return (
-    <div className="gasless-registration">
-      <h2>Register (Gasless - No Wallet Required)</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Product ID:</label>
-          <input
-            type="text"
-            value={formData.productId}
-            onChange={(e) =>
-              setFormData({ ...formData, productId: e.target.value })
-            }
-            required
-          />
-        </div>
-        <div>
-          <label>Description:</label>
-          <textarea
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-            rows={3}
-            required
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Submitting...' : 'Submit (No Gas Fee)'}
-        </button>
-      </form>
-
-      {error && <div className="error">Error: {error}</div>}
-
-      {result && (
-        <div className="result">
-          <h3>Submitted Successfully!</h3>
-          <p>
-            <strong>Hash:</strong> {result.hash}
-          </p>
-          {result.txHash && (
-            <p>
-              <strong>Transaction:</strong> {result.txHash}
-            </p>
-          )}
-          {result.note && <p className="note">{result.note}</p>}
-        </div>
-      )}
-    </div>
-  );
-}
+// (GaslessRegistration component removed - use RegistrationForm instead)
 
 // ============================================================================
 // Example App Component
@@ -569,30 +433,26 @@ export default function BlockchainApp() {
     <BlockchainProvider network="local">
       <div className="blockchain-app">
         <header>
-          <h1>🌾 Bread Traceability System</h1>
-          <ConnectedAccount />
+          <h1>🌾 Bread Traceability System (Demo Mode)</h1>
+          <ConnectionStatus />
         </header>
 
         <nav>
           <button onClick={() => setActiveTab('register')}>Register</button>
           <button onClick={() => setActiveTab('verify')}>Verify</button>
-          <button onClick={() => setActiveTab('gasless')}>
-            Gasless Registration
-          </button>
         </nav>
 
         <main>
-          {activeTab === 'register' && <HashRegistrationForm />}
+          {activeTab === 'register' && <RegistrationForm />}
           {activeTab === 'verify' && <HashVerification />}
-          {activeTab === 'gasless' && <GaslessRegistration />}
         </main>
       </div>
     </BlockchainProvider>
   );
 }
 
-function ConnectedAccount() {
-  const { account, connected, error } = useBlockchain();
+function ConnectionStatus() {
+  const { connected, error } = useBlockchain();
 
   if (error) {
     return <div className="connection-error">Error: {error}</div>;
@@ -603,8 +463,8 @@ function ConnectedAccount() {
   }
 
   return (
-    <div className="connected-account">
-      <span>Connected: {account ? `${account.slice(0, 6)}...${account.slice(-4)}` : 'Read-only'}</span>
+    <div className="connected-status">
+      <span>✅ Connected (Demo Mode - Read-only)</span>
     </div>
   );
 }
