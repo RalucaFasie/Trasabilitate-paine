@@ -45,7 +45,8 @@ app.post('/submit', async (req, res) => {
     await tx.wait();
     res.json({ ok: true, txHash: tx.hash, hash });
   } catch(err) {
-    res.status(500).json({ ok: false, error: err.message });
+    console.error('Relayer error:', err);
+    res.status(500).json({ ok: false, error: 'Internal server error' });
   }
 });
 
