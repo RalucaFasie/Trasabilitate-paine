@@ -182,6 +182,18 @@ export function useContract() {
 /**
  * Hook for submitting data via relayer service (gasless, no wallet required)
  * This is the primary method for demo mode - users don't need wallets or gas fees.
+ * 
+ * ⚠️ SECURITY WARNING - DEMO MODE ONLY:
+ * This implementation uses an empty signature ('0x') which means NO authentication.
+ * This is ONLY safe in:
+ * - Local development environments
+ * - Controlled demo environments
+ * - Trusted/private networks
+ * 
+ * For production use, you MUST implement proper authentication:
+ * - EIP-712 signature verification
+ * - API keys or OAuth tokens
+ * - Rate limiting and abuse prevention
  */
 export function useRelayer() {
   const { config } = useBlockchain();
@@ -201,7 +213,7 @@ export function useRelayer() {
         body: JSON.stringify({
           payload: data,
           reporter: reporter,
-          signature: '0x', // Demo mode - no signature verification
+          signature: '0x', // ⚠️ DEMO ONLY: No authentication - see security warning above
         }),
       });
 
