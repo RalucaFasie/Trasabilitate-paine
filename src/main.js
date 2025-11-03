@@ -223,7 +223,18 @@ function generatePopupHTML(stage) {
 </html>`;
 }
 
-// Function to open popup window
+// Function to navigate to homepage with stage filter
+function navigateToHomepage(stage) {
+  // Navigate to homepage with stage parameter
+  // Check if we're in development (localhost) or production
+  const homepageUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? '/frontend/homepage.html?stage=' + stage
+    : './frontend/homepage.html?stage=' + stage;
+  
+  window.location.href = homepageUrl;
+}
+
+// Keep the old popup function for backward compatibility if needed
 function openStagePopup(stage) {
   const popupHTML = generatePopupHTML(stage);
 
@@ -263,7 +274,8 @@ document.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', function () {
       const stage = this.getAttribute('data-stage');
       if (stage && stageData[stage]) {
-        openStagePopup(stage);
+        // Navigate to homepage instead of opening popup
+        navigateToHomepage(stage);
       }
     });
 
@@ -273,7 +285,8 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         const stage = this.getAttribute('data-stage');
         if (stage && stageData[stage]) {
-          openStagePopup(stage);
+          // Navigate to homepage instead of opening popup
+          navigateToHomepage(stage);
         }
       }
     });

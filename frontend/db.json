@@ -1,46 +1,76 @@
 {
   "home": {
     "hero": {
-      "title": "Trasabilitatea Pâinii",
+      "title": "Trasabilitatea Pâinii - Călărași",
       "subtitle": "De la fermă la masă - urmărește călătoria pâinii tale",
-      "description": "Sistem interactiv de trasabilitate bazat pe blockchain pentru transparență completă în lanțul de aprovizionare"
+      "description": "Sistem interactiv de trasabilitate bazat pe blockchain pentru transparență completă în lanțul de aprovizionare din județul Călărași"
     },
     "products": [
       {
         "id": 1,
         "name": "Pâine Albă Tradițională",
-        "description": "Pâine proaspătă din grâu local, copt zilnic",
+        "description": "Pâine proaspătă din grâu local Călărași, copt zilnic",
         "price": "4.50 RON",
         "image": "/assets/bread-product-1.jpg",
-        "origin": "Ferma AgroVerde, Călărași",
-        "hash": "0xabc123def456"
+        "origin": "Ferma AgroVerde, Borcea, Călărași",
+        "stage": "ferma",
+        "lot": "CL-BORCEA-2025-001",
+        "hash": "0x3f2a8b4c9d1e5a7f"
       },
       {
         "id": 2,
         "name": "Pâine Integrală Bio",
-        "description": "100% făină integrală certificată bio",
+        "description": "100% făină integrală certificată bio din Bărăgan",
         "price": "6.00 RON",
         "image": "/assets/bread-product-2.jpg",
-        "origin": "Ferma EcoBio, Brăila",
-        "hash": "0xdef789ghi012"
+        "origin": "Ferma EcoBio, Fundulea, Călărași",
+        "stage": "moara",
+        "lot": "CL-FUNDULEA-2025-002",
+        "hash": "0x8e5d3c2b1a9f7e6d"
       },
       {
         "id": 3,
         "name": "Pâine cu Semințe",
-        "description": "Bogată în semințe de floarea soarelui și in",
+        "description": "Bogată în semințe de floarea soarelui din câmpia Bărăganului",
         "price": "5.50 RON",
         "image": "/assets/bread-product-3.jpg",
-        "origin": "Ferma GrâuVerde, Constanța",
-        "hash": "0xjkl345mno678"
+        "origin": "Ferma GrâuAur, Lehliu Gară, Călărași",
+        "stage": "magazin",
+        "lot": "CL-LEHLIU-2025-003",
+        "hash": "0x5b8c4f2e9a3d1c7b"
       },
       {
         "id": 4,
         "name": "Pâine de Secară",
-        "description": "Aromă intensă, perfectă pentru sandvișuri",
+        "description": "Aromă intensă, perfectă pentru sandvișuri, secară locală",
         "price": "5.00 RON",
         "image": "/assets/bread-product-4.jpg",
-        "origin": "Ferma TradițieBună, Ialomița",
-        "hash": "0xpqr901stu234"
+        "origin": "Ferma TradițieBună, Modelu, Călărași",
+        "stage": "transport",
+        "lot": "CL-MODELU-2025-004",
+        "hash": "0x7d4a1f8c3e9b2d5a"
+      },
+      {
+        "id": 5,
+        "name": "Franzela Caldă",
+        "description": "Franzele calde și crocante, din făină premium Călărași",
+        "price": "3.00 RON",
+        "image": "/assets/bread-product-5.jpg",
+        "origin": "Brutăria Dunărea, Călărași (oraș)",
+        "stage": "senzori",
+        "lot": "CL-CALARASI-2025-005",
+        "hash": "0x2c9e5b7d4f1a8e3c"
+      },
+      {
+        "id": 6,
+        "name": "Pâine Rustică cu Maia",
+        "description": "Preparată cu maia naturală, fermentare lentă 24h",
+        "price": "7.50 RON",
+        "image": "/assets/bread-product-6.jpg",
+        "origin": "Moara Veche, Ulmeni, Călărași",
+        "stage": "ferma",
+        "lot": "CL-ULMENI-2025-006",
+        "hash": "0x6f3d8a1c5e2b9d4f"
       }
     ]
   }
