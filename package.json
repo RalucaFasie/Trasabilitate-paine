@@ -42,7 +42,8 @@
     "eslint": "^8.57.0",
     "hardhat": "^2.19.4",
     "prettier": "^3.2.5",
-    "vite": "^5.1.4"
+    "vite": "^5.1.4",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.1",
