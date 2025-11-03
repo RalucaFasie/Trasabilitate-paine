@@ -22,10 +22,13 @@
   <script>
     async function fetchHome() {
       try {
-        const res = await fetch('/api/home.json');
+        // Development mock server (json-server)
+        const res = await fetch('http://localhost:3000/home');
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
-        render(data);
+        // If json-server wraps data under "home", use data.home
+        const payload = data.home || data;
+        render(payload);
       } catch (err) {
         document.getElementById('root').innerHTML = '<div class="loading">Eroare la încărcare: '+err.message+'</div>';
       }
@@ -57,7 +60,7 @@
       root.appendChild(products);
     }
 
-    function escapeHtml(s){ return String(s).replace(/[&<>\"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]}); }
+    function escapeHtml(s){ return String(s).replace(/[&<>\"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":"&#39;"}[c]}); }
 
     fetchHome();
   </script>
