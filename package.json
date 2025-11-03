@@ -16,7 +16,8 @@
     "relayer": "node relayer/index.js",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
-    "clean": "npx hardhat clean"
+    "clean": "npx hardhat clean",
+    "verify-connection": "node scripts/verify-connection.js"
   },
   "keywords": [
     "blockchain",

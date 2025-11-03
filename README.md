@@ -13,6 +13,18 @@ Acest repository conține un sistem de trasabilitate pentru pâine bazat pe bloc
 - **Relayer:** Serviciu backend pentru interacțiunea cu blockchain
 - **Assets:** Imagini QR și resurse vizuale
 
+## 🔗 Blockchain Connection & Integration
+
+Pentru a integra acest sistem în aplicații externe (React, Node.js, etc.) sau pentru a verifica conexiunea blockchain:
+
+- 📖 **[BLOCKCHAIN_CONNECTION.md](BLOCKCHAIN_CONNECTION.md)** - Ghid complet de conectare și integrare
+- 📁 **[integration-examples/](integration-examples/)** - Exemple de integrare pentru React și Node.js
+- 🔧 **Verificare conexiune**: `npm run verify-connection`
+
+Sistemul suportă două moduri de integrare:
+1. **Direct Contract Interaction** - Utilizatorii plătesc gas fees (necesită MetaMask)
+2. **Relayer Service** - Tranzacții fără gas fees (nu necesită wallet)
+
 ## Dezvoltare locală (Frontend)
 
 ### 1. Instalează dependențe
