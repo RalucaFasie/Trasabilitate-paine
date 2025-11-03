@@ -23,6 +23,15 @@ const contract = (relayerWallet && CONTRACT_ADDRESS) ? new ethers.Contract(CONTR
 app.post('/submit', async (req, res) => {
   try {
     const { payload, reporter, signature } = req.body;
+    
+    // Input validation
+    if (!payload || typeof payload !== 'object') {
+      return res.status(400).json({ ok: false, error: 'Invalid payload: must be an object' });
+    }
+    if (!reporter || !ethers.isAddress(reporter)) {
+      return res.status(400).json({ ok: false, error: 'Invalid reporter: must be a valid Ethereum address' });
+    }
+    
     // In production: verify signature (EIP-712) that reporter signed payload
     // For demo: accept payload and compute hash
     const hash = ethers.keccak256(ethers.toUtf8Bytes(JSON.stringify(payload)));

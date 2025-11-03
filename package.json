@@ -8,7 +8,6 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .js",
-    "format": "prettier --write \"src/**/*.js\"",
     "format": "prettier --write \"src/**/*.{js,css}\"",
     "node": "npx hardhat node",
     "deploy": "npx hardhat run scripts/deploy.js --network localhost",
@@ -43,10 +42,6 @@
     "hardhat": "^2.19.4",
     "prettier": "^3.2.5",
     "vite": "^5.1.4"
-    "eslint": "^8.56.0",
-    "hardhat": "^2.19.4",
-    "prettier": "^3.1.1",
-    "vite": "^5.0.11"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.1",

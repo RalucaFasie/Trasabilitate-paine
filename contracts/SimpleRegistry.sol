@@ -18,8 +18,8 @@ contract SimpleRegistry is AccessControl {
     event HashRegistered(bytes32 indexed h, address indexed reporter, string ipfsCid, uint256 timestamp);
 
     constructor(address admin) {
-        _setupRole(DEFAULT_ADMIN_ROLE, admin);
-        _setupRole(RELAYER_ROLE, admin);
+        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+        _grantRole(RELAYER_ROLE, admin);
     }
 
     /// @notice Înregistrează un hash (bytes32) - apelabil de oricine
