@@ -1,0 +1,24 @@
+{
+  "hero": {
+    "title": "Pâine locală - Trasabilitate",
+    "subtitle": "Urmărește loturile și ingredientele fiecărui produs",
+    "image": "https://via.placeholder.com/400x240.png?text=Paine"
+  },
+  "products": [
+    {
+      "name": "Pâine cu maia",
+      "description": "Maia naturală, făină integrală",
+      "batch": "L20251103-01"
+    },
+    {
+      "name": "Chiflă",
+      "description": "Chifle pufoase, coapte azi",
+      "batch": "L20251103-02"
+    },
+    {
+      "name": "Pâine cu semințe",
+      "description": "Amestec semințe (in, susan, floarea-soarelui)",
+      "batch": "L20251102-07"
+    }
+  ]
+}
