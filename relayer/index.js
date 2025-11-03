@@ -25,11 +25,11 @@ app.post('/submit', async (req, res) => {
     const { payload, reporter, signature } = req.body;
     
     // Input validation
-    if (!payload || typeof payload !== 'object') {
+    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
       return res.status(400).json({ ok: false, error: 'Invalid payload: must be an object' });
     }
-    if (!reporter || !ethers.isAddress(reporter)) {
-      return res.status(400).json({ ok: false, error: 'Invalid reporter: must be a valid Ethereum address' });
+    if (!reporter || !ethers.isAddress(reporter) || reporter === ethers.ZeroAddress) {
+      return res.status(400).json({ ok: false, error: 'Invalid reporter: must be a valid non-zero Ethereum address' });
     }
     
     // In production: verify signature (EIP-712) that reporter signed payload
