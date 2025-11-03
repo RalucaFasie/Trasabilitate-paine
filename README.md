@@ -21,9 +21,9 @@ Pentru a integra acest sistem în aplicații externe (React, Node.js, etc.) sau 
 - 📁 **[integration-examples/](integration-examples/)** - Exemple de integrare pentru React și Node.js
 - 🔧 **Verificare conexiune**: `npm run verify-connection`
 
-Sistemul suportă două moduri de integrare:
-1. **Direct Contract Interaction** - Utilizatorii plătesc gas fees (necesită MetaMask)
-2. **Relayer Service** - Tranzacții fără gas fees (nu necesită wallet)
+Sistemul funcționează în **modul demo**:
+- **Relayer Service** - Tranzacții fără gas fees (nu necesită wallet sau MetaMask)
+- Verificare read-only prin JSON-RPC provider
 
 ## Dezvoltare locală (Frontend)
 
@@ -180,9 +180,7 @@ npm run relayer
 ```
 Relayer va rula pe http://localhost:3001
 
-#### 5. Conectează Metamask:
-- Importă una din cheile generate de Hardhat în Metamask
-- Configurează rețeaua custom: RPC URL = http://localhost:8545, Chain ID = 31337
+
 ### 4. Pornește relayer (terminal 3):
 ```bash
 npm run relayer
@@ -191,10 +189,7 @@ Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este set
 
 Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
 
-### 5. Conectează Metamask:
-- Importă una din cheile generate de Hardhat în Metamask
-- Configurează rețeaua custom: RPC URL = http://localhost:8545, Chain ID = 31337
-- Folosește butoanele din interfață pentru a interacționa cu blockchain-ul
+
 
 ## Deploy pe GitHub Pages
 

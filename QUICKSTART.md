@@ -6,7 +6,6 @@ Get the bread traceability demo running in 5 minutes!
 
 - Node.js >= 18.0.0
 - npm >= 9.0.0
-- (Optional) Metamask browser extension
 
 ## Step 1: Install Dependencies
 
@@ -93,15 +92,7 @@ python -m http.server 8000
 # Then open: http://localhost:8000/index.html
 ```
 
-## Step 7: (Optional) Connect Metamask
 
-1. Click "Conectează Wallet" in the web interface
-2. Add Hardhat network to Metamask:
-   - Network Name: `Hardhat Local`
-   - RPC URL: `http://localhost:8545`
-   - Chain ID: `31337`
-   - Currency Symbol: `ETH`
-3. Import one of the test accounts using a private key from Step 2
 
 ## 🎉 You're Ready!
 
@@ -121,10 +112,6 @@ Make sure the Hardhat node (Step 2) is still running.
 
 ### "Relayer not responding"
 Make sure the relayer (Step 5) is still running on port 3001.
-
-### Metamask connection fails
-- Check that you're using the correct RPC URL and Chain ID
-- Try resetting Metamask account: Settings → Advanced → Reset Account
 
 ### Contract function not found
 Make sure you've set the correct CONTRACT_ADDRESS in your .env file or in the HTML file (index.html line 222).

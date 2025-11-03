@@ -5,12 +5,12 @@ This directory contains integration examples showing how to connect external app
 ## Available Examples
 
 ### 1. React Integration (`react-integration.jsx`)
-Complete React integration with:
+Complete React integration in **Demo Mode** with:
 - Context provider for blockchain state management
-- Custom hooks for contract interaction
-- Custom hooks for relayer service
+- Custom hooks for read-only contract queries
+- Custom hooks for relayer service (gasless transactions)
 - Example components for registration and verification
-- Support for MetaMask and read-only connections
+- No wallet or Metamask required - all transactions via relayer
 
 **Usage in React App:**
 ```bash
@@ -57,10 +57,9 @@ node integration-examples/nodejs-integration.js
    };
    ```
 
-3. **Choose your integration method:**
-   - **Direct Contract Interaction**: Users pay gas fees (requires MetaMask)
+3. **Integration method (Demo Mode):**
    - **Relayer Service**: Gasless transactions (no wallet required)
-   - **Hybrid**: Both methods available
+   - Read-only blockchain queries for verification
 
 ### For Backend Applications (Node.js, Python, etc.)
 
@@ -75,29 +74,16 @@ node integration-examples/nodejs-integration.js
 
 3. **Consider using the relayer service for user-initiated transactions**
 
-## Integration Patterns
+## Integration Pattern (Demo Mode)
 
-### Pattern 1: Client-Side DApp
-```
-User Browser → MetaMask → Smart Contract
-```
-- **Pros**: Fully decentralized, no backend needed
-- **Cons**: Users need wallet and gas fees
-
-### Pattern 2: Relayer-Based
+### Relayer-Based (Demo Mode)
 ```
 User Browser → Relayer Service → Smart Contract
+           ↘ → JSON-RPC Provider (read-only)
 ```
-- **Pros**: No wallet or gas fees for users
+- **Pros**: No wallet or gas fees for users, easy to use
 - **Cons**: Requires trusted relayer service
-
-### Pattern 3: Hybrid Backend
-```
-User Browser → Your Backend → Smart Contract
-                         ↘ → Relayer Service
-```
-- **Pros**: Flexible, can implement custom logic
-- **Cons**: More complex architecture
+- **Note**: This is the recommended pattern for demos and prototypes
 
 ## Configuration
 

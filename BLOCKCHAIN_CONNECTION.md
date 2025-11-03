@@ -22,11 +22,11 @@ The system consists of three main components:
 - **Current**: Vanilla JavaScript web interface
 - **Extensible**: Can be integrated with React, Vue, Angular, or mobile apps
 
-## Connection Methods
+## Connection Methods (Demo Mode)
 
-### Method 1: Direct Smart Contract Interaction
+### Method 1: Read-Only Smart Contract Queries
 
-External applications can interact directly with the deployed smart contract using ethers.js or web3.js.
+External applications can query the blockchain directly for verification using ethers.js (read-only, no wallet needed).
 
 #### Prerequisites
 ```bash
@@ -45,20 +45,14 @@ const CONTRACT_ABI = [
   'event HashRegistered(bytes32 indexed h, address indexed reporter, string ipfsCid, uint256 timestamp)'
 ];
 
-// Connect to blockchain
+// Connect to blockchain (read-only, no wallet needed)
 const provider = new ethers.JsonRpcProvider('YOUR_RPC_URL');
-const signer = provider.getSigner(); // or use wallet
 
 // Connect to contract
 const contractAddress = 'DEPLOYED_CONTRACT_ADDRESS';
-const contract = new ethers.Contract(contractAddress, CONTRACT_ABI, signer);
+const contract = new ethers.Contract(contractAddress, CONTRACT_ABI, provider);
 
-// Register a hash
-const dataHash = ethers.keccak256(ethers.toUtf8Bytes(JSON.stringify(yourData)));
-const tx = await contract.register(dataHash, 'optional-ipfs-cid');
-await tx.wait();
-
-// Verify a hash
+// Verify a hash (read operation)
 const isRegistered = await contract.isRegistered(dataHash);
 console.log('Hash registered:', isRegistered);
 
@@ -69,7 +63,7 @@ console.log('Timestamp:', new Date(Number(registration.timestamp) * 1000));
 console.log('IPFS CID:', registration.ipfsCid);
 ```
 
-#### React Integration Example
+#### React Integration Example (Demo Mode - Read Only)
 ```javascript
 import { ethers } from 'ethers';
 import { useState, useEffect } from 'react';
@@ -80,48 +74,39 @@ function BlockchainConnector() {
   const [connected, setConnected] = useState(false);
 
   const CONTRACT_ADDRESS = 'YOUR_DEPLOYED_CONTRACT_ADDRESS';
+  const RPC_URL = 'http://localhost:8545'; // or your RPC URL
   const CONTRACT_ABI = [/* ABI as above */];
 
   useEffect(() => {
     const init = async () => {
-      if (window.ethereum) {
-        // Use MetaMask or injected provider
-        const web3Provider = new ethers.BrowserProvider(window.ethereum);
-        await web3Provider.send("eth_requestAccounts", []);
-        const signer = await web3Provider.getSigner();
-        
-        const contractInstance = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          CONTRACT_ABI,
-          signer
-        );
-        
-        setProvider(web3Provider);
-        setContract(contractInstance);
-        setConnected(true);
-      }
+      // Use JSON-RPC provider (read-only, no wallet needed)
+      const web3Provider = new ethers.JsonRpcProvider(RPC_URL);
+      
+      const contractInstance = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        web3Provider
+      );
+      
+      setProvider(web3Provider);
+      setContract(contractInstance);
+      setConnected(true);
     };
     init();
   }, []);
-
-  const registerHash = async (data) => {
-    if (!contract) return;
-    const hash = ethers.keccak256(ethers.toUtf8Bytes(JSON.stringify(data)));
-    const tx = await contract.register(hash, '');
-    await tx.wait();
-    return hash;
-  };
 
   const verifyHash = async (hash) => {
     if (!contract) return false;
     return await contract.isRegistered(hash);
   };
 
-  return { connected, registerHash, verifyHash };
+  return { connected, verifyHash };
 }
 
 export default BlockchainConnector;
 ```
+
+**Note**: For write operations (registering hashes), use the Relayer Service below.
 
 ### Method 2: Relayer Service Integration (Gasless Transactions)
 
