@@ -1,0 +1,1 @@
+Adaug workflow GitHub Actions pentru build si publicare pe GitHub Pages. Acest PR contine .github/workflows/gh-pages.yml si instructiuni in README pentru demo instant (relayer mock). Ruleaza npm ci si npm run build in workflow si publica dist/ pe branch gh-pages.
