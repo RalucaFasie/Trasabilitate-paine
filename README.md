@@ -5,6 +5,8 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)](https://soliditylang.org/)
 
+## 🚀 [View Live Demo](https://ralucafasie.github.io/Trasabilitate-paine/)
+
 Acest repository conține un sistem de trasabilitate pentru pâine bazat pe blockchain, cu contracte inteligente Hardhat și o interfață web modernă construită cu Vite.
 
 **Componente:**
