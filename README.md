@@ -136,6 +136,27 @@ npm run relayer
 ```
 Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
 
+### Testare smart contracts
+
+După ce ai instalat dependențele, poți rula testele pentru a verifica funcționalitatea contractelor:
+
+```bash
+# Rulează toate testele
+npm test
+
+# Rulează un test specific
+npx hardhat test test/SimpleRegistry.test.js
+
+# Compilează contractele
+npm run compile
+```
+
+Testele folosesc Hardhat și Chai pentru a valida logica contractelor smart. Acestea verifică:
+- Deployment corect al contractului
+- Înregistrarea hash-urilor
+- Controlul accesului pentru rolul de relayer
+- Verificarea hash-urilor duplicate
+
 
 
 ## Deploy pe GitHub Pages
