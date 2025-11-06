@@ -9,12 +9,23 @@
     "preview": "vite preview",
     "lint": "eslint src/**/*.js public/**/*.html",
     "format": "prettier --write \"src/**/*.{js,css}\" \"public/**/*.html\"",
-    "dev:api": "json-server --watch frontend/db.json --port 3000"
+    "dev:api": "json-server --watch frontend/db.json --port 3000",
+    "test": "hardhat test",
+    "node": "hardhat node",
+    "deploy": "hardhat run scripts/deploy.js",
+    "compile": "hardhat compile"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.4.0",
+    "chai": "^4.3.10",
+    "dotenv": "^16.6.1",
     "eslint": "^8.57.0",
+    "ethers": "^6.10.0",
+    "hardhat": "^2.19.4",
     "json-server": "^0.17.3",
     "prettier": "^3.2.5",
+    "solc": "^0.8.20",
     "vite": "^5.2.0"
   },
   "dependencies": {
