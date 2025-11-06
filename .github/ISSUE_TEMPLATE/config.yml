@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Questions & Discussions
+    url: https://github.com/RalucaFasie/Trasabilitate-paine/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 📚 Documentation
+    url: https://github.com/RalucaFasie/Trasabilitate-paine/blob/main/README.md
+    about: Read the project documentation
+  - name: 🚀 Quick Start Guide
+    url: https://github.com/RalucaFasie/Trasabilitate-paine/blob/main/QUICKSTART.md
+    about: Get started quickly with the project

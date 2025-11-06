@@ -1,13 +1,23 @@
 {
   "name": "trasabilitate-paine",
-  "version": "1.0.0",
-  "description": "Bread traceability application",
-  "main": "src/index.js",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src/**/*.js public/**/*.html",
+    "format": "prettier --write \"src/**/*.{js,css}\" \"public/**/*.html\"",
+    "dev:api": "json-server --watch frontend/db.json --port 3000"
   },
   "devDependencies": {
-    "webpack": "^5.102.1",
-    "webpack-cli": "^6.0.1"
+    "eslint": "^8.57.0",
+    "json-server": "^0.17.3",
+    "prettier": "^3.2.5",
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "express-rate-limit": "^8.2.1"
   }
 }

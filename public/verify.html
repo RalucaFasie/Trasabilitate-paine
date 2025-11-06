@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Verificare Trasabilitate — AgroVerde</title>
+  <style>
+    body{font-family:Inter, Arial, sans-serif;background:#fbfcfb;color:#071013;margin:0;padding:20px}
+    .wrap{max-width:900px;margin:20px auto}
+    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 10px 30px rgba(9,12,15,0.06);border:1px solid rgba(0,0,0,0.04)}
+    h1{color:#1f5a27}
+    .hash{font-family:monospace;background:#f4f6f5;padding:8px;border-radius:8px;display:inline-block}
+    .meta{color:#55606a}
+    .qr{width:160px;height:160px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:white;padding:8px}
+    a.btn{display:inline-block;padding:10px 14px;border-radius:10px;background:#1f5a27;color:#fff;text-decoration:none;margin-top:10px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Verificare trasabilitate</h1>
+      <p class="meta">Acestă pagină afișează informațiile de trasabilitate pentru hash-ul transmis în URL (ex: <code>?hash=...</code>). Concepută pentru demo/ prezentare — datele sunt preîncărcate local.</p>
+      <div id="content">Se încarcă…</div>
+      <p style="margin-top:12px;color:#8b8f96">Notă: pentru verificare reală pe blockchain trebuie setat un CONTRACT_ADDRESS activ și un provider. În demo local/date statice, afișăm înregistrările cunoscute.</p>
+    </div>
+  </div>
+
+  <script>
+    const blocks = [
+      { hash: '8ac2f97b5dfe91c44a5f3b9c78e4a2120d33ef', title: 'Ferma AgroVerde', date: '15 iulie 2025', desc: 'Originea cerealelor: Ferma AgroVerde, jud. Călărași', img: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=1e2f6b6e4c' },
+      { hash: '3de07b4fa2395c2d188a14f963ef77d0a245be', title: 'Moara PanMălina', date: '20 iulie 2025', desc: 'Lot procesat: GRAU-0725-CL', img: 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=7c1f0b4ea1' },
+      { hash: 'a712c2bffb9331ed48b6a9d6f4dc001cbb3e01', title: 'Brutăria DeliPan', date: '22 iulie 2025', desc: 'Produs: Pâine albă 600g', img: 'https://images.unsplash.com/photo-1544476915-ed1370594142?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=3a6c1f4f' },
+      { hash: 'e03b7ccaf45691a57ff9a1cde38df008aae97d', title: 'Magazinul EcoMarket', date: '23 iulie 2025', desc: 'Lot distribuție: DP-0725-01', img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b9b1f' },
+      { hash: '09a3bd2fa8b177a52fbb4c3e9d51aa1f5d26ff', title: 'Consumator final', date: '24 iulie 2025', desc: 'Tranzacția confirmă trasabilitatea completă a produsului.', img: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f7b9c' }
+    ];
+
+    // Escape HTML to prevent XSS
+    function escapeHTML(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getParam(name){
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    function findBlock(hash){
+      return blocks.find(b=>b.hash.toLowerCase()===hash.toLowerCase());
+    }
+
+    (function main(){
+      const hash = getParam('hash');
+      const content = document.getElementById('content');
+      if(!hash){
+        content.innerHTML = `<p>Parametrul <code>hash</code> lipsește. Exemplu: <code>?hash=8ac2f97b5dfe91c44a5f3b9c78e4a2120d33ef</code></p><ul>${blocks.map(b=>`<li><a href="verify.html?hash=${b.hash}">${b.title}</a></li>`).join('</ul><ul>')}</ul>`;
+        return;
+      }
+      const block = findBlock(hash);
+      if(!block){
+        content.innerHTML = `<p>Hash necunoscut în demo: <code>${escapeHTML(hash)}</code></p><p>Poți folosi una din înregistrările demo:</p><ul>${blocks.map(b=>`<li><a href="verify.html?hash=${b.hash}">${b.title} — ${b.hash}</a></li>`).join('</ul><ul>')}</ul>`;
+        return;
+      }
+
+      content.innerHTML = `
+        <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+          <div style="flex:1;min-width:240px">
+            <img src="${block.img}" alt="${block.title}" style="width:100%;border-radius:10px;margin-bottom:10px">
+            <p class="meta"><strong>${block.title}</strong><br>${block.date}</p>
+            <p>${block.desc}</p>
+            <p><strong>Hash:</strong> <span class="hash">${block.hash}</span></p>
+            <p><a class="btn" href="./index.html">Vezi fluxul complet</a></p>
+          </div>
+          <div style="width:200px;flex:0 0 200px;display:flex;flex-direction:column;align-items:center;gap:8px">
+            <canvas id="qr" class="qr" aria-hidden="true"></canvas>
+            <a href="verify.html?hash=${block.hash}" target="_blank">Deschide pe telefon</a>
+          </div>
+        </div>
+      `;
+
+      // generate QR pointing to this exact URL
+      const url = window.location.href;
+      // load qrcode library dynamically
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js';
+      s.onload = ()=>{
+        if (typeof QRCode !== 'undefined') {
+          QRCode.toCanvas(document.getElementById('qr'), url, { width: 160 }).catch(err=>console.error('QR code generation failed:', err));
+        }
+      };
+      s.onerror = ()=>{
+        console.error('Failed to load QR code library');
+        const canvas = document.getElementById('qr');
+        if (canvas) canvas.style.display = 'none';
+      };
+      document.head.appendChild(s);
+    })();
+  </script>
+</body>
+</html>
