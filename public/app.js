@@ -53,7 +53,7 @@ const blockchainData = [
         data: {
             'Temperatură': '22.5°C',
             'Umiditate': '65%',
-            'Condiții': 'Partly cloudy',
+            'Condiții': 'Parțial înnorat',
             'Monitorizare': 'Real-time sensors',
             'Status': 'Optimal pentru depozitare'
         }
