@@ -11,8 +11,8 @@ This directory contains legacy/demo files that are not part of the main applicat
 ## Usage
 
 These files are kept for reference and testing purposes. The main application uses:
-- `/public/index.html` - Main application entry point
-- `/public/verify.html` - Verification page
+- `/docs/index.html` - Main application entry point
+- `/docs/verify.html` - Verification page
 - `/src/main.js` - Main JavaScript
 - `/src/styles.css` - Main styles
 
@@ -22,4 +22,4 @@ npm run dev:api  # Start json-server on port 3000
 # Then open frontend/homepage.html in browser
 ```
 
-**Note:** The main application at `/public/index.html` does not depend on these demo files.
+**Note:** The main application at `/docs/index.html` does not depend on these demo files.

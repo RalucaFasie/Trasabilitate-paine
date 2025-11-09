@@ -21,7 +21,7 @@ build/
 .vite/
 
 # Generated blockchain data (created by CI)
-public/data/
+docs/data/
 
 # Logs
 logs

@@ -1,4 +1,4 @@
-# Blockchain Visualization - Public Folder
+# Blockchain Visualization - Docs Folder
 
 Acest folder conține site-ul static pentru vizualizarea blockchain-ului de trasabilitate al pâinii.
 
@@ -48,7 +48,7 @@ Dacă dorești să folosești date precalculate, schimbă în `blockchain.html`:
 
 **Cum funcționează:**
 1. GitHub Actions rulează `scripts/generate-blocks.js`
-2. Script-ul generează `public/data/blocks.json` cu hash-uri precalculate
+2. Script-ul generează `docs/data/blocks.json` cu hash-uri precalculate
 3. `app-static.js` încarcă JSON-ul și afișează datele
 
 ## 🚀 Deployment pe GitHub Pages
@@ -57,14 +57,14 @@ GitHub Actions workflow (`.github/workflows/static.yml`) se ocupă automat de:
 
 1. **Install dependencies** - `npm ci`
 2. **Generate blockchain data** - `node scripts/generate-blocks.js`
-3. **Deploy public/ folder** - doar folderul public/ este deploiat pe Pages
+3. **Deploy docs/ folder** - doar folderul docs/ este deploiat pe Pages
 
 ## 🔧 Testare Locală
 
 ### Testează client-side hashing:
 ```bash
-# Pornește un server local în folderul public
-cd public
+# Pornește un server local în folderul docs
+cd docs
 python -m http.server 8000
 # sau
 npx serve .
@@ -80,14 +80,14 @@ node scripts/generate-blocks.js
 
 # Schimbă app.js cu app-static.js în blockchain.html
 # Apoi pornește serverul local
-cd public
+cd docs
 python -m http.server 8000
 ```
 
 ## 📝 Modificarea Datelor Blockchain
 
 Pentru a modifica datele blocurilor, editează:
-- `public/app.js` - pentru client-side hashing
+- `docs/app.js` - pentru client-side hashing
 - `scripts/generate-blocks.js` - pentru CI-generated data
 
 Ambele fișiere conțin același array `blockchainData` cu structura:

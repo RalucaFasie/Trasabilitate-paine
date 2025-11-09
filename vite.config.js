@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  root: 'public',
+  root: 'docs',
   base: './',
   publicDir: 'assets',
   resolve: {
@@ -18,8 +18,8 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'public/index.html'),
-        verify: resolve(__dirname, 'public/verify.html'),
+        main: resolve(__dirname, 'docs/index.html'),
+        verify: resolve(__dirname, 'docs/verify.html'),
       },
     },
   },
