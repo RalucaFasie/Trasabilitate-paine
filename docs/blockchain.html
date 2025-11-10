@@ -1,224 +1,233 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ro">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blockchain Trasabilitate Pâine</title>
-    <meta name="description" content="Vizualizare blockchain pentru trasabilitatea pâinii">
+    <meta
+      name="description"
+      content="Vizualizare blockchain pentru trasabilitatea pâinii"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
 
+      h1 {
+        text-align: center;
+        color: white;
+        margin-bottom: 10px;
+        font-size: 2.5em;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 30px;
+      }
+
+      .blockchain-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .block {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .block-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e5e7eb;
+      }
+
+      .block-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+
+      .block-icon {
+        font-size: 1.8em;
+      }
+
+      .block-index {
+        background: #667eea;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+      }
+
+      .block-content {
+        margin-bottom: 15px;
+      }
+
+      .block-data {
+        background: #f9fafb;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+      }
+
+      .data-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .data-row:last-child {
+        border-bottom: none;
+      }
+
+      .data-label {
+        font-weight: 600;
+        color: #4b5563;
+      }
+
+      .data-value {
+        color: #1f2937;
+      }
+
+      .hash-section {
+        background: #f3f4f6;
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      .hash-row {
+        margin-bottom: 10px;
+      }
+
+      .hash-row:last-child {
+        margin-bottom: 0;
+      }
+
+      .hash-label {
+        font-weight: 600;
+        color: #4b5563;
+        margin-bottom: 5px;
+      }
+
+      .hash-value {
+        font-family: 'Courier New', monospace;
+        font-size: 0.85em;
+        background: white;
+        padding: 10px;
+        border-radius: 4px;
+        word-break: break-all;
+        color: #1f2937;
+        border: 1px solid #d1d5db;
+      }
+
+      .genesis-badge {
+        display: inline-block;
+        background: #10b981;
+        color: white;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        margin-left: 10px;
+      }
+
+      .timestamp {
+        color: #6b7280;
+        font-size: 0.9em;
+        margin-top: 10px;
+      }
+
+      .navigation {
+        text-align: center;
+        margin-top: 30px;
+      }
+
+      .nav-button {
+        background: white;
+        color: #667eea;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .nav-button:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
         h1 {
-            text-align: center;
-            color: white;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 30px;
-        }
-
-        .blockchain-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+          font-size: 1.8em;
         }
 
         .block {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .block:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+          padding: 15px;
         }
 
         .block-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e5e7eb;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
         }
-
-        .block-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
-        .block-icon {
-            font-size: 1.8em;
-        }
-
-        .block-index {
-            background: #667eea;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        .block-content {
-            margin-bottom: 15px;
-        }
-
-        .block-data {
-            background: #f9fafb;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .data-row:last-child {
-            border-bottom: none;
-        }
-
-        .data-label {
-            font-weight: 600;
-            color: #4b5563;
-        }
-
-        .data-value {
-            color: #1f2937;
-        }
-
-        .hash-section {
-            background: #f3f4f6;
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        .hash-row {
-            margin-bottom: 10px;
-        }
-
-        .hash-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .hash-label {
-            font-weight: 600;
-            color: #4b5563;
-            margin-bottom: 5px;
-        }
-
-        .hash-value {
-            font-family: 'Courier New', monospace;
-            font-size: 0.85em;
-            background: white;
-            padding: 10px;
-            border-radius: 4px;
-            word-break: break-all;
-            color: #1f2937;
-            border: 1px solid #d1d5db;
-        }
-
-        .genesis-badge {
-            display: inline-block;
-            background: #10b981;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            margin-left: 10px;
-        }
-
-        .timestamp {
-            color: #6b7280;
-            font-size: 0.9em;
-            margin-top: 10px;
-        }
-
-        .navigation {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .nav-button {
-            background: white;
-            color: #667eea;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .nav-button:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .block {
-                padding: 15px;
-            }
-
-            .block-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>🔗 Blockchain Trasabilitate Pâine</h1>
-        <p class="subtitle">Lanțul de blocuri ce asigură trasabilitatea de la fermă la consumator</p>
-        
-        <div id="blockchain-container" class="blockchain-container">
-            <!-- Blocks will be rendered here by JavaScript -->
-        </div>
+      <h1>🔗 Blockchain Trasabilitate Pâine</h1>
+      <p class="subtitle">
+        Lanțul de blocuri ce asigură trasabilitatea de la fermă la consumator
+      </p>
 
-        <div class="navigation">
-            <a href="index.html" class="nav-button">← Înapoi la Pagina Principală</a>
-        </div>
+      <div id="blockchain-container" class="blockchain-container">
+        <!-- Blocks will be rendered here by JavaScript -->
+      </div>
+
+      <div class="navigation">
+        <a href="index.html" class="nav-button"
+          >← Înapoi la Pagina Principală</a
+        >
+      </div>
     </div>
 
     <script type="module" src="./app.js"></script>
-</body>
+  </body>
 </html>

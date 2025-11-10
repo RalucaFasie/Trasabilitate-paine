@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint src/**/*.js docs/**/*.html",
+    "lint": "eslint src/**/*.js docs/**/*.js",
     "format": "prettier --write \"src/**/*.{js,css}\" \"docs/**/*.html\"",
     "dev:api": "json-server --watch frontend/db.json --port 3000",
     "test": "hardhat test",
