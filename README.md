@@ -94,7 +94,7 @@ npm run format
 ## 📁 Structura proiectului
 
 ```
-├── docs/                # Fișiere statice și HTML
+├── docs/              # Fișiere statice și HTML
 │   ├── assets/         # Imagini și resurse statice
 │   ├── index.html      # Pagina principală
 │   └── verify.html     # Pagina de verificare
