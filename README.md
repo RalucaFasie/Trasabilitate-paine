@@ -9,6 +9,12 @@
 
 Acest repository conține un sistem de trasabilitate pentru pâine bazat pe blockchain, cu contracte inteligente Hardhat și o interfață web modernă construită cu Vite.
 
+## 🌐 Acces Interfață Utilizator
+
+**🚀 Link Direct:** [https://ralucafasie.github.io/Trasabilitate-paine/](https://ralucafasie.github.io/Trasabilitate-paine/)
+
+**📋 Documentație Acces:** [LINK_ACCES.md](LINK_ACCES.md) | [ACCESS_INFO.md](ACCESS_INFO.md)
+
 **Componente:**
 - **Frontend:** Interfață web interactivă (docs/ + src/) construită cu Vite
 - **Smart Contracts:** Contracte Solidity pentru trasabilitate on-chain
