@@ -3,63 +3,81 @@ import './styles.css';
 
 // Stage data with structured content
 const stageData = {
-    ferma: {
-        title: 'Ferma',
-        icon: '🌾',
-        color: '#6a994e',
-        fields: [
-            { label: 'Cultură', value: 'Grâu de toamnă (Triticum aestivum)' },
-            { label: 'Suprafață', value: '250 hectare' },
-            { label: 'Lucrări', value: 'Arătură, semănat, fertilizare, irigare' },
-            { label: 'Hibrid', value: 'Hibrid rezistent la secetă - Soiul Dropia' },
-            { label: 'Tratamente', value: 'Erbicidare selectivă, fungicide naturale' }
-        ]
-    },
-    transport: {
-        title: 'Transport & Logistică',
-        icon: '🚚',
-        color: '#3b82f6',
-        fields: [
-            { label: 'Tip transport', value: 'Transport rutier - Camion frigorific' },
-            { label: 'Distanță', value: '145 km (Ferma AgroVerde - Moara PanMălina)' },
-            { label: 'Emisii CO₂', value: '23.5 kg CO₂ per transport' },
-            { label: 'Detalii camion', value: 'Mercedes-Benz Actros, Euro 6, capacitate 18 tone' }
-        ]
-    },
-    moara: {
-        title: 'Moară / Procesare',
-        icon: '⚙️',
-        color: '#f59e0b',
-        fields: [
-            { label: 'Data recepției', value: '20 iulie 2025, ora 08:30' },
-            { label: 'Lot', value: 'GRAU-0725-CL' },
-            { label: 'Calitate', value: 'Clasa I - Proteină 12.5%, gluten 28%' },
-            { label: 'Umiditate', value: '13.2% (conform standard)' },
-            { label: 'Certificări', value: 'ISO 22000, HACCP, BIO Certificate' }
-        ]
-    },
-    senzori: {
-        title: 'Senzorii IoT',
-        icon: '📡',
-        color: '#8b5cf6',
-        fields: [
-            { label: 'Temperatură', value: '22.5°C (optimă pentru depozitare)' },
-            { label: 'Umiditate sol', value: '65% - nivel adecvat pentru cultură' },
-            { label: 'Date meteo', value: 'Partly cloudy, 24°C, vânt 12 km/h NE' },
-            { label: 'Last update', value: '01 noiembrie 2025, 17:43 UTC' }
-        ]
-    },
-    magazin: {
-        title: 'Magazin / Consumator',
-        icon: '🛒',
-        color: '#ef4444',
-        fields: [
-            { label: 'Locul de vânzare', value: 'EcoMarket - Str. Libertății nr. 45, București' },
-            { label: 'Cod lot', value: 'DP-0725-01-ECO' },
-            { label: 'Termen valabilitate', value: '5 zile de la producție (27 iulie 2025)' },
-            { label: 'QR', value: 'Cod QR disponibil pe ambalaj pentru trasabilitate completă' }
-        ]
-    }
+  ferma: {
+    title: 'Ferma',
+    icon: '🌾',
+    color: '#6a994e',
+    fields: [
+      { label: 'Cultură', value: 'Grâu de toamnă (Triticum aestivum)' },
+      { label: 'Suprafață', value: '250 hectare' },
+      { label: 'Lucrări', value: 'Arătură, semănat, fertilizare, irigare' },
+      { label: 'Hibrid', value: 'Hibrid rezistent la secetă - Soiul Dropia' },
+      {
+        label: 'Tratamente',
+        value: 'Erbicidare selectivă, fungicide naturale',
+      },
+    ],
+  },
+  transport: {
+    title: 'Transport & Logistică',
+    icon: '🚚',
+    color: '#3b82f6',
+    fields: [
+      { label: 'Tip transport', value: 'Transport rutier - Camion frigorific' },
+      {
+        label: 'Distanță',
+        value: '145 km (Ferma AgroVerde - Moara PanMălina)',
+      },
+      { label: 'Emisii CO₂', value: '23.5 kg CO₂ per transport' },
+      {
+        label: 'Detalii camion',
+        value: 'Mercedes-Benz Actros, Euro 6, capacitate 18 tone',
+      },
+    ],
+  },
+  moara: {
+    title: 'Moară / Procesare',
+    icon: '⚙️',
+    color: '#f59e0b',
+    fields: [
+      { label: 'Data recepției', value: '20 iulie 2025, ora 08:30' },
+      { label: 'Lot', value: 'GRAU-0725-CL' },
+      { label: 'Calitate', value: 'Clasa I - Proteină 12.5%, gluten 28%' },
+      { label: 'Umiditate', value: '13.2% (conform standard)' },
+      { label: 'Certificări', value: 'ISO 22000, HACCP, BIO Certificate' },
+    ],
+  },
+  senzori: {
+    title: 'Senzorii IoT',
+    icon: '📡',
+    color: '#8b5cf6',
+    fields: [
+      { label: 'Temperatură', value: '22.5°C (optimă pentru depozitare)' },
+      { label: 'Umiditate sol', value: '65% - nivel adecvat pentru cultură' },
+      { label: 'Date meteo', value: 'Partly cloudy, 24°C, vânt 12 km/h NE' },
+      { label: 'Last update', value: '01 noiembrie 2025, 17:43 UTC' },
+    ],
+  },
+  magazin: {
+    title: 'Magazin / Consumator',
+    icon: '🛒',
+    color: '#ef4444',
+    fields: [
+      {
+        label: 'Locul de vânzare',
+        value: 'EcoMarket - Str. Libertății nr. 45, București',
+      },
+      { label: 'Cod lot', value: 'DP-0725-01-ECO' },
+      {
+        label: 'Termen valabilitate',
+        value: '5 zile de la producție (27 iulie 2025)',
+      },
+      {
+        label: 'QR',
+        value: 'Cod QR disponibil pe ambalaj pentru trasabilitate completă',
+      },
+    ],
+  },
 };
 
 // Function to escape HTML to prevent XSS
