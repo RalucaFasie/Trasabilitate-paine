@@ -5,6 +5,8 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)](https://soliditylang.org/)
 
+## 🚀 [View Live Demo](https://ralucafasie.github.io/Trasabilitate-paine/)
+
 Acest repository conține un sistem de trasabilitate pentru pâine bazat pe blockchain, cu contracte inteligente Hardhat și o interfață web modernă construită cu Vite.
 
 ## 🌐 Acces Interfață Utilizator
@@ -141,6 +143,27 @@ npm run deploy
 npm run relayer
 ```
 Relayer va rula pe http://localhost:3001 (mock mode dacă RELAYER_PK nu este setat)
+
+### Testare smart contracts
+
+După ce ai instalat dependențele, poți rula testele pentru a verifica funcționalitatea contractelor:
+
+```bash
+# Rulează toate testele
+npm test
+
+# Rulează un test specific
+npx hardhat test test/SimpleRegistry.test.js
+
+# Compilează contractele
+npm run compile
+```
+
+Testele folosesc Hardhat și Chai pentru a valida logica contractelor smart. Acestea verifică:
+- Deployment corect al contractului
+- Înregistrarea hash-urilor
+- Controlul accesului pentru rolul de relayer
+- Verificarea hash-urilor duplicate
 
 
 
