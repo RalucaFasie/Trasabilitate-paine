@@ -113,7 +113,7 @@ steps:
   - name: Upload artifact (docs/ folder only)
     uses: actions/upload-pages-artifact@v3
     with:
-      path: 'public'
+      path: 'docs'
 ```
 
 ### Generated JSON Structure
@@ -203,7 +203,7 @@ The system includes 6 blocks representing the supply chain:
 ### Test Client-Side Hashing
 
 ```bash
-cd public
+cd docs
 python -m http.server 8000
 # or
 npx serve .
@@ -219,7 +219,7 @@ node scripts/generate-blocks.js
 
 # Switch to app-static.js in blockchain.html
 # Then start server
-cd public
+cd docs
 python -m http.server 8000
 ```
 
@@ -260,7 +260,7 @@ The workflow deploys **only** the `docs/` folder:
 - name: Upload artifact (docs/ folder only)
   uses: actions/upload-pages-artifact@v3
   with:
-    path: 'public'
+    path: 'docs'
 ```
 
 This ensures the site URL structure is clean:
