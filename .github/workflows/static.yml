@@ -42,7 +42,7 @@ jobs:
         run: npm ci
       
       - name: Generate blockchain data
-        run: node scripts/generate-blocks.js
+        run: node scripts/generate-blocks.mjs
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
