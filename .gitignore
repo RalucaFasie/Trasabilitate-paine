@@ -16,6 +16,7 @@ typechain-types/
 # Build outputs
 dist/
 build/
+public/
 
 # Vite
 .vite/
