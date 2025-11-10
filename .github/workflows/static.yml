@@ -1,28 +1,20 @@
-# Workflow for deploying docs/ folder to GitHub Pages with blockchain data
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Build and deploy job
   deploy:
     environment:
       name: github-pages
@@ -31,33 +23,45 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
+      - name: Build project (if present)
+        run: npm run build --if-present
+
       - name: Generate blockchain data
         run: node scripts/generate-blocks.mjs
-      
+
+      - name: Prepare Pages artifact
+        run: |
+          rm -rf public
+          if [ -d "./dist" ]; then
+            echo "Using ./dist as site output"
+            cp -r ./dist ./public
+          elif [ -d "./docs" ]; then
+            echo "Using ./docs as site output"
+            cp -r ./docs ./public
+          else
+            echo "No build output found in ./dist or ./docs"
+            ls -la
+            exit 1
+          fi
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      
-      - name: Upload artifact
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload dist directory
-          path: './dist'
-      - name: Upload artifact (public/ folder only)
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload only docs/ directory
-          path: 'docs'
-      
+          path: 'public'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
