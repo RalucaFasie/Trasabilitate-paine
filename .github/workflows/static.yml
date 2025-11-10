@@ -33,11 +33,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build project (if present)
-        run: npm run build --if-present
-
       - name: Generate blockchain data
         run: node scripts/generate-blocks.mjs
+
+      - name: Build project (if present)
+        run: npm run build --if-present
 
       - name: Prepare Pages artifact
         run: |
