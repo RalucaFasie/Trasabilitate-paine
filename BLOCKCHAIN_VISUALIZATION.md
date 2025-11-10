@@ -9,7 +9,7 @@ This implementation provides a blockchain visualization for the bread traceabili
 
 ## 🎯 Requirements Met
 
-✅ Deploy `public/` folder to GitHub Pages  
+✅ Deploy `docs/` folder to GitHub Pages  
 ✅ All asset paths are relative  
 ✅ GitHub Actions workflow builds and deploys  
 ✅ Blockchain visualization with simulated data  
@@ -21,7 +21,7 @@ This implementation provides a blockchain visualization for the bread traceabili
 ## 📂 File Structure
 
 ```
-public/
+docs/
 ├── index.html              # Main page with blockchain link
 ├── blockchain.html         # Blockchain visualization page
 ├── app.js                  # Option 1: Client-side hashing
@@ -39,7 +39,7 @@ scripts/
 
 ## 🔐 Option 1: Client-Side Hashing (DEFAULT)
 
-**File**: `public/app.js`
+**File**: `docs/app.js`
 
 ### How It Works
 
@@ -90,12 +90,12 @@ Simply open `blockchain.html` - it uses `app.js` by default.
 
 ## 🏗️ Option 2: CI-Generated Static Data
 
-**Files**: `scripts/generate-blocks.js` + `public/app-static.js`
+**Files**: `scripts/generate-blocks.js` + `docs/app-static.js`
 
 ### How It Works
 
 1. GitHub Actions runs on push to main
-2. `generate-blocks.js` creates `public/data/blocks.json`
+2. `generate-blocks.js` creates `docs/data/blocks.json`
 3. JSON contains all blocks with precomputed hashes
 4. `app-static.js` loads and displays the JSON
 
@@ -110,7 +110,7 @@ steps:
   - name: Generate blockchain data
     run: node scripts/generate-blocks.js
   
-  - name: Upload artifact (public/ folder only)
+  - name: Upload artifact (docs/ folder only)
     uses: actions/upload-pages-artifact@v3
     with:
       path: 'public'
@@ -229,7 +229,7 @@ To add or modify blocks:
 
 ### For Client-Side Hashing
 
-Edit `public/app.js` - modify the `blockchainData` array.
+Edit `docs/app.js` - modify the `blockchainData` array.
 
 ### For CI-Generated Data
 
@@ -254,17 +254,17 @@ node scripts/generate-blocks.js
 
 ## 🌐 GitHub Pages Deployment
 
-The workflow deploys **only** the `public/` folder:
+The workflow deploys **only** the `docs/` folder:
 
 ```yaml
-- name: Upload artifact (public/ folder only)
+- name: Upload artifact (docs/ folder only)
   uses: actions/upload-pages-artifact@v3
   with:
     path: 'public'
 ```
 
 This ensures the site URL structure is clean:
-- ✅ `https://username.github.io/repo/` → serves `public/index.html`
+- ✅ `https://username.github.io/repo/` → serves `docs/index.html`
 - ✅ `https://username.github.io/repo/blockchain.html` → blockchain page
 - ✅ Relative paths work correctly
 
@@ -308,14 +308,14 @@ This ensures the site URL structure is clean:
 ### Problem: Hashes don't match between options
 
 **Solution**: Ensure `blockchainData` is identical in:
-- `public/app.js`
+- `docs/app.js`
 - `scripts/generate-blocks.js`
 
 ### Problem: GitHub Pages shows 404
 
 **Solution**: 
 - Check workflow ran successfully
-- Verify `public/` folder contains files
+- Verify `docs/` folder contains files
 - Check GitHub Pages settings (should deploy from gh-pages branch or GitHub Actions)
 
 ## 📚 Additional Resources

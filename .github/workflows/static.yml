@@ -1,4 +1,4 @@
-# Workflow for deploying public/ folder to GitHub Pages with blockchain data
+# Workflow for deploying docs/ folder to GitHub Pages with blockchain data
 name: Deploy static content to Pages
 
 on:
@@ -55,8 +55,8 @@ jobs:
       - name: Upload artifact (public/ folder only)
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload only public/ directory
-          path: 'public'
+          # Upload only docs/ directory
+          path: 'docs'
       
       - name: Deploy to GitHub Pages
         id: deployment

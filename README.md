@@ -16,7 +16,7 @@ Acest repository conține un sistem de trasabilitate pentru pâine bazat pe bloc
 **📋 Documentație Acces:** [LINK_ACCES.md](LINK_ACCES.md) | [ACCESS_INFO.md](ACCESS_INFO.md)
 
 **Componente:**
-- **Frontend:** Interfață web interactivă (public/ + src/) construită cu Vite
+- **Frontend:** Interfață web interactivă (docs/ + src/) construită cu Vite
 - **Smart Contracts:** Contracte Solidity pentru trasabilitate on-chain
 - **Relayer:** Serviciu backend pentru interacțiunea cu blockchain
 - **Assets:** Imagini QR și resurse vizuale
@@ -47,7 +47,7 @@ Aplicație web de trasabilitate pentru pâine cu smart contracts Hardhat și ser
 
 **Structura modernă:**
 - `src/` — JavaScript și CSS sursă (ES modules)
-- `public/` — HTML și assets statice
+- `docs/` — HTML și assets statice
 - Build tool: Vite pentru dev și production builds
 
 **Componente:**
@@ -56,7 +56,7 @@ Aplicație web de trasabilitate pentru pâine cu smart contracts Hardhat și ser
 - scripts/deploy.js — script deploy
 - relayer/index.js — skeleton relayer (mock mode sau real, dacă setezi RELAYER_PK)
 - .env.example — variabile mediu
-- public/assets/ — imagini QR și ilustrații
+- docs/assets/ — imagini QR și ilustrații
 
 ## Rulare locală - Frontend
 
@@ -94,7 +94,7 @@ npm run format
 ## 📁 Structura proiectului
 
 ```
-├── public/              # Fișiere statice și HTML
+├── docs/              # Fișiere statice și HTML
 │   ├── assets/         # Imagini și resurse statice
 │   ├── index.html      # Pagina principală
 │   └── verify.html     # Pagina de verificare
@@ -188,7 +188,7 @@ Configurează un workflow GitHub Actions pentru a construi automat și a publica
 2. Configurează GitHub Pages să servească din branch-ul `gh-pages` sau direct din `dist/` (dacă este disponibil)
 3. Aplicația va fi disponibilă la `https://<username>.github.io/<repository>/`
 ### QR codes
-- Fișierele SVG din `public/assets/` conțin placeholder-uri pentru QR codes (qr-b1.svg .. qr-b5.svg).
+- Fișierele SVG din `docs/assets/` conțin placeholder-uri pentru QR codes (qr-b1.svg .. qr-b5.svg).
 - Pentru coduri QR scannabile, generează imagini QR cu linkul de verificare (ex: `https://your-demo.example/verify.html?hash=<hash>`).
 
 ## GitHub Pages
