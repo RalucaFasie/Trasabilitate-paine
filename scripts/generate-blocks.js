@@ -2,7 +2,7 @@
 /**
  * generate-blocks.js - Generează date blockchain statice cu hash-uri precalculate
  * 
- * Acest script rulează în GitHub Actions și generează public/data/blocks.json
+ * Acest script rulează în GitHub Actions și generează docs/data/blocks.json
  * cu toate hash-urile calculate, astfel încât site-ul să nu mai calculeze
  * hash-urile în browser (opțiunea 2 din requirements).
  * 
@@ -164,7 +164,7 @@ function main() {
         console.log(`✅ Generated ${blockchain.length} blocks`);
         
         // Create output directory
-        const outputDir = join(__dirname, '..', 'public', 'data');
+        const outputDir = join(__dirname, '..', 'docs', 'data');
         mkdirSync(outputDir, { recursive: true });
         console.log(`📁 Created directory: ${outputDir}`);
         
