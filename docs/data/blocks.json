@@ -1,0 +1,101 @@
+{
+  "blockchain": [
+    {
+      "index": 0,
+      "timestamp": "2025-10-15T08:00:00Z",
+      "icon": "🌱",
+      "title": "Genesis Block",
+      "data": {
+        "Tip": "Bloc Inițial",
+        "Descriere": "Punct de pornire al lanțului blockchain",
+        "Network": "Bread Traceability Chain"
+      },
+      "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "380f2a987c6ef42ad1595fb9dccb6e4976ff101cacce5bb8798a028320799975"
+    },
+    {
+      "index": 1,
+      "timestamp": "2025-10-20T10:30:00Z",
+      "icon": "🌾",
+      "title": "Ferma",
+      "data": {
+        "Fermier": "AgroVerde SRL",
+        "Locație": "Călărași, România",
+        "Cultură": "Grâu de toamnă (Triticum aestivum)",
+        "Suprafață": "250 hectare",
+        "Certificare": "BIO Certificate",
+        "Hibrid": "Soiul Dropia"
+      },
+      "previousHash": "380f2a987c6ef42ad1595fb9dccb6e4976ff101cacce5bb8798a028320799975",
+      "hash": "86a0dffb372c58f638de91083eae1be8a72647805f013ecc5285d614d94fefb0"
+    },
+    {
+      "index": 2,
+      "timestamp": "2025-10-22T14:15:00Z",
+      "icon": "⚙️",
+      "title": "Moară",
+      "data": {
+        "Moară": "PanMălina Industrial",
+        "Lot": "GRAU-1025-CL",
+        "Calitate": "Clasa I - Proteină 12.5%",
+        "Umiditate": "13.2%",
+        "Certificări": "ISO 22000, HACCP",
+        "Data procesării": "2025-10-22"
+      },
+      "previousHash": "86a0dffb372c58f638de91083eae1be8a72647805f013ecc5285d614d94fefb0",
+      "hash": "e59166ab3ec15f089270cb77861da4b138bf208f0050c5c36b9e9e1991cfc617"
+    },
+    {
+      "index": 3,
+      "timestamp": "2025-10-23T09:45:00Z",
+      "icon": "📡",
+      "title": "Senzori IoT",
+      "data": {
+        "Temperatură": "22.5°C",
+        "Umiditate": "65%",
+        "Condiții": "Parțial înnorat",
+        "Monitorizare": "Real-time sensors",
+        "Status": "Optimal pentru depozitare"
+      },
+      "previousHash": "e59166ab3ec15f089270cb77861da4b138bf208f0050c5c36b9e9e1991cfc617",
+      "hash": "a68378211a9c55cfc5b4e4479966b87953aa345d51470e13940d8a825f257fcf"
+    },
+    {
+      "index": 4,
+      "timestamp": "2025-10-25T11:20:00Z",
+      "icon": "🍞",
+      "title": "Brutărie",
+      "data": {
+        "Brutărie": "Pâinea Caldă",
+        "Producție": "Pâine artizanală",
+        "Rețetă": "Tradițională cu maia naturală",
+        "Lot pâine": "PAINE-1025-001",
+        "Cantitate": "500 kg",
+        "Data coacere": "2025-10-25"
+      },
+      "previousHash": "a68378211a9c55cfc5b4e4479966b87953aa345d51470e13940d8a825f257fcf",
+      "hash": "f3769808f936c52a6022bf4d25f8fb164b9bfdc405d139e25b10d77bf049daf2"
+    },
+    {
+      "index": 5,
+      "timestamp": "2025-10-26T07:00:00Z",
+      "icon": "🛒",
+      "title": "Magazin",
+      "data": {
+        "Magazin": "SuperMarket Fresh",
+        "Locație": "București, Sector 3",
+        "Data livrare": "2025-10-26",
+        "Preț": "8.50 RON/kg",
+        "Disponibilitate": "În stoc",
+        "Cod produs": "BREAD-TRACE-001"
+      },
+      "previousHash": "f3769808f936c52a6022bf4d25f8fb164b9bfdc405d139e25b10d77bf049daf2",
+      "hash": "16d3ed308eb34bdcaf15995b0ae7e995bc578f859fdf43a2eb3b3a0f3aa4bb33"
+    }
+  ],
+  "metadata": {
+    "generatedAt": "2025-11-10T06:51:45.500Z",
+    "totalBlocks": 6,
+    "version": "1.0.0"
+  }
+}
