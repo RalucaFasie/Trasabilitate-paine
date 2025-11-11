@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificare Sursă Blockchain - Trasabilitate Pâine</title>
+    <meta name="description" content="Verificare autenticitate produse pe blockchain - sistem de trasabilitate pâine">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .connection-status.connected {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .connection-status.disconnected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .connection-status.connecting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group .help-text {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #d1d5db;
+        }
+
+        .result-card {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-card.success {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .result-card.failure {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .result-card.info {
+            background: #dbeafe;
+            border-color: #3b82f6;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .result-header .icon {
+            font-size: 1.5em;
+        }
+
+        .result-details {
+            margin-top: 15px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .detail-value {
+            font-family: 'Courier New', monospace;
+            color: #1f2937;
+            word-break: break-all;
+            max-width: 60%;
+            text-align: right;
+        }
+
+        .hash-display {
+            background: #f3f4f6;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .navigation a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .navigation a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e5e7eb;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .examples {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .examples h4 {
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .example-item {
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+        }
+
+        .example-item:hover {
+            border-color: #667eea;
+            background: #f3f4f6;
+        }
+
+        .example-item strong {
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .detail-value {
+                max-width: 100%;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Verificare Sursă Blockchain</h1>
+            <p>Verificați autenticitatea produselor pe blockchain</p>
+        </div>
+
+        <div class="card">
+            <div id="connectionStatus" class="connection-status connecting">
+                <div class="spinner"></div>
+                <span>Conectare la blockchain...</span>
+            </div>
+
+            <form id="verificationForm">
+                <div class="form-group">
+                    <label for="verificationMode">Mod de verificare:</label>
+                    <select id="verificationMode" style="padding: 12px; width: 100%; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+                        <option value="data">Verifică date JSON</option>
+                        <option value="hash">Verifică hash direct</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="dataInputGroup">
+                    <label for="dataInput">Introduceți datele pentru verificare:</label>
+                    <textarea 
+                        id="dataInput" 
+                        placeholder='{"productId": "BREAD-001", "batchNumber": "LOT-2025-001", "location": "București"}'
+                    ></textarea>
+                    <div class="help-text">Introduceți datele în format JSON pentru a verifica dacă sunt înregistrate pe blockchain</div>
+                </div>
+
+                <div class="form-group" id="hashInputGroup" style="display: none;">
+                    <label for="hashInput">Introduceți hash-ul (0x...):</label>
+                    <input 
+                        type="text" 
+                        id="hashInput" 
+                        placeholder="0x..."
+                    />
+                    <div class="help-text">Introduceți un hash de 66 caractere care începe cu "0x"</div>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn-primary" id="verifyButton">
+                        <span id="buttonText">🔍 Verifică pe Blockchain</span>
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="clearForm()">Curăță</button>
+                </div>
+            </form>
+
+            <div class="examples">
+                <h4>📋 Exemple de date demo:</h4>
+                <div class="example-item" onclick="useExample('ferma')">
+                    <strong>Fermă:</strong> {"stage": "ferma", "supplier": "AgroVerde", "batch": "GRAU-2025-001"}
+                </div>
+                <div class="example-item" onclick="useExample('moara')">
+                    <strong>Moară:</strong> {"stage": "moara", "lot": "GRAU-1025-CL", "quality": "Clasa I"}
+                </div>
+                <div class="example-item" onclick="useExample('magazin')">
+                    <strong>Magazin:</strong> {"stage": "magazin", "product": "Pâine 600g", "code": "DP-0725-01"}
+                </div>
+            </div>
+
+            <div id="resultContainer"></div>
+        </div>
+
+        <div class="navigation">
+            <a href="index.html">← Înapoi la pagina principală</a>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import ethers.js from CDN
+        import { ethers } from 'https://cdn.jsdelivr.net/npm/ethers@6.10.0/+esm';
+
+        // Configuration
+        const CONFIG = {
+            // For demo mode - using public RPC or local Hardhat
+            rpcUrl: 'http://localhost:8545', // Change to your RPC URL
+            contractAddress: '0x5FbDB2315678afecb367f032d93F642f64180aa3', // Replace with actual deployed contract
+            contractABI: [
+                'function isRegistered(bytes32 h) external view returns (bool)',
+                'function registrations(bytes32) external view returns (address reporter, uint256 timestamp, string ipfsCid)',
+            ],
+        };
+
+        // Global state
+        let provider = null;
+        let contract = null;
+        let isConnected = false;
+
+        // Initialize blockchain connection
+        async function initBlockchain() {
+            const statusDiv = document.getElementById('connectionStatus');
+            
+            try {
+                // Try to connect to blockchain
+                provider = new ethers.JsonRpcProvider(CONFIG.rpcUrl);
+                
+                // Test connection
+                const network = await provider.getNetwork();
+                const blockNumber = await provider.getBlockNumber();
+                
+                // Initialize contract
+                contract = new ethers.Contract(
+                    CONFIG.contractAddress,
+                    CONFIG.contractABI,
+                    provider
+                );
+
+                // Update UI
+                isConnected = true;
+                statusDiv.className = 'connection-status connected';
+                statusDiv.innerHTML = `
+                    <span>✅</span>
+                    <span>Conectat la blockchain (Chain ID: ${network.chainId}, Block: ${blockNumber})</span>
+                `;
+                
+                console.log('✅ Connected to blockchain:', {
+                    chainId: network.chainId,
+                    blockNumber: blockNumber,
+                    contractAddress: CONFIG.contractAddress
+                });
+            } catch (error) {
+                console.error('❌ Blockchain connection failed:', error);
+                isConnected = false;
+                statusDiv.className = 'connection-status disconnected';
+                statusDiv.innerHTML = `
+                    <span>❌</span>
+                    <span>Nu s-a putut conecta la blockchain (Mod demo activ)</span>
+                `;
+                
+                // Show demo mode message
+                showDemoModeMessage();
+            }
+        }
+
+        function showDemoModeMessage() {
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = `
+                <div class="result-card info">
+                    <div class="result-header">
+                        <span class="icon">ℹ️</span>
+                        <span>Mod Demo</span>
+                    </div>
+                    <p>Nu s-a putut stabili conexiunea cu blockchain-ul. Verificați:</p>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>Hardhat node rulează: <code>npm run node</code></li>
+                        <li>Contractul este deploiat: <code>npm run deploy</code></li>
+                        <li>CONTRACT_ADDRESS este setat corect în fișier</li>
+                    </ul>
+                    <p style="margin-top: 10px;">În mod demo, puteți testa interfața, dar verificarea reală necesită conexiune blockchain.</p>
+                </div>
+            `;
+        }
+
+        // Calculate hash from data
+        function calculateHash(data) {
+            const dataString = typeof data === 'string' ? data : JSON.stringify(data);
+            return ethers.keccak256(ethers.toUtf8Bytes(dataString));
+        }
+
+        // Verify hash on blockchain
+        async function verifyOnBlockchain(hash) {
+            if (!isConnected || !contract) {
+                throw new Error('Nu există conexiune la blockchain');
+            }
+
+            const isRegistered = await contract.isRegistered(hash);
+            
+            if (isRegistered) {
+                const registration = await contract.registrations(hash);
+                return {
+                    isRegistered: true,
+                    details: {
+                        reporter: registration.reporter,
+                        timestamp: new Date(Number(registration.timestamp) * 1000),
+                        ipfsCid: registration.ipfsCid,
+                    }
+                };
+            }
+
+            return { isRegistered: false };
+        }
+
+        // Display result
+        function displayResult(hash, result, originalData) {
+            const resultContainer = document.getElementById('resultContainer');
+            
+            if (result.isRegistered) {
+                const details = result.details;
+                resultContainer.innerHTML = `
+                    <div class="result-card success">
+                        <div class="result-header">
+                            <span class="icon">✅</span>
+                            <span>Verificat pe Blockchain</span>
+                        </div>
+                        <p>Datele au fost găsite și sunt înregistrate pe blockchain!</p>
+                        
+                        ${originalData ? `
+                            <div style="margin-top: 15px;">
+                                <strong>Date verificate:</strong>
+                                <div class="hash-display">${escapeHtml(originalData)}</div>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="result-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Hash:</span>
+                                <span class="detail-value">${hash}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Înregistrat de:</span>
+                                <span class="detail-value">${details.reporter}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Data înregistrării:</span>
+                                <span class="detail-value">${details.timestamp.toLocaleString('ro-RO')}</span>
+                            </div>
+                            ${details.ipfsCid ? `
+                                <div class="detail-row">
+                                    <span class="detail-label">IPFS CID:</span>
+                                    <span class="detail-value">${details.ipfsCid}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultContainer.innerHTML = `
+                    <div class="result-card failure">
+                        <div class="result-header">
+                            <span class="icon">❌</span>
+                            <span>Nu este înregistrat</span>
+                        </div>
+                        <p>Aceste date nu au fost găsite pe blockchain.</p>
+                        
+                        ${originalData ? `
+                            <div style="margin-top: 15px;">
+                                <strong>Date verificate:</strong>
+                                <div class="hash-display">${escapeHtml(originalData)}</div>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="result-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Hash calculat:</span>
+                                <span class="detail-value">${hash}</span>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #991b1b;">
+                            <strong>⚠️ Atenție:</strong> Produsul ar putea să nu fie autentic sau datele introduse sunt incorecte.
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;',
+            };
+            return String(text).replace(/[&<>"']/g, (m) => map[m]);
+        }
+
+        // Handle form submission
+        document.getElementById('verificationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const mode = document.getElementById('verificationMode').value;
+            const verifyButton = document.getElementById('verifyButton');
+            const buttonText = document.getElementById('buttonText');
+            const resultContainer = document.getElementById('resultContainer');
+            
+            try {
+                // Show loading state
+                verifyButton.disabled = true;
+                buttonText.innerHTML = '<div class="spinner" style="width: 16px; height: 16px; border-width: 2px;"></div> <span>Verificare în curs...</span>';
+                resultContainer.innerHTML = '';
+                
+                let hash;
+                let originalData = null;
+                
+                if (mode === 'data') {
+                    const dataInput = document.getElementById('dataInput').value.trim();
+                    if (!dataInput) {
+                        throw new Error('Vă rugăm să introduceți date pentru verificare');
+                    }
+                    
+                    // Try to parse as JSON
+                    let data;
+                    try {
+                        data = JSON.parse(dataInput);
+                    } catch {
+                        data = dataInput; // Use as plain text if not JSON
+                    }
+                    
+                    originalData = typeof data === 'string' ? data : JSON.stringify(data);
+                    hash = calculateHash(data);
+                } else {
+                    hash = document.getElementById('hashInput').value.trim();
+                    if (!hash) {
+                        throw new Error('Vă rugăm să introduceți un hash pentru verificare');
+                    }
+                    
+                    if (!hash.startsWith('0x') || hash.length !== 66) {
+                        throw new Error('Hash-ul trebuie să înceapă cu "0x" și să aibă 66 caractere');
+                    }
+                }
+                
+                // Verify on blockchain
+                const result = await verifyOnBlockchain(hash);
+                displayResult(hash, result, originalData);
+                
+            } catch (error) {
+                console.error('Verification error:', error);
+                resultContainer.innerHTML = `
+                    <div class="result-card failure">
+                        <div class="result-header">
+                            <span class="icon">❌</span>
+                            <span>Eroare la verificare</span>
+                        </div>
+                        <p>${escapeHtml(error.message)}</p>
+                    </div>
+                `;
+            } finally {
+                verifyButton.disabled = false;
+                buttonText.textContent = '🔍 Verifică pe Blockchain';
+            }
+        });
+
+        // Handle mode change
+        document.getElementById('verificationMode').addEventListener('change', (e) => {
+            const dataGroup = document.getElementById('dataInputGroup');
+            const hashGroup = document.getElementById('hashInputGroup');
+            
+            if (e.target.value === 'data') {
+                dataGroup.style.display = 'block';
+                hashGroup.style.display = 'none';
+            } else {
+                dataGroup.style.display = 'none';
+                hashGroup.style.display = 'block';
+            }
+        });
+
+        // Clear form function
+        window.clearForm = function() {
+            document.getElementById('dataInput').value = '';
+            document.getElementById('hashInput').value = '';
+            document.getElementById('resultContainer').innerHTML = '';
+        };
+
+        // Use example data
+        window.useExample = function(type) {
+            const examples = {
+                ferma: '{"stage": "ferma", "supplier": "AgroVerde", "batch": "GRAU-2025-001", "location": "Călărași"}',
+                moara: '{"stage": "moara", "lot": "GRAU-1025-CL", "quality": "Clasa I", "protein": "12.5%"}',
+                magazin: '{"stage": "magazin", "product": "Pâine 600g", "code": "DP-0725-01", "store": "EcoMarket"}'
+            };
+            
+            document.getElementById('verificationMode').value = 'data';
+            document.getElementById('dataInputGroup').style.display = 'block';
+            document.getElementById('hashInputGroup').style.display = 'none';
+            document.getElementById('dataInput').value = examples[type];
+        };
+
+        // Initialize on page load
+        initBlockchain();
+    </script>
+</body>
+</html>
