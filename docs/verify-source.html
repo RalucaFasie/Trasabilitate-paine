@@ -382,19 +382,19 @@
                     <button type="submit" class="btn-primary" id="verifyButton">
                         <span id="buttonText">🔍 Verifică pe Blockchain</span>
                     </button>
-                    <button type="button" class="btn-secondary" onclick="clearForm()">Curăță</button>
+                    <button type="button" class="btn-secondary" id="clearButton">Curăță</button>
                 </div>
             </form>
 
             <div class="examples">
                 <h4>📋 Exemple de date demo:</h4>
-                <div class="example-item" onclick="useExample('ferma')">
+                <div class="example-item" data-example="ferma">
                     <strong>Fermă:</strong> {"stage": "ferma", "supplier": "AgroVerde", "batch": "GRAU-2025-001"}
                 </div>
-                <div class="example-item" onclick="useExample('moara')">
+                <div class="example-item" data-example="moara">
                     <strong>Moară:</strong> {"stage": "moara", "lot": "GRAU-1025-CL", "quality": "Clasa I"}
                 </div>
-                <div class="example-item" onclick="useExample('magazin')">
+                <div class="example-item" data-example="magazin">
                     <strong>Magazin:</strong> {"stage": "magazin", "product": "Pâine 600g", "code": "DP-0725-01"}
                 </div>
             </div>
@@ -687,14 +687,17 @@
         });
 
         // Clear form function
-        window.clearForm = function() {
+        function clearFormHandler() {
             document.getElementById('dataInput').value = '';
             document.getElementById('hashInput').value = '';
             document.getElementById('resultContainer').innerHTML = '';
-        };
+        }
+
+        // Attach clear button handler
+        document.getElementById('clearButton')?.addEventListener('click', clearFormHandler);
 
         // Use example data
-        window.useExample = function(type) {
+        function useExample(type) {
             const examples = {
                 ferma: '{"stage": "ferma", "supplier": "AgroVerde", "batch": "GRAU-2025-001", "location": "Călărași"}',
                 moara: '{"stage": "moara", "lot": "GRAU-1025-CL", "quality": "Clasa I", "protein": "12.5%"}',
@@ -705,7 +708,17 @@
             document.getElementById('dataInputGroup').style.display = 'block';
             document.getElementById('hashInputGroup').style.display = 'none';
             document.getElementById('dataInput').value = examples[type];
-        };
+        }
+
+        // Attach example button handlers
+        document.querySelectorAll('.example-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const exampleType = this.getAttribute('data-example');
+                if (exampleType) {
+                    useExample(exampleType);
+                }
+            });
+        });
 
         // Initialize on page load
         initBlockchain();
