@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trasabilitatea Pâinii - Homepage Interactiv</title>
+    <meta
+      name="description"
+      content="Sistem interactiv de trasabilitate pentru pâine - de la fermă la consumator"
+    />
+
+    <!-- Styles will be imported by main.js -->
+    <script type="module" crossorigin src="./assets/main-B7FxyKXs.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/main-CAkWB30-.css">
+  </head>
+  <body>
+    <div class="container">
+      <!-- Illustration Area -->
+      <div class="illustration-area">
+        <div class="header">
+          <h1>Trasabilitatea Pâinii</h1>
+          <p class="subtitle">
+            Urmărește călătoria pâinii tale de la fermă la masă
+          </p>
+        </div>
+        <div class="illustration-wrapper">
+          <img
+            src="./assets/bread-traceability-map-C8JYxdou.png"
+            alt="Harta trasabilității - ilustrare a lanțului de aprovizionare"
+            class="illustration-image"
+          />
+        </div>
+      </div>
+
+      <!-- Stage Buttons Panel -->
+      <nav
+        class="stages-panel"
+        role="navigation"
+        aria-label="Etape de trasabilitate"
+      >
+        <h2 class="panel-title">Etape de Trasabilitate</h2>
+        <div class="stages-buttons">
+          <button
+            class="stage-button stage-ferma"
+            data-stage="ferma"
+            aria-haspopup="true"
+          >
+            <span class="stage-icon">🌾</span>
+            <span class="stage-label">Ferma</span>
+          </button>
+          <button
+            class="stage-button stage-transport"
+            data-stage="transport"
+            aria-haspopup="true"
+          >
+            <span class="stage-icon">🚚</span>
+            <span class="stage-label">Transport & Logistică</span>
+          </button>
+          <button
+            class="stage-button stage-moara"
+            data-stage="moara"
+            aria-haspopup="true"
+          >
+            <span class="stage-icon">⚙️</span>
+            <span class="stage-label">Moară / Procesare</span>
+          </button>
+          <button
+            class="stage-button stage-senzori"
+            data-stage="senzori"
+            aria-haspopup="true"
+          >
+            <span class="stage-icon">📡</span>
+            <span class="stage-label">Senzorii IoT</span>
+          </button>
+          <button
+            class="stage-button stage-magazin"
+            data-stage="magazin"
+            aria-haspopup="true"
+          >
+            <span class="stage-icon">🛒</span>
+            <span class="stage-label">Magazin / Consumator</span>
+          </button>
+        </div>
+
+        <!-- Blockchain Visualization Link -->
+        <div style="margin-top: 20px; text-align: center">
+          <a
+            href="blockchain.html"
+            style="
+              display: inline-block;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 12px 24px;
+              border-radius: 8px;
+              text-decoration: none;
+              font-weight: 600;
+              transition: transform 0.2s;
+            "
+          >
+            🔗 Vizualizează Blockchain-ul
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2025 Trasabilitatea Pâinii - Realizat de Raluca Fășie</p>
+    </footer>
+
+  </body>
+</html>
