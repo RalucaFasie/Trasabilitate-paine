@@ -3,15 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interfață pentru sistemul de trasabilitate pâine - navigare între sectiuni">
+    <title>Trasabilitate pâine</title>
     <link rel="stylesheet" href="css/interface.css">
-    <title>Interfața Utilizatorului</title>
 </head>
 <body>
-    <h1>Interfața Utilizatorului</h1>
-    <button id="btnFerma">Ferma</button>
-    <button id="btnMoara">Moara</button>
-    <button id="btnFabrica">Fabrica</button>
-    <button id="btnMagazin">Magazin</button>
+    <!-- Header cu imaginea hero -->
+    <header class="hero">
+        <img src="assets/Interface.png" alt="Trasabilitate pâine - Imagine hero" class="hero-image">
+        <h1>Trasabilitate pâine</h1>
+    </header>
+
+    <!-- Container pentru butoane de navigare -->
+    <main class="main-content">
+        <nav class="button-nav">
+            <button class="nav-btn" data-target="ferma.html">Fermă</button>
+            <button class="nav-btn" data-target="transport-logistica.html">Transport și Logistică</button>
+            <button class="nav-btn" data-target="moara-procesare.html">Moară Procesare</button>
+            <button class="nav-btn" data-target="senzori-iot.html">Senzori IoT</button>
+            <button class="nav-btn" data-target="magazin.html">Magazin</button>
+        </nav>
+
+        <!-- Element pentru mesaje de status -->
+        <div id="status" aria-live="polite" role="status"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Trasabilitate pâine - Sistem blockchain</p>
+    </footer>
+
     <script src="js/interface.js"></script>
 </body>
 </html>
