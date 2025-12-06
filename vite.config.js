@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  root: 'docs',
   base: './',
   publicDir: 'assets',
   resolve: {
@@ -14,12 +13,12 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../dist',
+    outDir: 'build',
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'docs/index.html'),
-        verify: resolve(__dirname, 'docs/verify.html'),
+        main: resolve(__dirname, 'index.html'),
+        verify: resolve(__dirname, 'verify.html'),
       },
     },
   },

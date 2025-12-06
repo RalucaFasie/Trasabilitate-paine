@@ -8,19 +8,21 @@
       name="description"
       content="Sistem interactiv de trasabilitate pentru pâine - de la fermă la consumator"
     />
+    <link rel="stylesheet" href="./src/style.css">
 
-    <!-- Styles will be imported by main.js -->
   </head>
   <body>
     <div class="container">
       <!-- Illustration Area -->
       <div class="illustration-area">
-        <div class="header">
-          <h1>Pâine de acasă</h1>
-          <p class="subtitle">
-            Urmărește călătoria pâinii tale de la fermă la masă
-        
-        </div>
+        <img src="docs/assets/Interface.png" alt="Interfața de trasabilitate a pâinii" usemap="#product-map">
+        <map name="product-map">
+          <area shape="rect" coords=" etapa-1 " href="#" alt="Ferma" class="stage-button" data-stage="ferma">
+          <area shape="rect" coords=" etapa-2 " href="#" alt="Transport & Logistică" class="stage-button" data-stage="transport">
+          <area shape="rect" coords=" etapa-3 " href="#" alt="Moară / Procesare" class="stage-button" data-stage="moara">
+          <area shape="rect" coords=" etapa-4 " href="#" alt="Senzorii IoT" class="stage-button" data-stage="senzori">
+          <area shape="rect" coords=" etapa-5 " href="#" alt="Magazin / Consumator" class="stage-button" data-stage="magazin">
+        </map>
       </div>
 
       <!-- Stage Buttons Panel -->
@@ -113,6 +115,6 @@
       <p>&copy; 2025 Trasabilitatea Pâinii - Realizat de Raluca Fășie</p>
     </footer>
 
-    <script type="module" src="../src/main.js"></script>
+    <script type="module" src="./main.js"></script>
   </body>
 </html>
