@@ -26,7 +26,16 @@
     box-sizing: border-box;
 }
 
+html {
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+}
+
 body {
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, var(--wheat-light) 0%, var(--wheat-main) 100%);
     min-height: 100vh;
@@ -101,7 +110,6 @@ body {
     letter-spacing: 0.5px;
     min-width: 200px;
     position: relative;
-    overflow: hidden;
 }
 
 /* Efect la hover */
@@ -307,4 +315,15 @@ footer p {
     color: var(--brown-warm);
     line-height: 1.8;
     margin-bottom: 1rem;
+}
+
+/* Interface class for paine.png background */
+.interface {
+    background-image: url("../assets/paine.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top center;
+    width: 100vw;
+    min-height: 100vh;
+    position: relative;
 }
