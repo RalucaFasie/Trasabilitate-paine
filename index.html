@@ -1,120 +1,179 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ro">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trasabilitatea Pâinii - Homepage Interactiv</title>
-    <meta
-      name="description"
-      content="Sistem interactiv de trasabilitate pentru pâine - de la fermă la consumator"
-    />
-    <link rel="stylesheet" href="./src/style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trasabilitate Pâine</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-  </head>
-  <body>
-    <div class="container">
-      <!-- Illustration Area -->
-      <div class="illustration-area">
-        <img src="docs/assets/Interface.png" alt="Interfața de trasabilitate a pâinii" usemap="#product-map">
-        <map name="product-map">
-          <area shape="rect" coords=" etapa-1 " href="#" alt="Ferma" class="stage-button" data-stage="ferma">
-          <area shape="rect" coords=" etapa-2 " href="#" alt="Transport & Logistică" class="stage-button" data-stage="transport">
-          <area shape="rect" coords=" etapa-3 " href="#" alt="Moară / Procesare" class="stage-button" data-stage="moara">
-          <area shape="rect" coords=" etapa-4 " href="#" alt="Senzorii IoT" class="stage-button" data-stage="senzori">
-          <area shape="rect" coords=" etapa-5 " href="#" alt="Magazin / Consumator" class="stage-button" data-stage="magazin">
-        </map>
-      </div>
+<div class="menu">
+    
+    <button class="btn ferma" onclick="openBlock('ferma')">
+        <span class="icon">🌾</span>
+        <span class="text">FERMĂ</span>
+    </button>
 
-      <!-- Stage Buttons Panel -->
-      <nav
-        class="stages-panel"
-        role="navigation"
-        aria-label="Etape de trasabilitate"
-      >
-        <h2 class="panel-title">Etape de Trasabilitate</h2>
-        <div class="stages-buttons">
-          <button
-            class="stage-button stage-ferma"
-            data-stage="ferma"
-            aria-haspopup="true"
-          >
-            <span class="stage-icon">🌾</span>
-            <span class="stage-label">Ferma</span>
-          </button>
-          <button
-            class="stage-button stage-transport"
-            data-stage="transport"
-            aria-haspopup="true"
-          >
-            <span class="stage-icon">🚚</span>
-            <span class="stage-label">Transport & Logistică</span>
-          </button>
-          <button
-            class="stage-button stage-moara"
-            data-stage="moara"
-            aria-haspopup="true"
-          >
-            <span class="stage-icon">⚙️</span>
-            <span class="stage-label">Moară / Procesare</span>
-          </button>
-          <button
-            class="stage-button stage-senzori"
-            data-stage="senzori"
-            aria-haspopup="true"
-          >
-            <span class="stage-icon">📡</span>
-            <span class="stage-label">Senzorii IoT</span>
-          </button>
-          <button
-            class="stage-button stage-magazin"
-            data-stage="magazin"
-            aria-haspopup="true"
-          >
-            <span class="stage-icon">🛒</span>
-            <span class="stage-label">Magazin / Consumator</span>
-          </button>
-        </div>
+    <button class="btn transport" onclick="openBlock('transport')">
+        <span class="icon">🚚</span>
+        <span class="text">TRANSPORT ȘI LOGISTICĂ</span>
+    </button>
 
-        <!-- Blockchain Visualization and Verification Links -->
-        <div style="margin-top: 20px; text-align: center; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-          <a
-            href="blockchain.html"
-            style="
-              display: inline-block;
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              color: white;
-              padding: 12px 24px;
-              border-radius: 8px;
-              text-decoration: none;
-              font-weight: 600;
-              transition: transform 0.2s;
-            "
-          >
-            🔗 Vizualizează Blockchain-ul
-          </a>
-          <a
-            href="verify-source.html"
-            style="
-              display: inline-block;
-              background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-              color: white;
-              padding: 12px 24px;
-              border-radius: 8px;
-              text-decoration: none;
-              font-weight: 600;
-              transition: transform 0.2s;
-            "
-          >
-            🔍 Verificare Sursă Blockchain
-          </a>
-        </div>
-      </nav>
+    <button class="btn moara" onclick="openBlock('moara')">
+        <span class="icon">🏛️</span>
+        <span class="text">MOARĂ ȘI PROCESARE</span>
+    </button>
+
+    <button class="btn brutarie" onclick="openBlock('brutaria')">
+        <span class="icon">🍞</span>
+        <span class="text">BRUTĂRIE</span>
+    </button>
+
+    <button class="btn magazin" onclick="openBlock('magazin')">
+        <span class="icon">🛒</span>
+        <span class="text">MAGAZIN</span>
+    </button>
+
+    <div class="bottom-row">
+        <button class="btn small certificari" onclick="openCertificari()">
+            <span class="icon">🏅</span>
+            <span class="text">CERTIFICATE</span>
+        </button>
+
+        <button class="btn small blockchain" onclick="openBlockchainVerification()">
+            <span class="icon">⛓️</span>
+            <span class="text">BLOCKCHAIN</span>
+        </button>
     </div>
 
-    <footer class="footer">
-      <p>&copy; 2025 Trasabilitatea Pâinii - Realizat de Raluca Fășie</p>
-    </footer>
+</div>
 
-    <script type="module" src="./main.js"></script>
-  </body>
+    <!-- Modal Ferma -->
+    <div id="modal-ferma" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-ferma')">&times;</span>
+            <h2></h2>
+            
+            <div class="block-info">
+                <div class="info-section">
+                    <h3>Hash Anterior</h3>
+                    <div id="prev-ferma" class="hash-display"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Date Block</h3>
+                    <div id="details-ferma" class="data-display"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Hash Curent (SHA-256)</h3>
+                    <div id="hash-ferma" class="hash-display"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Transport -->
+    <div id="modal-transport" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-transport')">&times;</span>
+            <h2></h2>
+            
+            <div class="block-info">
+                <div class="info-section">
+                    <h3>Hash Anterior</h3>
+                    <div id="prev-transport" class="hash-display"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Date Block</h3>
+                    <div id="details-transport" class="data-display"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Hash Curent (SHA-256)</h3>
+                    <div id="hash-transport" class="hash-display"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Moara -->
+    <div id="modal-moara" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-moara')">&times;</span>
+            <h2></h2>
+            
+            <div class="block-info">
+                <div class="info-section">
+                    <h3>Hash Anterior</h3>
+                    <div id="prev-moara" class="hash-display"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Date Block</h3>
+                    <div id="details-moara" class="data-display"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Hash Curent (SHA-256)</h3>
+                    <div id="hash-moara" class="hash-display"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Brutaria -->
+    <div id="modal-brutaria" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-brutaria')">&times;</span>
+            <h2></h2>
+            
+            <div class="block-info">
+                <div class="info-section">
+                    <h3>Hash Anterior</h3>
+                    <div id="prev-brutaria" class="hash-display"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Date Block</h3>
+                    <div id="details-brutaria" class="data-display"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Hash Curent (SHA-256)</h3>
+                    <div id="hash-brutaria" class="hash-display"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Magazin -->
+    <div id="modal-magazin" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-magazin')">&times;</span>
+            <h2></h2>
+            
+            <div class="block-info">
+                <div class="info-section">
+                    <h3>Hash Anterior</h3>
+                    <div id="prev-magazin" class="hash-display"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Date Block</h3>
+                    <div id="details-magazin" class="data-display"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Hash Curent (SHA-256)</h3>
+                    <div id="hash-magazin" class="hash-display"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
