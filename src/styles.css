@@ -1,240 +1,235 @@
-/* Reset and Base Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:root {
-  --bg-main: #f8f9fa;
-  --bg-panel: #ffffff;
-  --text-dark: #2c3e50;
-  --text-light: #6c757d;
-  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.15);
-  --radius: 12px;
-  --radius-lg: 20px;
-
-  /* Stage Colors */
-  --color-ferma: #6a994e;
-  --color-transport: #3b82f6;
-  --color-moara: #f59e0b;
-  --color-senzori: #8b5cf6;
-  --color-magazin: #ef4444;
-}
-
+/* ==== BACKGROUND FULL SCREEN ==== */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: var(--bg-main);
-  color: var(--text-dark);
-  line-height: 1.6;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    margin: 0;
+    padding: 0;
+    background-image: url("assets/mobile.png");
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    font-family: "Montserrat", sans-serif;
+    min-height: 100vh;
 }
 
-.container {
-  display: flex;
-  gap: 2rem;
-  max-width: 1400px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
-  flex: 1;
-}
-
-/* Illustration Area */
-.illustration-area {
-  flex: 1;
-  min-width: 0;
-}
-
-.header {
-  margin-bottom: 2rem;
-}
-
-.header h1 {
-  font-size: 2.5rem;
-  color: var(--text-dark);
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-}
-
-.subtitle {
-  font-size: 1.125rem;
-  color: var(--text-light);
-}
-
-.illustration-wrapper {
-  background: var(--bg-panel);
-  border-radius: var(--radius-lg);
-  padding: 2rem;
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 500px;
-}
-
-.illustration-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: var(--radius);
-  display: block;
-}
-
-/* Stages Panel */
-.stages-panel {
-  background: var(--bg-panel);
-  border-radius: var(--radius-lg);
-  padding: 2rem;
-  box-shadow: var(--shadow);
-  width: 320px;
-  flex-shrink: 0;
-}
-
-.panel-title {
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  color: var(--text-dark);
-  font-weight: 600;
-  text-align: center;
-}
-
-.stages-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.stage-button {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  border: none;
-  border-radius: var(--radius);
-  font-size: 1rem;
-  font-weight: 600;
-  color: white;
-  cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-  box-shadow: var(--shadow);
-  text-align: left;
-  width: 100%;
-}
-
-.stage-button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-}
-
-.stage-button:active {
-  transform: translateY(0);
-}
-
-.stage-icon {
-  font-size: 1.5rem;
-}
-
-.stage-label {
-  flex: 1;
-}
-
-/* Individual Stage Colors */
-.stage-ferma {
-  background: linear-gradient(135deg, var(--color-ferma) 0%, #588239 100%);
-}
-
-.stage-transport {
-  background: linear-gradient(135deg, var(--color-transport) 0%, #2563eb 100%);
-}
-
-.stage-moara {
-  background: linear-gradient(135deg, var(--color-moara) 0%, #d97706 100%);
-}
-
-.stage-senzori {
-  background: linear-gradient(135deg, var(--color-senzori) 0%, #7c3aed 100%);
-}
-
-.stage-magazin {
-  background: linear-gradient(135deg, var(--color-magazin) 0%, #dc2626 100%);
-}
-
-/* Footer */
-.footer {
-  background: var(--bg-panel);
-  padding: 1.5rem;
-  text-align: center;
-  color: var(--text-light);
-  margin-top: 2rem;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.footer p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .stages-panel {
+/* ==== CONTAINER BUTOANE ==== */
+.menu {
     width: 100%;
-    max-width: 600px;
+    max-width: 480px;
     margin: 0 auto;
-  }
-
-  .stages-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-  }
+    padding-top: 320px; /* distanță corectă sub pâine */
 }
 
+/* ==== BUTOANE MARI ==== */
+.btn {
+    width: 88%;
+    margin: 14px auto;
+    padding: 18px 22px;
+    border: none;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    cursor: pointer;
+}
+
+/* ==== ICON ==== */
+.icon {
+    font-size: 32px;
+}
+
+/* ==== BUTOANE MICI ==== */
+.bottom-row {
+    width: 90%;
+    margin: 18px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn.small {
+    width: 48%;
+    padding: 14px 10px;
+    font-size: 16px;
+}
+
+.btn.small .icon {
+    font-size: 24px;
+}
+
+/* ==== CULORI EXACT CA ÎN DESIGN ==== */
+.ferma {
+    background: #f3e9cd;
+}
+
+.transport {
+    background: #bfc98a;
+}
+
+.moara {
+    background: #f0eddd;
+}
+
+.brutarie {
+    background: #e7a862;
+}
+
+.magazin {
+    background: #f4ead4;
+}
+
+.certificari,
+.blockchain {
+    background: #f7f2e4;
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 420px) {
+    .btn {
+        font-size: 18px;
+        padding: 16px;
+    }
+    .icon {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 360px) {
+    .btn {
+        font-size: 16px;
+    }
+    .bottom-row .btn.small {
+        font-size: 14px;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 700px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s ease;
+    position: relative;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+}
+
+#modal-title {
+    color: #667eea;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.block-info {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.info-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.info-section h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.hash-display {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    word-break: break-all;
+    color: #764ba2;
+    border: 1px solid #e0e0e0;
+}
+
+.data-display {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    min-height: 80px;
+    border: 1px solid #e0e0e0;
+    color: #333;
+}
+
+.data-display p {
+    margin: 8px 0;
+    line-height: 1.6;
+    color: #555;
+}
+
+.data-display b {
+    color: #667eea;
+    font-weight: 600;
+}
+
+/* Modal adjustments for mobile */
 @media (max-width: 768px) {
-  .header h1 {
-    font-size: 2rem;
-  }
-
-  .subtitle {
-    font-size: 1rem;
-  }
-
-  .illustration-wrapper {
-    min-height: 300px;
-    padding: 1.5rem;
-  }
-
-  .stages-panel {
-    padding: 1.5rem;
-  }
-
-  .panel-title {
-    font-size: 1.25rem;
-  }
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 20px;
+    }
 }
 
-@media (max-width: 480px) {
-  .container {
-    margin: 1rem auto;
-    padding: 0 1rem;
-  }
-
-  .header h1 {
-    font-size: 1.75rem;
-  }
-
-  .stages-buttons {
-    grid-template-columns: 1fr;
-  }
-
-  .stage-button {
-    padding: 1rem;
-  }
-}
+/* Nu introducem 100vh, poziționări în procente pentru layout-ul mobil sau cod de debugging */
